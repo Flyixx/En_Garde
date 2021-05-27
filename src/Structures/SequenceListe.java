@@ -10,6 +10,8 @@ public class SequenceListe<E> implements Sequence<E>{
             queue = nouveau;
         }
         tete = nouveau;
+
+
     }
 
     @Override
@@ -34,6 +36,7 @@ public class SequenceListe<E> implements Sequence<E>{
         if(tete == null){
             queue = null;
         }
+
         return resultat;
     }
 
