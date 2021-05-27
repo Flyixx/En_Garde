@@ -382,12 +382,17 @@ public class Manche extends Historique<Coup>{
         // Si l'action est une parade
         if(cp.action.id == 4)
         {
-            for(int i = 0; i < partie.Joueur(tourJoueur).main.size(); i++)
+            int nbSuppr = 0;
+            int l = 0;
+            //Supprimer le nombre de cartes de la bonne valeur pour parer
+            while(l< partie.Joueur(tourJoueur).main.size() && cp.action.valeurs[nbSuppr] !=0)
             {
-                if(partie.Joueur(tourJoueur).main.get(i) == cp.action.valeurs[0])
+                if(partie.Joueur(tourJoueur).main.get(l) == cp.action.valeurs[0])
                 {
-                    partie.Joueur(tourJoueur).supprMain(i);
+                    partie.Joueur(tourJoueur).supprMain(l);
+                    nbSuppr ++;
                 }
+                l++;
 
             }
         }
@@ -419,7 +424,7 @@ public class Manche extends Historique<Coup>{
         else if(coupsTourTab[1] == null)
         {
             coupsTourTab[1] = cp;
-            if(coupsTourTab[0].action.id != 3){
+            if(coupsTourTab[0].action.id != 4){
                 changeTourJoueur();
             }
         }
