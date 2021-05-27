@@ -15,10 +15,12 @@ public class CoupParTour {
 
     ArrayList<Coup> coupsTour;
     Coup[] coupsTourTab;
+    int nbCoups;
     Manche manche;
 
-    public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab)
+    public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups)
     {
+        nbCoups = nbcoups;
         coupstour = new ArrayList<>();
         coupsTourTab = new Coup[2];
         typeAction = typeaction;
