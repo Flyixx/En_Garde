@@ -465,6 +465,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     drawable.setColor(Color.RED);
                     drawable.fillRect(CaseIHM.get(i).getX(), CaseIHM.get(i).getY(), CaseIHM.get(i).getLargeur(), CaseIHM.get(i).getHauteur());
                     break;
+                case 3:
+                    drawable.setColor(Color.GREEN);
+                    drawable.fillRect(CaseIHM.get(i).getX(), CaseIHM.get(i).getY(), CaseIHM.get(i).getLargeur(), CaseIHM.get(i).getHauteur());
+                    break;
                 default:
                     break;
 

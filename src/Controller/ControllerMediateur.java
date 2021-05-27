@@ -105,6 +105,11 @@ public class ControllerMediateur implements CollecteurEvenements {
 						//jeu.partie().manche().updateAll();
 						//jeu.partie().initialiseManche();
 
+					} else if (c.getEtat() == 3){
+						jeu.partie().manche().parerDirectement();
+						System.out.println("Tu peux parer mon pote");
+						jeu.partie().manche().doitParer = false;
+
 					}
 				}
 			}

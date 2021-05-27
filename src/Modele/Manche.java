@@ -479,7 +479,6 @@ public class Manche extends Historique<Coup>{
 
             miseAJourGrille(oldPosJ1, oldPosJ2, this.joueur1.getPosition(), this.joueur2.getPosition());
 
-
         }
         else{
 
