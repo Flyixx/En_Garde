@@ -39,9 +39,9 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 
-	public void clickCarte(int x, int y){
+	public void clickCarte(int x, int y) {
 		// Si le joueur doit parer, il ne peut pas cliquer sur une carte
-		if(inter.niv().Partie) {
+		if (inter.niv().Partie) {
 			if (!jeu.partie().manche().doitParer) {
 				JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
 				for (int i = 0; i < joueur.getCarteI().size(); i++) {
@@ -57,6 +57,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 				}
 			}
 		}
+	}
 
 	public void clickDeplacement(int x, int y){
 		ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
