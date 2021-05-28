@@ -24,7 +24,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     public int tailleMute, xBoutonMute, yBoutonMute, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
     Image[][] joueurs1;
     Image[][] joueurs2;
-    Image carte1_disabled, carte2_disabled, carte3_disabled, carte4_disabled, carte5_disabled;
+    Image carte1_disabled, carte2_disabled, carte3_disabled, carte4_disabled, carte5_disabled, cartePioche;
     Image ButtonChangeTour;
     Random r;
     Clip clip;
@@ -112,6 +112,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         save = chargeImage("Partie/Save");
         annuler = chargeImage("Partie/AnnulerCoup");
         refaire = chargeImage("Partie/RefaireCoup");
+
+        cartePioche = chargeImage("Carte/DeckCard");
 
         carte0 = chargeImage("Carte/Card_0");
         carte1 = chargeImage("Carte/Card_1");
@@ -356,6 +358,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(NomJ1, (int)Math.round(xPointGauche+(0.5*EspacementTiret)), yNom, largeurNom, hauteurNom, null);
         drawable.drawImage(NomJ2, (int)Math.round(xPointDroit-(5*EspacementTiret)), yNom, largeurNom, hauteurNom, null);
 
+        // affichage de la pioche
+        int largeurCarte = (int) Math.round(largeur * 0.30)/5;
+        int hauteurCarte = (int) Math.round(hauteur * 0.15);
+        drawable.drawString("Pioche : " + jeu.partie().manche().restantPioche(),(int)Math.round(largeur*0.45),(int)Math.round(hauteur*0.2));
+        for(int i=1;i<=jeu.partie().manche().restantPioche();i++){
+            drawable.drawImage(cartePioche,(int)Math.round((largeur*0.45) + (i*2)),(int)Math.round(hauteur*0.20),largeurCarte,hauteurCarte, null);
+        }
+
         //affichage Des Bouton
         drawable.drawImage(quitter, xBoutonGauche, yBoutonBas, largeurBouton, hauteurBouton, null);
         drawable.drawImage(save, xBoutonGauche, yBoutonMilieu, largeurBouton, hauteurBouton, null);
@@ -457,6 +467,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(map, (int)Math.round(largeur*0.35),(int)Math.round(hauteur*0.1),(int)Math.round(largeur*0.30), (int)Math.round(largeur*0.150), null);
         drawable.drawImage(joueur1Choix, (int)Math.round(largeur*0.1), (int)Math.round(hauteur*0.1), largeurVador, hauteurVador, null);
         drawable.drawImage(joueur2Choix, (int)Math.round(largeur*0.9), (int)Math.round(hauteur*0.1), -largeurVador, hauteurVador, null);
+
+
 
         //Flèche Joueur 1
         drawable.drawImage(flecheDroit, xBouton1 , yBouton, tailleBouton, tailleBouton, null);

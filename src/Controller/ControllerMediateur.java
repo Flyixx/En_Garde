@@ -123,25 +123,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 		}
 	}
 
-	public void clickChangeTour(int x, int y)
-	{
-		if(jeu.partie().manche().boutonChangeTour != null)
-		{
-			if(jeu.partie().manche().nbCoupsJoues != 0)
-			{
-				ButtonIHM but = jeu.partie().manche().boutonChangeTour;
-				if (x >= but.getX() && x < but.getX() + but.getLargeur()){
-					if (y >= but.getY() && y < but.getY() + but.getHauteur()){
+	public void clickChangeTour(int x, int y) {
+		if(inter.niv().Partie) {
+			if(jeu.partie().manche().nbCoupsJoues != 0) {
+				//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
+				if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
+					if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
 						jeu.partie().manche().changeTourJoueur();
 
-						for(int f = 0; f<jeu.selectedCarte.size(); f++)
-						{
+						for(int f = 0; f<jeu.selectedCarte.size(); f++) {
 							jeu.selectedCarte.remove(f);
 							f=0;
 						}
 
-						if(jeu.selectedCarte.size()>0)
-						{
+						if(jeu.selectedCarte.size()>0) {
 							jeu.selectedCarte.remove(0);
 						}
 
@@ -149,6 +144,8 @@ public class ControllerMediateur implements CollecteurEvenements {
 						System.out.println("Je change le tour");
 					}
 				}
+			}else{
+				System.out.println("Impossible le joueur doit jouer au moins une carte");
 			}
 		}
 	}
