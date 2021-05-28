@@ -21,13 +21,15 @@ public class ControllerMediateur implements CollecteurEvenements {
 	int joueurCourant;
 	int decompte;
 	Sequence<Animation> animations;
+	Animation mouvement;
 	InterfaceGraphique inter;
 
 	public ControllerMediateur(Jeu j){
 		jeu = j;
 		animations = new SequenceListe<>();
-		Joueur1 = j.partie().Joueur(1);
-		Joueur2 = j.partie().Joueur(2);
+		mouvement = null;
+		/*Joueur1 = j.partie().Joueur(1);
+		Joueur2 = j.partie().Joueur(2);*/
 		joueurCourant = 1; //jeu.partie().getTourJoueur();
 	}
 
@@ -38,16 +40,17 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 
 	public void clickCarte(int x, int y){
+		if(inter.niv().Partie){
+			JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
+			for(int i = 0; i < joueur.getCarteI().size(); i++){
+				CarteIHM c = joueur.getCarteI().get(i);
+				if(x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1){
+					if((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))){
 
-		JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
-		for(int i = 0; i < joueur.getCarteI().size(); i++){
-			CarteIHM c = joueur.getCarteI().get(i);
-			if(x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1){
-				if((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))){
+						jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
+						jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte);
 
-					 jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
-					 jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte);
-
+					}
 				}
 			}
 		}
@@ -56,7 +59,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 	public void clickDeplacement(int x, int y){
 		ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
 		CaseIHM = jeu.partie().manche().getCaseIHM();
-
+		Coup cp = null;
 		for(int i = 0; i < CaseIHM.size(); i++){
 			SelectionCaseIHM c = CaseIHM.get(i);
 			if(c.getEtat() != 0 && x >= c.getX() && x <= (c.getX() + c.getLargeur())){
@@ -66,7 +69,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 					if (c.getEtat() == 1){
 						int[] valeurs= new int[5];
 						valeurs[0] = jeu.selectedCarte.get(0).getValeur();
-						Coup cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
+						cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
 						jeu.jouerCoup(cp);
 
 						for(int j =0; j<jeu.selectedCarte.size();j ++)
@@ -83,7 +86,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 							valeurs[j] = jeu.selectedCarte.get(j).getValeur();
 						}
 
-						Coup cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
+						cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
 						jeu.jouerCoup(cp);
 
 						for(int f = 0; f<jeu.selectedCarte.size(); f++)
@@ -104,35 +107,28 @@ public class ControllerMediateur implements CollecteurEvenements {
 				}
 			}
 		}
-	}
-
-	public void clickChangeTour(int x, int y)
-	{
-		if(jeu.partie().manche().boutonChangeTour != null)
-		{
-			ButtonIHM but = jeu.partie().manche().boutonChangeTour;
-			if (x >= but.getX() && x < but.getX() + but.getLargeur()){
-				if (y >= but.getY() && y < but.getY() + but.getHauteur()){
-					jeu.partie().manche().changeTourJoueur(jeu.partie().manche().tourJoueur);
-
-					for(int f = 0; f<jeu.selectedCarte.size(); f++)
-					{
-						jeu.selectedCarte.remove(f);
-						f=0;
-					}
-
-					if(jeu.selectedCarte.size()>0)
-					{
-						jeu.selectedCarte.remove(0);
-					}
-
-					jeu.partie().manche().updateAll();
-					System.out.println("Je change le tour");
-				}
-			}
+		if(cp != null){
+			mouvement = new AnimationCoup(cp, inter, 1, 2);
+			animations.insereQueue(mouvement);
 		}
 	}
 
+	public void clickChangeTour(int x, int y) {
+		if(x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
+			if(y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
+				jeu.partie().manche().changeTourJoueur(jeu.partie().manche().tourJoueur);
+				for(int f = 0; f<jeu.selectedCarte.size(); f++) {
+					jeu.selectedCarte.remove(f);
+					f=0;
+				}
+				if(jeu.selectedCarte.size()>0) {
+					jeu.selectedCarte.remove(0);
+				}
+				jeu.partie().manche().updateAll();
+				System.out.println("Je change le tour");
+			}
+		}
+	}
 
 	public void clickChange(int x, int y){
 		if((y >= inter.niv().yBouton && y <= (inter.niv().yBouton + inter.niv().tailleBouton))){
@@ -175,24 +171,58 @@ public class ControllerMediateur implements CollecteurEvenements {
 		inter.niv().metAJour();
 	}
 
-	/*public void avancer() {
-		int[] valeurs= new int[5];
-		valeurs[0] = jeu.selectedCarte.getValeur();
-		Coup cp = jeu.determinerCoup(1, valeurs,jeu.partie().manche().grilleJeu);
-		jeu.jouerCoup(cp);
-		jeu.selectedCarte.reset();
-
+	@Override
+	public void clickQuitterJeu(int x, int y) {
+		if(inter.niv().Partie){
+			if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
+				if(y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
+					commande("RetourMenu");
+				}
+			}
+		}else if(inter.niv().Victoire){
+			if(x >= 0 && x < inter.niv().largeurBouton){
+				if(y >= inter.niv().yBoutonVictoire && y < (inter.niv().yBoutonVictoire+inter.niv().hauteurBouton)){
+					commande("RetourMenu");
+				}
+			}
+		}
 	}
 
-	public void reculer() {
-		int[] valeurs= new int[5];
-		valeurs[0] = jeu.selectedCarte.getValeur();
-		Coup cp = jeu.determinerCoup(2, valeurs,jeu.partie().manche().grilleJeu);
-		jeu.jouerCoup(cp);
-		jeu.selectedCarte.reset();
-	}*/
+	@Override
+	public void clickSauvegarder(int x, int y) {
+		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
+			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
+				System.out.println("Sauvegarde effectué");
+			}
+		}
+	}
 
+	@Override
+	public void clickAnnuler(int x, int y) {
+		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
+			if(y >= inter.niv().yBoutonMilieu2 && y < (inter.niv().yBoutonMilieu2+inter.niv().hauteurBouton)){
+				System.out.println("Dernier Coup/Tour Annulé");
+			}
+		}
+	}
 
+	@Override
+	public void clickRefaire(int x, int y) {
+		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
+			if(y >= inter.niv().yBoutonHaut && y < (inter.niv().yBoutonHaut+inter.niv().hauteurBouton)){
+				System.out.println("Dernier Coup/Tour Refait");
+			}
+		}
+	}
+
+	public void clickMute(int x, int y){
+		if(x >= inter.niv().xBoutonMute && x < (inter.niv().xBoutonMute + inter.niv().tailleMute)){
+			if(y >= inter.niv().yBoutonMute && y < (inter.niv().yBoutonMute + inter.niv().tailleMute)){
+				inter.niv().mute = !inter.niv().mute;
+				inter.niv().mute();
+			}
+		}
+	}
 
 	public void tictac(){
 		if(inter.getMenu()){
@@ -209,19 +239,21 @@ public class ControllerMediateur implements CollecteurEvenements {
 			Animation anim = it.prochain();
 			anim.tictac();
 		}
-		if(!jeu.partie().aGagner()){
-			if(decompte == 0){
-				if(joueurCourant == 2){
-					//Faire jouer le joueur 2
-					changeJoueur();
+		if(inter.niv().Partie){
+			if(!jeu.partie().aGagner()){
+				if(decompte == 0){
+					if(joueurCourant == 2){
+						//Faire jouer le joueur 2
+						changeJoueur();
+					}else{
+						decompte = lenteurAttente;
+					}
 				}else{
-					decompte = lenteurAttente;
+					decompte--;
 				}
 			}else{
-				decompte--;
+				joueurCourant = 1;
 			}
-		}else{
-			joueurCourant = 1;
 		}
 	}
 
@@ -237,17 +269,20 @@ public class ControllerMediateur implements CollecteurEvenements {
     public boolean commande(String c) {
         switch (c) {
 			case "NewPartie":
-				inter.changeBackground(false, false, false, true);
+				inter.changeBackground(false, false, false, true, false);
 				break;
 			case "Regles":
-				inter.changeBackground(false, false, true, false);
+				inter.changeBackground(false, false, true, false, false);
 				break;
 			case "RetourMenu":
-				inter.changeBackground(true, false, false, false);
+				inter.changeBackground(true, false, false, false, false );
 				break;
 			case "PartieLance":
-				Jeu jeu = new Jeu();
-				inter.changeBackground(false, true, false, false);
+				jeu.initialisePartie();
+				Joueur1 = jeu.partie().Joueur(1);
+				Joueur2 = jeu.partie().Joueur(2);
+				inter.changeBackground(false, true, false, false, false);
+				break;
 			case "Suivant":
 				if(inter.niv().compteur < 10){
 					inter.niv().compteur++;

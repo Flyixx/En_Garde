@@ -14,12 +14,19 @@ public class AdaptateurSouris extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        control.clickCarte(e.getX(), e.getY());
-        control.clickDeplacement(e.getX(), e.getY());
-        control.clickChangeTour(e.getX(), e.getY());
         if(niv.NewPartie){
             control.clickChange(e.getX(), e.getY());
         }
+        if(niv.Partie){
+            control.clickCarte(e.getX(), e.getY());
+            control.clickDeplacement(e.getX(), e.getY());
+            control.clickChangeTour(e.getX(), e.getY());
+            control.clickSauvegarder(e.getX(), e.getY());
+            control.clickAnnuler(e.getX(), e.getY());
+            control.clickRefaire(e.getX(), e.getY());
+        }
+        control.clickQuitterJeu(e.getX(), e.getY());
+        control.clickMute(e.getX(), e.getY());
     }
 
 }
