@@ -239,6 +239,12 @@ public class ControllerMediateur implements CollecteurEvenements {
 			case "NewPartie":
 				inter.changeBackground(false, false, false, true);
 				break;
+			case "PartieIAF":
+				System.out.println("Partie contre IA");
+				jeu = new Jeu();
+				jeu.partie().typePartie = 2;
+				inter.changeBackground(false,true,false,false);
+				break;
 			case "Regles":
 				inter.changeBackground(false, false, true, false);
 				break;
@@ -246,7 +252,8 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.changeBackground(true, false, false, false);
 				break;
 			case "PartieLance":
-				Jeu jeu = new Jeu();
+				jeu = new Jeu();
+				jeu.partie().typePartie = 1;
 				inter.changeBackground(false, true, false, false);
 			case "Suivant":
 				if(inter.niv().compteur < 10){

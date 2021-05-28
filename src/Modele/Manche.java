@@ -108,6 +108,8 @@ public class Manche extends Historique<Coup>{
             j.main.add(carte);
 
         }
+        System.out.println("Pioche melangee :" + piocheCartes);
+
         System.out.println("main complete joueur " + tourJoueur + " : " + j.main);
     }
 
@@ -253,60 +255,6 @@ public class Manche extends Historique<Coup>{
             }
         }
 
-    }
-
-    public void listerCoupComplexe(JoueurHumain j, CarteIHM carte){ // coups composés de plusieurs cartes
-        int newPos;
-        int dir = j.direction;
-        int valeurCarte = carte.getValeur();
-        //System.out.println("carte : " + valeurCarte);
-        if(dir == 1) { // joueur à gauche
-            if(j.position >= valeurCarte){
-                newPos = j.position - valeurCarte;
-                System.out.println("peut reculer en " + newPos);
-                CaseIHM.get(newPos).updateEtat(1);
-            }
-            newPos = j.position + valeurCarte;
-            if(newPos <= 22){
-                if(newPos == joueur2.position ){
-                    CaseIHM.get(newPos).updateEtat(2);
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                }else if(newPos < joueur2.position){
-                    System.out.println("peut avancer en " + newPos);
-                    peutAttaquer(carte, newPos, j);
-                    CaseIHM.get(newPos).updateEtat(1);
-                    //Coup coup = new Coup()
-                    //joue(1,valeurCarte);
-                }else{
-                    CaseIHM.get(newPos).updateEtat(0);
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
-
-        if(dir == -1){ // joueur à droite
-            if(j.position +valeurCarte <= 22){
-                newPos = j.position + valeurCarte;
-                CaseIHM.get(newPos).updateEtat(1);
-                System.out.println("peut reculer en " + newPos);
-            }
-            newPos = j.position - valeurCarte;
-            if(newPos >= 0){
-                if(newPos == joueur1.position ){
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                    CaseIHM.get(newPos).updateEtat(2);
-                }else if(newPos > joueur1.position){
-                    System.out.println("peut avancer en " + newPos);
-                    if(peutAttaquer(carte, newPos, j)){
-
-                    };
-                    CaseIHM.get(newPos).updateEtat(1);
-
-                }else{
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
     }
 
     public boolean peutAttaquer(CarteIHM carte,int pos, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
@@ -504,7 +452,6 @@ public class Manche extends Historique<Coup>{
         {
                 remplirMain(joueur2);
                 this.tourJoueur = 1;
-
         }
     }
 

@@ -9,6 +9,7 @@ public class Partie {
     Manche courant;
     JoueurHumain joueur1, joueur2;
     int gagnant;
+    public int typePartie; // 1 = J vs J - 2 = J vs IA - 3 = IA vs IA
 
     public Partie(Jeu j){
         jeu = j;
@@ -24,6 +25,7 @@ public class Partie {
         courant = new Manche(this);
         J1Gagnant = false;
         J2Gagnant = false;
+        int typePartie = 1;
     }
 
     public void initialiseManche(){
