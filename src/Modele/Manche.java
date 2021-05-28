@@ -125,12 +125,12 @@ public class Manche extends Historique<Coup>{
     }
 
     public void viderMain(JoueurHumain j){
-        System.out.println("vidage de main joueur " + j.getDirection() + " : " + j.getMain());
+        //System.out.println("vidage de main joueur " + j.getDirection() + " : " + j.getMain());
         int tailleMain = j.main.size();
         for(int i=0;i<tailleMain;i++){
             j.main.remove(0);
         }
-        System.out.println("vidage de main fini");
+        //System.out.println("vidage de main fini");
     }
 
     public int pioche(){ // le joueur récupère une carte dans l
