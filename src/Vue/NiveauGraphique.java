@@ -422,10 +422,15 @@ public class NiveauGraphique extends JComponent implements Observateur {
             x = x+largeurCarte;
 
 
-            if(j.getCarteI().size() < 5){
+
+            if(j.getCarteI().size() < 5 ){
                 j.initCarteI(i, valeurCarte, x, y, largeurCarte, hauteurCarte);
             } else {
-                j.updateCarteI(i, valeurCarte, x, y, largeurCarte, hauteurCarte);
+                if(i != 5)
+                {
+                    j.updateCarteI(i, valeurCarte, x, y, largeurCarte, hauteurCarte);
+                }
+
             }
 
             if (j.getCarteI().get(i).getEtat() == 1){
@@ -458,6 +463,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
                     break;
                 case 2:
                     drawable.setColor(Color.RED);
+                    drawable.fillRect(CaseIHM.get(i).getX(), CaseIHM.get(i).getY(), CaseIHM.get(i).getLargeur(), CaseIHM.get(i).getHauteur());
+                    break;
+                case 3:
+                    drawable.setColor(Color.GREEN);
                     drawable.fillRect(CaseIHM.get(i).getX(), CaseIHM.get(i).getY(), CaseIHM.get(i).getLargeur(), CaseIHM.get(i).getHauteur());
                     break;
                 default:

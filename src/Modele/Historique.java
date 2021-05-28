@@ -4,29 +4,31 @@ package Modele;
 import Structures.SequenceListe;
 
 public class Historique<E extends Commande> {
-    SequenceListe<Coup> CoupFait, CoupAnnuler;
+    SequenceListe<CoupParTour> CoupFait, CoupAnnuler;
 
     Historique(){
         CoupFait = new SequenceListe<>();
         CoupAnnuler = new SequenceListe<>();
     }
 
-    void nouveau(Coup c){
+    void nouveau(CoupParTour c){
         System.out.println("Coup : " + c);
         CoupFait.insereTete(c);
         //c.execute(c);
         while(!CoupAnnuler.estVide()){
             CoupAnnuler.extraitTete();
         }
+
+
     }
 
-    public Coup coupPrecedent()
+    public CoupParTour coupPrecedent()
     {
         if(CoupFait.estVide())
         {
             return null;
         }
-        Coup c = CoupFait.extraitTete();
+        CoupParTour c = CoupFait.extraitTete();
         CoupFait.insereTete(c);
 
         return c;
@@ -40,10 +42,10 @@ public class Historique<E extends Commande> {
         return !CoupFait.estVide();
     }
 
-    Coup refaire(){
+    CoupParTour refaire(){
         if(peutRefaire()){
 
-            Coup c = CoupAnnuler.extraitTete();
+            CoupParTour c = CoupAnnuler.extraitTete();
 
             CoupFait.insereTete(c);
             return c;
@@ -52,9 +54,9 @@ public class Historique<E extends Commande> {
         }
     }
 
-    Coup annuler(){
+    CoupParTour annuler(){
         if(peutAnnuler()){
-            Coup c = CoupFait.extraitTete();
+            CoupParTour c = CoupFait.extraitTete();
             c.desexecute(c);
 
             CoupAnnuler.insereTete(c);

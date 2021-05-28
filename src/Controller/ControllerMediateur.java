@@ -38,16 +38,18 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 
 	public void clickCarte(int x, int y){
+		// Si le joueur doit parer, il ne peut pas cliquer sur une carte
+		if(!jeu.partie().manche().doitParer) {
+			JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
+			for (int i = 0; i < joueur.getCarteI().size(); i++) {
+				CarteIHM c = joueur.getCarteI().get(i);
+				if (x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1) {
+					if ((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))) {
 
-		JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
-		for(int i = 0; i < joueur.getCarteI().size(); i++){
-			CarteIHM c = joueur.getCarteI().get(i);
-			if(x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1){
-				if((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))){
+						jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
+						jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte);
 
-					 jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
-					 jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte);
-
+					}
 				}
 			}
 		}
@@ -65,8 +67,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 					if (c.getEtat() == 1){
 						int[] valeurs= new int[5];
-						valeurs[0] = jeu.selectedCarte.get(0).getValeur();
-						Coup cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
+
+						Coup cp = null;
+						if(jeu.partie().manche().doitParer)
+						{
+							valeurs[0] = i;
+							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 3);
+							jeu.partie().manche().changeTourJoueur();
+							jeu.partie().manche().doitParer = false;
+						}
+						else
+						{
+							valeurs[0] = jeu.selectedCarte.get(0).getValeur();
+							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
+						}
 						jeu.jouerCoup(cp);
 
 						for(int j =0; j<jeu.selectedCarte.size();j ++)
@@ -84,21 +98,17 @@ public class ControllerMediateur implements CollecteurEvenements {
 						}
 
 						Coup cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
+
 						jeu.jouerCoup(cp);
 
-						for(int f = 0; f<jeu.selectedCarte.size(); f++)
-						{
-							jeu.selectedCarte.remove(f);
-							f=0;
-						}
 
-						if(jeu.selectedCarte.size()>0)
-						{
-							jeu.selectedCarte.remove(0);
-						}
 						//jeu.partie().manche().updateAll();
-						jeu.partie().manche().changeTourJoueur(jeu.partie().manche().getTourJoueur());
-						jeu.partie().initialiseManche();
+						//jeu.partie().initialiseManche();
+
+					} else if (c.getEtat() == 3){
+						jeu.partie().manche().parerDirectement();
+						System.out.println("Tu peux parer mon pote");
+						jeu.partie().manche().doitParer = false;
 
 					}
 				}
@@ -110,26 +120,30 @@ public class ControllerMediateur implements CollecteurEvenements {
 	{
 		if(jeu.partie().manche().boutonChangeTour != null)
 		{
-			ButtonIHM but = jeu.partie().manche().boutonChangeTour;
-			if (x >= but.getX() && x < but.getX() + but.getLargeur()){
-				if (y >= but.getY() && y < but.getY() + but.getHauteur()){
-					jeu.partie().manche().changeTourJoueur(jeu.partie().manche().tourJoueur);
+			if(jeu.partie().manche().nbCoupsJoues != 0)
+			{
+				ButtonIHM but = jeu.partie().manche().boutonChangeTour;
+				if (x >= but.getX() && x < but.getX() + but.getLargeur()){
+					if (y >= but.getY() && y < but.getY() + but.getHauteur()){
+						jeu.partie().manche().changeTourJoueur();
 
-					for(int f = 0; f<jeu.selectedCarte.size(); f++)
-					{
-						jeu.selectedCarte.remove(f);
-						f=0;
+						for(int f = 0; f<jeu.selectedCarte.size(); f++)
+						{
+							jeu.selectedCarte.remove(f);
+							f=0;
+						}
+
+						if(jeu.selectedCarte.size()>0)
+						{
+							jeu.selectedCarte.remove(0);
+						}
+
+						jeu.partie().manche().updateAll();
+						System.out.println("Je change le tour");
 					}
-
-					if(jeu.selectedCarte.size()>0)
-					{
-						jeu.selectedCarte.remove(0);
-					}
-
-					jeu.partie().manche().updateAll();
-					System.out.println("Je change le tour");
 				}
 			}
+
 		}
 	}
 
