@@ -8,4 +8,9 @@ public interface CollecteurEvenements {
     boolean commande(String c);
     void fixerInterfaceGraphique(InterfaceGraphique i);
     void clickChange(int x, int y);
+    void clickQuitterJeu(int x, int y);
+    void clickSauvegarder(int x, int y);
+    void clickAnnuler(int x, int y);
+    void clickRefaire(int x, int y);
+    void clickMute(int x, int y);
 }
