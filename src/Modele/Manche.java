@@ -51,7 +51,9 @@ public class Manche extends Historique<Coup>{
         joueur2.direction = -1;
         //joueur2.vie = 5;
         viderMain(joueur1);
+        System.out.println("Main joueur1 :" + joueur1.getMain());
         viderMain(joueur2);
+        System.out.println("Main joueur2 :" + joueur2.getMain());
         remplirMain(joueur1);
         remplirMain(joueur2);
         System.out.println("Pioche complete : " + piocheCartes);
@@ -68,6 +70,9 @@ public class Manche extends Historique<Coup>{
         }else {
             return false;
         }
+    }
+    public int restantPioche(){
+        return piocheCartes.size();
     }
 
     public void initialiserPioche(){
@@ -96,7 +101,6 @@ public class Manche extends Historique<Coup>{
 
     public void remplirMain(JoueurHumain j){
         for(int i=0;i<j.main.size();i++){
-
             if(j.main.get(i) == 0){
 
                 j.main.remove(i);
@@ -121,9 +125,12 @@ public class Manche extends Historique<Coup>{
     }
 
     public void viderMain(JoueurHumain j){
-        for(int i=0;i<j.main.size();i++){
-            j.main.remove(i);
+        //System.out.println("vidage de main joueur " + j.getDirection() + " : " + j.getMain());
+        int tailleMain = j.main.size();
+        for(int i=0;i<tailleMain;i++){
+            j.main.remove(0);
         }
+        //System.out.println("vidage de main fini");
     }
 
     public int pioche(){ // le joueur récupère une carte dans l
@@ -628,12 +635,16 @@ public class Manche extends Historique<Coup>{
 
         if(tourJoueur == 1)
         {
+                System.out.println("Joueur 1 pioche");
                 remplirMain(joueur1);
-                this.tourJoueur = 2;
+            System.out.println("Cartes restantes pioche : " + this.restantPioche());
+            this.tourJoueur = 2;
         }
         else
         {
+                System.out.println("Joueur 2 pioche");
                 remplirMain(joueur2);
+                System.out.println("Cartes restantes pioche : " + this.restantPioche());
                 this.tourJoueur = 1;
 
         }

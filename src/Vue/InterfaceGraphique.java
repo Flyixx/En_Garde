@@ -248,8 +248,8 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
     //Fonction permettant de mettre a jour les booléens permettant de changer l'affichage de la fenêtre
     //en appelant la fonction changeBackground de NiveauGraphique
-    public void changeBackground(boolean Menu, boolean Partie, boolean Regles, boolean NewPartie){
-        niv.changeBackground(Menu, Partie, Regles, NewPartie);
+    public void changeBackground(boolean Menu, boolean Partie, boolean Regles, boolean NewPartie, boolean Victoire){
+        niv.changeBackground(Menu, Partie, Regles, NewPartie, Victoire);
         InterfaceMenu();
         InterfaceRegles();
         InterfaceNewPartie();
@@ -286,6 +286,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
     public void metAJour() {
         niv.repaint();
     }
+
 
     //Fonction permettant de faire les animations en appelant la fonction animJoueur de NiveauGraphique
     public void animJoueur() {

@@ -9,9 +9,8 @@ public class Jeu extends Observable {
     public ArrayList<CarteIHM> selectedCarte;
     public SelectionCaseIHM selectedCase;
 
-    public Jeu()
-    {
-        initialisePartie();
+    public Jeu() {
+
     }
 
     public void initialisePartie(){
