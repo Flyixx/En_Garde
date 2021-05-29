@@ -378,6 +378,10 @@ public class Manche extends Historique<Coup>{
                 partie.Joueur(tourJoueur).supprMain(partie.jeu.selectedCarte.get(i).getId());
             }
         }
+        else if(cp.action.id == 3)
+        {
+            changeTourJoueur();
+        }
 
         // Si l'action est une parade
         if(cp.action.id == 4)
