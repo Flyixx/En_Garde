@@ -589,6 +589,20 @@ public class Manche extends Historique<Coup>{
     {
         CoupParTour coupTour = null;
 
+        if(partie.jeu.selectedCarte != null)
+        {
+            for(int i = 0; i<partie.jeu.selectedCarte.size(); i++)
+            {
+                partie.jeu.selectedCarte.remove(i);
+                i = 0;
+            }
+
+            if(partie.jeu.selectedCarte.size() != 0)
+            {
+                partie.jeu.selectedCarte.remove(0);
+            }
+        }
+
         if(coupsTourTab[0] !=null) {
 
 
