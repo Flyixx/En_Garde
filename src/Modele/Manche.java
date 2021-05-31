@@ -385,8 +385,10 @@ public class Manche extends Historique<Coup>{
                 partie.Joueur(tourJoueur).supprMain(partie.jeu.selectedCarte.get(i).getId());
             }
         }
-        else if(cp.action.id == 3)
+
+        if(cp.action.id == 3)
         {
+            coupsTourTab[0] = cp;
             changeTourJoueur();
         }
 
@@ -432,14 +434,31 @@ public class Manche extends Historique<Coup>{
                 changeTourJoueur();
             }
         }
-        else if(coupsTourTab[1] == null)
+        else if(coupsTourTab[1] == null && coupsTourTab[0] != null)
         {
             coupsTourTab[1] = cp;
+
+            if(cp.action.id == 2)
+            {
+                //updateAll();
+
+                for(int f = 0; f<partie.jeu.selectedCarte.size(); f++)
+                {
+                    partie.jeu.selectedCarte.remove(f);
+                    f=0;
+                }
+
+                if(partie.jeu.selectedCarte.size()>0)
+                {
+                    partie.jeu.selectedCarte.remove(0);
+                }
+
+            }
             if(coupsTourTab[0].action.id != 4){
                 changeTourJoueur();
             }
         }
-        else if(coupsTourTab[2]!=null)
+        else if(coupsTourTab[2]!=null && coupsTourTab[0]!= null)
         {
             changeTourJoueur();
         }
