@@ -77,10 +77,28 @@ public class ControllerMediateur implements CollecteurEvenements {
 						int[] valeurs= new int[5];
 
 						cp = null;
+						System.out.println("Doit parer : " + jeu.partie().manche().doitParer);
 						if(jeu.partie().manche().doitParer)
 						{
-							valeurs[0] = i;
+							if(jeu.partie().manche().getTourJoueur() == 1)
+							{
+								valeurs[0] = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition() - i;
+							}
+							else
+							{
+								valeurs[0] = i - jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition();
+							}
 							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 3);
+							boolean suppr = false;
+							for(int f = 0; f<jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.size() && suppr != true; f++)
+							{
+								if(jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.get(f) == valeurs[0])
+								{
+									jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).supprMain(f);
+									suppr = true;
+
+								}
+							}
 							jeu.partie().manche().doitParer = false;
 						}
 						else
@@ -88,12 +106,14 @@ public class ControllerMediateur implements CollecteurEvenements {
 							valeurs[0] = jeu.selectedCarte.get(0).getValeur();
 							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
 						}
+
 						jeu.jouerCoup(cp);
 
 						for(int j =0; j<jeu.selectedCarte.size();j ++)
 						{
 							jeu.selectedCarte.get(0).reset();
 						}
+
 
 
 					} else if (c.getEtat() == 2){
