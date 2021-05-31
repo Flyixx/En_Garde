@@ -361,10 +361,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
         // affichage de la pioche
         int largeurCarte = (int) Math.round(largeur * 0.30)/5;
         int hauteurCarte = (int) Math.round(hauteur * 0.15);
-        drawable.drawString("Pioche : " + jeu.partie().manche().restantPioche(),(int)Math.round(largeur*0.45),(int)Math.round(hauteur*0.2));
-        for(int i=1;i<=jeu.partie().manche().restantPioche();i++){
+        //int[] oldPos;
+        int k =1;
+        do{
+            drawable.drawImage(cartes[0],(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
+            k+=1;
+        }while(k<jeu.partie().manche().restantPioche());
+        drawable.drawImage(cartes[1],(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
+        /*for(int i=jeu.partie().manche().restantPioche(); i<15;i++){
             drawable.drawImage(cartePioche,(int)Math.round((largeur*0.45) + (i*2)),(int)Math.round(hauteur*0.20),largeurCarte,hauteurCarte, null);
-        }
+        }*/
 
         //affichage Des Bouton
         drawable.drawImage(quitter, xBoutonGauche, yBoutonBas, largeurBouton, hauteurBouton, null);
