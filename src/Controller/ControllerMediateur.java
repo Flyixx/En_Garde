@@ -77,7 +77,6 @@ public class ControllerMediateur implements CollecteurEvenements {
 						{
 							valeurs[0] = i;
 							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 3);
-							jeu.partie().manche().changeTourJoueur();
 							jeu.partie().manche().doitParer = false;
 						}
 						else
