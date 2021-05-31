@@ -1,5 +1,7 @@
 package Modele;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicIntegerArray;
+
 import Controller.*;
 import Vue.ButtonIHM;
 
@@ -30,7 +32,6 @@ public class Manche extends Historique<Coup>{
     public Manche(Partie p){
         doitParer = false;
         partie = p;
-        //int sel = p.jeu.selectedCarte;
 
         //Les joueurs de la partie associés à la manche
         joueur1 = partie.Joueur(1);
@@ -64,6 +65,66 @@ public class Manche extends Historique<Coup>{
         tourJoueur = 1;
 
     }
+
+    //Constructeur de la manche en cour lors de la sauvegarde
+    public Manche(Partie p, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant){
+        doitParer = false;
+        partie = p;
+
+        //Les joueurs de la partie associés à la manche
+        joueur1 = partie.Joueur(1);
+        joueur2 = partie.Joueur(2);
+
+        grilleJeu = new int [NOMBRE_CASES];
+
+        //Mise en place du joueur 1
+        grilleJeu[positionJ1] = 1;
+        joueur1.position = positionJ1;
+        joueur1.direction = 1;
+
+        //Mise en place du joueur 2
+        grilleJeu[positionJ2] = 2;
+        joueur2.position = positionJ2;
+        joueur2.direction = -1;
+
+        //Vider la main des joueurs pour les remplir correctement
+        viderMain(joueur1);
+        viderMain(joueur2);
+
+        //Remplissage de la main du joueur 1
+        char MainJ1Char[] = MainJ1.toCharArray();
+        for(int i = 0; i < 5; i++){
+            joueur1.main.add(Character.digit(MainJ1Char[i],10));
+        }
+
+        //Remplissage de la main du joueur 2
+        char MainJ2Char[] = MainJ2.toCharArray();
+        for(int i = 0; i < 5; i++){
+            joueur2.main.add(Character.digit(MainJ2Char[i],10));
+
+        }
+
+        //Remplissage de la pioche
+        char PiocheChar[] = pioche.toCharArray();
+        for(int i = 0; i < PiocheChar.length; i++){
+            piocheCartes.add(Character.digit(PiocheChar[i],10));
+        }
+
+        System.out.println("Pioche complete : " + piocheCartes);
+
+        coupsTour = new ArrayList<>();
+        coupsTourTab = new Coup[3];
+
+        //Mise en place du tour
+        tourJoueur = tourCourant;
+
+    }
+
+
+
+
+
+
     public boolean piocheVide(){
         return piocheCartes.size()==0;
     }
