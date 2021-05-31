@@ -65,11 +65,7 @@ public class Manche extends Historique<Coup>{
 
     }
     public boolean piocheVide(){
-        if(piocheCartes.size() == 0){
-            return true;
-        }else {
-            return false;
-        }
+        return piocheCartes.size()==0;
     }
     public int restantPioche(){
         return piocheCartes.size();
@@ -237,9 +233,7 @@ public class Manche extends Historique<Coup>{
                         peutAttaquer(cartes.get(0), j.getPosition(), j);
                     }else if(newPos > joueur1.position && peutseDeplacer){
                         System.out.println("peut avancer en " + newPos);
-                        if(peutAttaquer(cartes.get(0), newPos, j)){
 
-                        }
                         CaseIHM.get(newPos).updateEtat(1);
                     }else{
                         System.out.println("bloqué par joueur");
@@ -320,9 +314,6 @@ public class Manche extends Historique<Coup>{
                     CaseIHM.get(newPos).updateEtat(2);
                 }else if(newPos > joueur1.position){
                     System.out.println("peut avancer en " + newPos);
-                    if(peutAttaquer(carte, newPos, j)){
-
-                    };
                     CaseIHM.get(newPos).updateEtat(1);
 
                 }else{
