@@ -38,6 +38,10 @@ public class ControllerMediateur implements CollecteurEvenements {
 		animations.insereQueue(new AnimationJoueur(inter));
 	}
 
+	public InterfaceGraphique inter(){
+		return inter;
+	}
+
 
 	public void clickCarte(int x, int y) {
 		// Si le joueur doit parer, il ne peut pas cliquer sur une carte
@@ -123,25 +127,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 		}
 	}
 
-	public void clickChangeTour(int x, int y)
-	{
-		if(jeu.partie().manche().boutonChangeTour != null)
-		{
-			if(jeu.partie().manche().nbCoupsJoues != 0)
-			{
-				ButtonIHM but = jeu.partie().manche().boutonChangeTour;
-				if (x >= but.getX() && x < but.getX() + but.getLargeur()){
-					if (y >= but.getY() && y < but.getY() + but.getHauteur()){
+	public void clickChangeTour(int x, int y) {
+		if(inter.niv().Partie) {
+			if(jeu.partie().manche().nbCoupsJoues != 0) {
+				//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
+				if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
+					if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
 						jeu.partie().manche().changeTourJoueur();
 
-						for(int f = 0; f<jeu.selectedCarte.size(); f++)
-						{
+						for(int f = 0; f<jeu.selectedCarte.size(); f++) {
 							jeu.selectedCarte.remove(f);
 							f=0;
 						}
 
-						if(jeu.selectedCarte.size()>0)
-						{
+						if(jeu.selectedCarte.size()>0) {
 							jeu.selectedCarte.remove(0);
 						}
 
@@ -149,42 +148,37 @@ public class ControllerMediateur implements CollecteurEvenements {
 						System.out.println("Je change le tour");
 					}
 				}
+			}else{
+				System.out.println("Impossible le joueur doit jouer au moins une carte");
 			}
 		}
 	}
 
 	public void clickChange(int x, int y){
 		if((y >= inter.niv().yBouton && y <= (inter.niv().yBouton + inter.niv().tailleBouton))){
-			System.out.println("Salut y");
 			if((x >= inter.niv().xBouton1 && x <= (inter.niv().xBouton1 + inter.niv().tailleBouton))) {
-				System.out.println("Salut x1");
 				if(inter.niv().compteurJ1 == 0){
-					inter.niv().compteurJ1 = 1;
+					inter.niv().compteurJ1 = 3;
 				}else{
 					inter.niv().compteurJ1--;
 				}
 			}else if((x >= inter.niv().xBouton2 && x <= (inter.niv().xBouton2 + inter.niv().tailleBouton))) {
-				System.out.println("Salut x2");
-				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%2;
+				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%4;
 			}else if((x >= inter.niv().xBouton3 && x <= (inter.niv().xBouton3 + inter.niv().tailleBouton))){
-				System.out.println("Salut x3");
 				if(inter.niv().compteurJ2 == 0){
-					inter.niv().compteurJ2 = 1;
+					inter.niv().compteurJ2 = 3;
 				}else{
 					inter.niv().compteurJ2--;
 				}
 			}else if((x >= inter.niv().xBouton4 && x <= (inter.niv().xBouton4 + inter.niv().tailleBouton))){
-				System.out.println("Salut x4");
-				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%2;
+				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%4;
 			}else if((x >= inter.niv().xBouton5 && x <= (inter.niv().xBouton5 + inter.niv().tailleBouton))){
-				System.out.println("Salut x5");
 				if(inter.niv().compteurMap == 0){
 					inter.niv().compteurMap = 7;
 				}else{
 					inter.niv().compteurMap--;
 				}
 			}else if((x >= inter.niv().xBouton6 && x <= (inter.niv().xBouton6 + inter.niv().tailleBouton))){
-				System.out.println("Salut x6");
 				inter.niv().compteurMap = (inter.niv().compteurMap+1)%8;
 			}
 		}
@@ -215,7 +209,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 	public void clickSauvegarder(int x, int y) {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
-				System.out.println("Sauvegarde effectué");
+				inter.sauve();
 			}
 		}
 	}
@@ -301,10 +295,16 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.changeBackground(true, false, false, false, false );
 				break;
 			case "PartieLance":
-				jeu.initialisePartie();
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false);
+				break;
+			case "ChargePartie":
+				boolean bool = inter.charge();
+				if(bool){
+					inter.changeBackground(false, true, false, false, false);
+				}
 				break;
 			case "Suivant":
 				if(inter.niv().compteur < 10){
