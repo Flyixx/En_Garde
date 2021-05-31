@@ -4,7 +4,9 @@ import Modele.Jeu;
 import Patterns.Observateur;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.*;
 
 public class InterfaceGraphique implements Runnable, Observateur {
     Jeu jeu;
@@ -19,6 +21,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
     InterfaceGraphique(Jeu j,CollecteurEvenements c){
         jeu = j;
         control = c;
+        jeu.fixerCollecteurEvenement(c);
         jeu.ajouteObservateur(this);
     }
 
@@ -67,7 +70,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         pan.setOpaque(true);
 
         Niveau = createButton("Nouvelle Partie", "NewPartie");
-        Charger = createButton("Charger Une Partie", "Charger");
+        Charger = createButton("Charger Une Partie", "ChargePartie");
         Option = createButton("Règles du jeu", "Regles");
         Quitter = createButton("Quitter le jeu", "quit");
         pan.add(Niveau);
@@ -321,5 +324,33 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
     public boolean getRegles() {
         return niv.Regles;
+    }
+
+    public void sauve(){
+        JFileChooser selecteur = new JFileChooser();
+        selecteur.setDialogTitle("Fichier de sauvegarde");
+        selecteur.setFileFilter(new FileNameExtensionFilter("Save", "*.cfg"));
+        int resultat = selecteur.showSaveDialog(frame);
+        if(resultat == JFileChooser.APPROVE_OPTION){
+            File fichier = selecteur.getSelectedFile();
+            try{
+                OutputStream out = new FileOutputStream(fichier);
+                jeu.sauve(out);
+            } catch (FileNotFoundException e) {
+                System.err.println("Erreur : "+ e);
+            }
+        }
+    }
+
+    public boolean charge() {
+        JFileChooser selecteur = new JFileChooser();
+        selecteur.setDialogTitle("Fichier de Sauvegarde");
+        int resultat = selecteur.showOpenDialog(frame);
+        if(resultat == JFileChooser.APPROVE_OPTION){
+            String FileName = selecteur.getSelectedFile().getAbsolutePath();
+            jeu.initialisePartieSauve(FileName);
+            return true;
+        }
+        return false;
     }
 }

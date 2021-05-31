@@ -7,6 +7,7 @@ public interface CollecteurEvenements {
     void clickChangeTour(int x, int y);
     boolean commande(String c);
     void fixerInterfaceGraphique(InterfaceGraphique i);
+    InterfaceGraphique inter();
     void clickChange(int x, int y);
     void clickQuitterJeu(int x, int y);
     void clickSauvegarder(int x, int y);
