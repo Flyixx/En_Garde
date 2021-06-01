@@ -174,20 +174,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 		if((y >= inter.niv().yBouton && y <= (inter.niv().yBouton + inter.niv().tailleBouton))){
 			if((x >= inter.niv().xBouton1 && x <= (inter.niv().xBouton1 + inter.niv().tailleBouton))) {
 				if(inter.niv().compteurJ1 == 0){
-					inter.niv().compteurJ1 = 3;
+					inter.niv().compteurJ1 = 5;
 				}else{
 					inter.niv().compteurJ1--;
 				}
 			}else if((x >= inter.niv().xBouton2 && x <= (inter.niv().xBouton2 + inter.niv().tailleBouton))) {
-				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%4;
+				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%6;
 			}else if((x >= inter.niv().xBouton3 && x <= (inter.niv().xBouton3 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurJ2 == 0){
-					inter.niv().compteurJ2 = 3;
+					inter.niv().compteurJ2 = 5;
 				}else{
 					inter.niv().compteurJ2--;
 				}
 			}else if((x >= inter.niv().xBouton4 && x <= (inter.niv().xBouton4 + inter.niv().tailleBouton))){
-				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%4;
+				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%6;
 			}else if((x >= inter.niv().xBouton5 && x <= (inter.niv().xBouton5 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurMap == 0){
 					inter.niv().compteurMap = 7;
@@ -206,9 +206,9 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 	@Override
 	public void clickQuitterJeu(int x, int y) {
-		if(inter.niv().Partie){
-			if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
-				if(y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
+		if(inter.niv().MenuPartie){
+			if(x >= inter.niv().xBoutonMenu && x < (inter.niv().xBoutonMenu+inter.niv().largeurBoutonMenu)){
+				if(y >= inter.niv().yBoutonTrois && y < (inter.niv().yBoutonTrois+inter.niv().hauteurBoutonMenu)){
 					commande("RetourMenu");
 				}
 			}
@@ -222,9 +222,18 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	@Override
+	public void clickMenuPartie(int x, int y){
+		if(x > inter.niv().xBoutonGauche && x <= inter.niv().xBoutonGauche+inter.niv().largeurBouton){
+			if(y > inter.niv().yBoutonBas && y <= inter.niv().yBoutonBas+inter.niv().hauteurBouton){
+				commande("MenuPartie");
+			}
+		}
+	}
+
+	@Override
 	public void clickSauvegarder(int x, int y) {
-		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
-			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
+		if(x >= inter.niv().xBoutonMenu && x < (inter.niv().xBoutonMenu+inter.niv().largeurBoutonMenu)){
+			if(y >= inter.niv().yBoutonDeux && y < (inter.niv().yBoutonDeux+inter.niv().hauteurBoutonMenu)){
 				inter.sauve();
 			}
 		}
@@ -234,7 +243,8 @@ public class ControllerMediateur implements CollecteurEvenements {
 	public void clickAnnuler(int x, int y) {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu2 && y < (inter.niv().yBoutonMilieu2+inter.niv().hauteurBouton)){
-				System.out.println("Dernier Coup/Tour Annulé");
+				System.out.println("Annuler");
+				commande("Annuler");
 			}
 		}
 	}
@@ -242,17 +252,29 @@ public class ControllerMediateur implements CollecteurEvenements {
 	@Override
 	public void clickRefaire(int x, int y) {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
-			if(y >= inter.niv().yBoutonHaut && y < (inter.niv().yBoutonHaut+inter.niv().hauteurBouton)){
-				System.out.println("Dernier Coup/Tour Refait");
+			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
+				System.out.println("Refaire");
+				commande("Refaire");
+			}
+		}
+	}
+
+	@Override
+	public void clickRevenirPartie(int x, int y){
+		if(x >= inter.niv().xBoutonMenu && x < (inter.niv().xBoutonMenu+inter.niv().largeurBoutonMenu)){
+			if(y >= inter.niv().yBoutonUn && y < (inter.niv().yBoutonUn+inter.niv().hauteurBoutonMenu)){
+				commande("RevenirPartie");
 			}
 		}
 	}
 
 	public void clickMute(int x, int y){
-		if(x >= inter.niv().xBoutonMute && x < (inter.niv().xBoutonMute + inter.niv().tailleMute)){
-			if(y >= inter.niv().yBoutonMute && y < (inter.niv().yBoutonMute + inter.niv().tailleMute)){
-				inter.niv().mute = !inter.niv().mute;
-				inter.niv().mute();
+		if(inter.niv().MenuPartie || inter.niv().Menu || inter.niv().Regles || inter.niv().NewPartie || inter.niv().Victoire){
+			if(x >= inter.niv().xBoutonMute && x < (inter.niv().xBoutonMute + inter.niv().tailleMute)){
+				if(y >= inter.niv().yBoutonMute && y < (inter.niv().yBoutonMute + inter.niv().tailleMute)){
+					inter.niv().mute = !inter.niv().mute;
+					inter.niv().mute();
+				}
 			}
 		}
 	}
@@ -298,23 +320,31 @@ public class ControllerMediateur implements CollecteurEvenements {
 		}
 	}
 
+	void annule(){
+		jeu.annule();
+	}
+
+	void refaire(){
+		jeu.refaire();
+	}
+
     @Override
     public boolean commande(String c) {
         switch (c) {
 			case "NewPartie":
-				inter.changeBackground(false, false, false, true, false);
+				inter.changeBackground(false, false, false, true, false, false);
 				break;
 			case "Regles":
-				inter.changeBackground(false, false, true, false, false);
+				inter.changeBackground(false, false, true, false, false, false);
 				break;
 			case "RetourMenu":
-				inter.changeBackground(true, false, false, false, false );
+				inter.changeBackground(true, false, false, false, false, false);
 				break;
 			case "PartieLance":
 				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
-				inter.changeBackground(false, true, false, false, false);
+				inter.changeBackground(false, true, false, false, false, false);
 				break;
 			case "PartieIAF":
 				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
@@ -326,8 +356,14 @@ public class ControllerMediateur implements CollecteurEvenements {
 			case "ChargePartie":
 				boolean bool = inter.charge();
 				if(bool){
-					inter.changeBackground(false, true, false, false, false);
+					inter.changeBackground(false, true, false, false, false, false);
 				}
+				break;
+			case "RevenirPartie":
+				inter.changeBackground(false, true, false, false, false, false);
+				break;
+			case "MenuPartie":
+				inter.changeBackground(false, false, false, false, false, true);
 				break;
 			case "Suivant":
 				if(inter.niv().compteur < 10){
@@ -344,7 +380,12 @@ public class ControllerMediateur implements CollecteurEvenements {
 				break;
 			case "fullscreen":
 				break;
-
+			case "Annuler":
+				annule();
+				break;
+			case "Refaire":
+				refaire();
+				break;
 			default:
 				return false;
 		}

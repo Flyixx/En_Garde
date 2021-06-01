@@ -19,18 +19,19 @@ import java.util.Random;
 
 public class NiveauGraphique extends JComponent implements Observateur {
     Jeu jeu;
-    Image muteIm, unMute, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
+    Image revenirALaPartie, menuPartie, fondMenuPartie, muteIm, unMute, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y, joueur2Vie, joueur1Vie, action, EspacementTiret, dimensionTete, xTeteDroite, xTeteGauche, yTete, etape, largeur, hauteur, nbColonnes, largeurCase, hauteurNom, largeurNom, hauteurCase, hauteurLuke, hauteurVador, largeurVador, yPoint, xPointGauche, xPointDroit, hauteurTiret, largeurTiret, yNom, xNom;
-    public int tailleMute, xBoutonMute, yBoutonMute, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
+    public int hauteurBoutonMenu, largeurBoutonMenu, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
     Image[][] joueurs1;
     Image[][] joueurs2;
+    Image[][] BandeVie;
     Image carte1_disabled, carte2_disabled, carte3_disabled, carte4_disabled, carte5_disabled, cartePioche;
     Image ButtonChangeTour;
     Random r;
     Clip clip;
     FloatControl gainControl;
     Graphics2D drawable;
-    public boolean mute, Victoire, VictoireSet, Menu, Partie, Regles, NewPartie, PartieSet, MenuSet, ReglesSet, NewPartieSet;
+    public boolean mute, Victoire, VictoireSet, Menu, Partie, Regles, NewPartie, PartieSet, MenuSet, ReglesSet, NewPartieSet, MenuPartieSet, MenuPartie;
     public int compteur;
     Image[] cartes = {};
     Image[] cartesSel = {};
@@ -102,6 +103,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         NomJ1 = chargeImage("Partie/NomJ1");
         NomJ2 = chargeImage("Partie/NomJ2");
         fondJoueur = chargeImage("Partie/FondJoueur");
+        fondMenuPartie = chargeImage("Partie/NomMenu");
+        revenirALaPartie = chargeImage("Partie/RevenirPartie");
+        menuPartie = chargeImage("Partie/Menu");
 
         victoireName = chargeImage("Partie/Victoire");
         muteIm = chargeImage("Partie/Mute");
@@ -150,6 +154,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
+        BandeVie = new Image[2][2];
+        for(int v = 0; v < 2; v++){
+            for(int z = 0; z < 2; z++){
+                BandeVie[v][z] = chargeImage("Map/BandeVie_"+v+z);
+            }
+        }
+
         etape = 0;
         action = 0;
         joueur1 = joueurs1[action][etape];
@@ -173,14 +184,17 @@ public class NiveauGraphique extends JComponent implements Observateur {
         largeur = getSize().width;
         hauteur = getSize().height;
 
+        drawable.clearRect(0, 0, largeur, hauteur);
+
         if(Partie){
-            if (jeu.partie().aGagner()){
-                changeBackground(false, false, false,false, true);
+            if(jeu.partie().aGagner()){
+                joueur1Vie = jeu.partie().Joueur(1).vie;
+                joueur2Vie = jeu.partie().Joueur(2).vie;
+                changeBackground(false, false, false,false, true, false);
                 jeu.initialisePartie(compteurMap, compteurJ1, compteurJ2);
             }
         }
 
-        drawable.clearRect(0, 0, largeur, hauteur);
         if(Partie){
             tracerPartie();
         }else if(Menu){
@@ -191,7 +205,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
             tracerNewPartie();
         }else if(Victoire){
             tracerVictoire();
+        }else if(MenuPartie){
+            tracerMenuPartie();
         }
+        System.out.println("J1 " + joueur1Vie + "/ J2 " + joueur2Vie);
         mute();
     }
 
@@ -315,6 +332,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         ReglesSet = false;
         NewPartieSet = false;
         VictoireSet = false;
+        MenuPartie = false;
 
         largeurCase = largeur / nbColonnes;
         hauteurCase = (int)Math.round(largeurCase*0.35);
@@ -323,7 +341,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         largeurVador = (int)Math.round(largeurCase * 1.50);
         xTeteGauche = (int)Math.round(largeur*0.01);
         EspacementTiret = (int)Math.round(largeur*0.05);
-        dimensionTete = (int)Math.round(largeurCase*1.75);
+        dimensionTete = (int)Math.round(largeurCase*1.50);
         xTeteDroite = (int)Math.round((largeur*.99)-(dimensionTete));
         yTete = (int)Math.round(hauteur*0.05);
         xPointGauche = (xTeteGauche+dimensionTete);
@@ -350,6 +368,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawable.clearRect(0, 0, largeur, hauteur);
         drawable.drawImage(map, 0, 0, largeur, hauteur, null);
+
+        if(jeu.partie().manche().getTourJoueur() == 1){
+            drawable.drawImage(BandeVie[0][compteurJ1%2], 0, yTete-(int)Math.round(hauteur*0.040), largeur, dimensionTete+hauteurNom+largeurTiret, null);
+        }else{
+            drawable.drawImage(BandeVie[1][compteurJ2%2], 0, yTete-(int)Math.round(hauteur*0.040), largeur, dimensionTete+hauteurNom+largeurTiret, null);
+        }
+
         //affichage de la tete et du nom des deux joueurs
         //drawable.drawImage(fondJoueur, 0, (int)Math.round(yTete-0.005*hauteur), (int)Math.round(dimensionTete+largeurNom*1.50), (int)Math.round(dimensionTete+largeurTiret*0.25), null);
         //drawable.drawImage(fondJoueur, largeur, (int)Math.round(yTete-0.005*hauteur), -(int)Math.round(dimensionTete+largeurNom*1.50), (int)Math.round(dimensionTete+largeurTiret*0.25), null);
@@ -373,12 +398,10 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }*/
 
         //affichage Des Bouton
-        drawable.drawImage(quitter, xBoutonGauche, yBoutonBas, largeurBouton, hauteurBouton, null);
-        drawable.drawImage(save, xBoutonGauche, yBoutonMilieu, largeurBouton, hauteurBouton, null);
         drawable.drawImage(fin, xBoutonDroite, yBoutonBas, largeurBouton, hauteurBouton, null);
         drawable.drawImage(annuler, xBoutonGauche, yBoutonMilieu2, largeurBouton, hauteurBouton, null);
-        drawable.drawImage(refaire, xBoutonGauche, yBoutonHaut, largeurBouton, hauteurBouton, null);
-
+        drawable.drawImage(refaire, xBoutonGauche, yBoutonMilieu, largeurBouton, hauteurBouton, null);
+        drawable.drawImage(menuPartie, xBoutonGauche, yBoutonBas, largeurBouton, hauteurBouton, null);
         // affichage des barres de vie à partir de la santé de chaque joueur
         joueur1Vie = jeu.partie().manche().joueur1.vie;
         joueur2Vie = jeu.partie().manche().joueur2.vie;
@@ -394,18 +417,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for(int i=joueur2Vie; i<5;i++){
             drawable.drawImage(TiretRouge, (int)Math.round(xPointDroit-((i+1)*EspacementTiret)), yPoint, largeurTiret, hauteurTiret, null);
         }
-
         for(int c = 0; c < jeu.partie().manche().NOMBRE_CASES; c++){
             int x = c * largeurCase;
             y = (int) Math.round(hauteur * 0.62);
-
             if (jeu.partie().manche().getCaseIHM().size() < jeu.partie().manche().NOMBRE_CASES){
-                jeu.partie().manche().initCaseIHM(c, grilleJeu[c], x, y - hauteurCase*3, largeurCase, hauteurCase*4, 0);
+                jeu.partie().manche().initCaseIHM(c, grilleJeu[c], x, (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), largeurCase, hauteurVador, 0);
             } else {
-                jeu.partie().manche().updateCaseIHM(c, grilleJeu[c], x, y - hauteurCase*3, largeurCase, hauteurCase*4);
+                jeu.partie().manche().updateCaseIHM(c, grilleJeu[c], x, (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), largeurCase, hauteurVador);
             }
-
-
             drawable.drawImage(sol, x, y, largeurCase, hauteurCase, null);
             if(grilleJeu[c] == 1){
                 drawable.drawImage(joueur1, x, (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), largeurVador, hauteurVador, null);
@@ -424,12 +443,41 @@ public class NiveauGraphique extends JComponent implements Observateur {
             {
                 selectCartes(jeu.selectedCarte.get(i).getValeur(), jeu.selectedCarte.get(i).getCoordX(), jeu.selectedCarte.get(i).getCoordY(), jeu.selectedCarte.get(i).getLargeur(), jeu.selectedCarte.get(i).getHauteur(), drawable);
             }
-
         }
+    }
+
+    public void tracerMenuPartie(){
+        drawable.clearRect(0, 0, largeur, hauteur);
+
+        PartieSet = true;
+        MenuPartieSet = true;
+        MenuSet = false;
+        ReglesSet = false;
+        NewPartieSet = false;
+        VictoireSet = false;
+
+        drawable.drawRect(0,0,largeur, hauteur);
+        Color cGris = new Color(150, 150, 150, 20);
+        drawable.setColor(cGris);
+        drawable.fillRect(0, 0, largeur, hauteur);
+
+        drawable.drawImage(fondMenuPartie, 0, 0, largeur, hauteur, null);
+
 
         tailleMute = (int)Math.round(largeur*0.05);
         xBoutonMute = largeur-tailleMute;
         yBoutonMute = hauteur-tailleMute;
+        xBoutonMenu = (int)Math.round(largeur*0.375);
+        yBoutonUn = (int)Math.round(hauteur*0.35);
+        yBoutonDeux = (int)Math.round(hauteur*0.55);
+        yBoutonTrois = (int)Math.round(hauteur*0.75);
+        largeurBoutonMenu = (int)Math.round(largeur*0.250);
+        hauteurBoutonMenu = (int)Math.round(hauteur*0.100);
+
+        drawable.drawImage(revenirALaPartie, xBoutonMenu, yBoutonUn, largeurBoutonMenu, hauteurBoutonMenu, null);
+        drawable.drawImage(quitter, xBoutonMenu, yBoutonTrois, largeurBoutonMenu, hauteurBoutonMenu, null);
+        drawable.drawImage(save, xBoutonMenu, yBoutonDeux, largeurBoutonMenu, hauteurBoutonMenu, null);
+
 
         if(mute){
             drawable.drawImage(muteIm, xBoutonMute, yBoutonMute, tailleMute, tailleMute, null);
@@ -512,6 +560,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         NewPartieSet = false;
         PartieSet = false;
         ReglesSet = false;
+        MenuPartie = false;
 
         largeurBouton = (int)Math.round(largeur*0.15);
         hauteurBouton = (int)Math.round(hauteur*0.059);
@@ -522,6 +571,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawable.drawImage(quitter, 0, hauteur-hauteurBouton, largeurBouton, hauteurBouton, null);
         drawable.drawImage(victoireName, (int)Math.round(0.25*largeur), (int)Math.round(0.1*hauteur), (int)Math.round(0.50*largeur), (int)Math.round(0.07*largeur), null);
+
+        /*int pdv2 = jeu.partie().manche().joueur2.vie;
+        int pdv1 = jeu.partie().manche().joueur1.vie;*/
 
         if(joueur1Vie > joueur2Vie){
             drawable.drawImage(joueur1, (int)Math.round(0.45*largeur), (int)Math.round(0.3*hauteur), (int)Math.round(0.20*largeur), (int)Math.round(0.20*largeur), null);
@@ -643,12 +695,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     //Fonction qui met à jour les booléens pour changer l'affichage de la fenêtre en fonction de la page
     //que l'on veut afficher
-    public void changeBackground(boolean b1, boolean b2, boolean b3, boolean b4, boolean b5) {
+    public void changeBackground(boolean b1, boolean b2, boolean b3, boolean b4, boolean b5, boolean b6) {
         Menu = b1;
         Partie = b2;
         Regles = b3;
         NewPartie = b4;
         Victoire = b5;
+        MenuPartie = b6;
         metAJour();
     }
 

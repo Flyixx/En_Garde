@@ -128,29 +128,42 @@ public class Jeu extends Observable {
     }
 
     public void sauve(OutputStream out) {
-        sortie = new PrintStream(out);
-        sortie.println("CompteurMap="+compteurMap);
-        sortie.println("CompteurJ1="+compteurJ1);
-        sortie.println("CompteurJ2="+compteurJ2);
-        sortie.println("Joueur1Vie="+courant.joueur1.vie);
-        sortie.println("Joueur2Vie="+courant.joueur2.vie);
-        sortie.println("TourJoueur="+courant.manche().tourJoueur);
-        sortie.println("PositionJ1="+courant.manche().joueur1.position);
-        sortie.println("PositionJ2="+courant.manche().joueur2.position);
-        sortie.print("Pioche=");
-        for(int i = 0; i < courant.manche().piocheCartes.size(); i++){
-            sortie.print(courant.manche().piocheCartes.get(i));
-        }
-        sortie.println();
-        sortie.print("MainJoueur1=");
-        for(int i = 0; i < courant.manche().joueur1.main.size(); i++){
-            sortie.print(courant.manche().joueur1.main.get(i));
-        }
-        sortie.println();
-        sortie.print("MainJoueur2=");
-        for(int i = 0; i < courant.manche().joueur2.main.size(); i++){
-            sortie.print(courant.manche().joueur2.main.get(i));
-        }
-        sortie.println();
+            sortie = new PrintStream(out);
+            sortie.println("CompteurMap="+compteurMap);
+            sortie.println("CompteurJ1="+compteurJ1);
+            sortie.println("CompteurJ2="+compteurJ2);
+            sortie.println("Joueur1Vie="+courant.joueur1.vie);
+            sortie.println("Joueur2Vie="+courant.joueur2.vie);
+            sortie.println("TourJoueur="+courant.manche().tourJoueur);
+            sortie.println("PositionJ1="+courant.manche().joueur1.position);
+            sortie.println("PositionJ2="+courant.manche().joueur2.position);
+            sortie.print("Pioche=");
+            for(int i = 0; i < courant.manche().piocheCartes.size(); i++){
+                sortie.print(courant.manche().piocheCartes.get(i));
+            }
+            sortie.println();
+            sortie.print("MainJoueur1=");
+            for(int i = 0; i < courant.manche().joueur1.main.size(); i++){
+                sortie.print(courant.manche().joueur1.main.get(i));
+            }
+            sortie.println();
+            sortie.print("MainJoueur2=");
+            for(int i = 0; i < courant.manche().joueur2.main.size(); i++){
+                sortie.print(courant.manche().joueur2.main.get(i));
+            }
+            sortie.println();
+            sortie.close();
+    }
+
+    public CoupParTour annule(){
+        CoupParTour cp = partie().annuler();
+        miseAJour();
+        return cp;
+    }
+
+    public CoupParTour refaire(){
+        CoupParTour cp = partie().refaire();
+        miseAJour();
+        return cp;
     }
 }
