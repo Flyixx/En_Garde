@@ -351,7 +351,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 				jeu.partie().type = 2;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
-				inter.changeBackground(false, true, false, false, false);
+				inter.changeBackground(false, true, false, false, false,false);
 				break;
 			case "ChargePartie":
 				boolean bool = inter.charge();
