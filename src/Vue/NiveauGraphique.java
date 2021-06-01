@@ -646,10 +646,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             }
 
-            if (j.getCarteI().get(i).getEtat() == 1){
-                drawable.drawImage(cartesDisabled[valeurCarte-1], x , y, largeurCarte, hauteurCarte, null);
-            } else {
-                drawable.drawImage(cartes[valeurCarte], x , y, largeurCarte, hauteurCarte, null);
+            if(i<j.getCarteI().size())
+            {
+                if (j.getCarteI().get(i).getEtat() == 1){
+                    drawable.drawImage(cartesDisabled[valeurCarte-1], x , y, largeurCarte, hauteurCarte, null);
+                } else {
+                    drawable.drawImage(cartes[valeurCarte], x , y, largeurCarte, hauteurCarte, null);
+                }
             }
 
             if (jeu.selectedCarte.size()>i && jeu.selectedCarte.get(i).getId() == i){

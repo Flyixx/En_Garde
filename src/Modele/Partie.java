@@ -10,9 +10,12 @@ public class Partie extends Historique<CoupParTour>{
     JoueurHumain joueur1, joueur2;
     public int type;
     int gagnant;
+    int premierTourPrecedent; // Changer à qui est le premier tour à chaque fois
 
     public Partie(Jeu j){
         jeu = j;
+
+        premierTourPrecedent = 1;
         initialisePartie();
     }
 
@@ -27,7 +30,7 @@ public class Partie extends Historique<CoupParTour>{
         joueur2 = new JoueurHumain(jeu);
         joueur1.vie = 5;
         joueur2.vie = 5;
-        courant = new Manche(this);
+        courant = new Manche(this, premierTourPrecedent);
         J1Gagnant = false;
         J2Gagnant = false;
     }
@@ -45,6 +48,14 @@ public class Partie extends Historique<CoupParTour>{
     public void initialiseManche(){
         courant = null;
 
+        if(premierTourPrecedent == 1)
+        {
+            premierTourPrecedent = 2;
+        }
+        else
+        {
+            premierTourPrecedent = 1;
+        }
         if(this.aGagner())
         {
             System.out.println("Le vainqueur est le joueur " + gagnant);
@@ -52,7 +63,8 @@ public class Partie extends Historique<CoupParTour>{
         }
         else
         {
-            courant = new Manche(this);
+            courant = null;
+            courant = new Manche(this, premierTourPrecedent);
         }
 
     }
