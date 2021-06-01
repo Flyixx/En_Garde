@@ -208,7 +208,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }else if(MenuPartie){
             tracerMenuPartie();
         }
-        System.out.println("J1 " + joueur1Vie + "/ J2 " + joueur2Vie);
+        //System.out.println("J1 " + joueur1Vie + "/ J2 " + joueur2Vie);
         mute();
     }
 

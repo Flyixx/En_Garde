@@ -785,6 +785,9 @@ public class Manche extends Historique<CoupParTour>{
             remplirMain(joueur1);
             System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 2;
+            if(partie.type == 2){
+                System.out.println("Joueur 2 est IA : ");
+            }
         }
         else
         {
