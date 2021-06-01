@@ -62,7 +62,7 @@ public class CoupParTour extends Commande{
                 '}';
     }
 
-    @Override
+    /*@Override
     void execute(Coup cp) {
 
     }
@@ -70,5 +70,5 @@ public class CoupParTour extends Commande{
     @Override
     void desexecute(Coup cp) {
 
-    }
+    }*/
 }
