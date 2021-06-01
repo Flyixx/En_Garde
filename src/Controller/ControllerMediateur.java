@@ -1,8 +1,6 @@
 package Controller;
 
-import Modele.CarteIHM;
-import Modele.Jeu;
-import Modele.SelectionCaseIHM;
+import Modele.*;
 import Structures.Iterateur;
 import Structures.Sequence;
 import Structures.SequenceListe;
@@ -10,7 +8,6 @@ import Vue.ButtonIHM;
 import Vue.CollecteurEvenements;
 import Vue.InterfaceGraphique;
 import Vue.NiveauGraphique;
-import Modele.Coup;
 
 import java.util.ArrayList;
 
@@ -315,6 +312,13 @@ public class ControllerMediateur implements CollecteurEvenements {
 				break;
 			case "PartieLance":
 				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				Joueur1 = jeu.partie().Joueur(1);
+				Joueur2 = jeu.partie().Joueur(2);
+				inter.changeBackground(false, true, false, false, false);
+				break;
+			case "PartieIAF":
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.partie().type = 2;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false);

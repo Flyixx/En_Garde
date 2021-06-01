@@ -8,6 +8,7 @@ public class Partie {
     Jeu jeu;
     Manche courant;
     JoueurHumain joueur1, joueur2;
+    public int type;
     int gagnant;
 
     public Partie(Jeu j){
@@ -84,6 +85,8 @@ public class Partie {
             return joueur2;
         }
     }
+
+
 
     public Manche manche()
     {
