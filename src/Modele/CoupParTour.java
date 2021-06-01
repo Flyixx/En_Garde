@@ -5,7 +5,7 @@ import Structures.SequenceListe;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CoupParTour {
+public class CoupParTour extends Commande{
 
     //Type d'action :
     //Si deplacement --> 1
@@ -18,8 +18,7 @@ public class CoupParTour {
     int nbCoups;
     Manche manche;
 
-    public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups)
-    {
+    public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups) {
         nbCoups = nbcoups;
         coupstour = new ArrayList<>();
         coupsTourTab = new Coup[2];
@@ -28,15 +27,12 @@ public class CoupParTour {
         coupsTourTab = coupstourtab;
     }
 
-    public Coup getCoup(int numero)
-    {
-        if(coupsTour.size() == 0)
-        {
+    public Coup getCoup(int numero) {
+        if(coupsTour.size() == 0) {
             return null;
         }
         Coup c = coupsTour.get(numero);
         //coupsTour.insereTete(c);
-
         return c;
     }
 
@@ -45,12 +41,15 @@ public class CoupParTour {
         manche = m;
     }
 
-    public void execute(CoupParTour cp) {
 
+    void execute(CoupParTour cp) {
+        Coup cpe = cp.coupsTourTab[cp.nbCoups-1];
+        cpe.execute(cpe);
     }
 
-    public void desexecute(CoupParTour cp) {
-
+    void desexecute(CoupParTour cp) {
+        Coup cpd = cp.coupsTourTab[0];
+        cpd.desexecute(cpd);
     }
 
     @Override

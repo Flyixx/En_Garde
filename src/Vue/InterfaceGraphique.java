@@ -251,11 +251,12 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
     //Fonction permettant de mettre a jour les booléens permettant de changer l'affichage de la fenêtre
     //en appelant la fonction changeBackground de NiveauGraphique
-    public void changeBackground(boolean Menu, boolean Partie, boolean Regles, boolean NewPartie, boolean Victoire){
-        niv.changeBackground(Menu, Partie, Regles, NewPartie, Victoire);
+    public void changeBackground(boolean Menu, boolean Partie, boolean Regles, boolean NewPartie, boolean Victoire, boolean MenuPartie){
+        niv.changeBackground(Menu, Partie, Regles, NewPartie, Victoire, MenuPartie);
         InterfaceMenu();
         InterfaceRegles();
         InterfaceNewPartie();
+        metAJour();
     }
 
     //Fonction permettant de faire des boutons avec un hover
@@ -327,19 +328,25 @@ public class InterfaceGraphique implements Runnable, Observateur {
     }
 
     public void sauve(){
-        JFileChooser selecteur = new JFileChooser();
-        selecteur.setDialogTitle("Fichier de sauvegarde");
-        selecteur.setFileFilter(new FileNameExtensionFilter("Save", "*.cfg"));
-        int resultat = selecteur.showSaveDialog(frame);
-        if(resultat == JFileChooser.APPROVE_OPTION){
-            File fichier = selecteur.getSelectedFile();
-            try{
-                OutputStream out = new FileOutputStream(fichier);
-                jeu.sauve(out);
-            } catch (FileNotFoundException e) {
-                System.err.println("Erreur : "+ e);
+        if(jeu.partie().manche().peutSauvegarderEtHistorique){
+            JFileChooser selecteur = new JFileChooser();
+            selecteur.setDialogTitle("Fichier de sauvegarde");
+            selecteur.setFileFilter(new FileNameExtensionFilter("Save", "*.cfg"));
+            int resultat = selecteur.showSaveDialog(frame);
+            if(resultat == JFileChooser.APPROVE_OPTION){
+                File fichier = selecteur.getSelectedFile();
+                try{
+                    OutputStream out = new FileOutputStream(fichier);
+                    jeu.sauve(out);
+                    out.close();
+                } catch (Exception e) {
+                    System.err.println("Erreur : "+ e);
+                }
             }
+        }else{
+            System.out.println("Sauvegarde Impossible, Veuillez finir votre tour");
         }
+
     }
 
     public boolean charge() {
@@ -349,6 +356,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         if(resultat == JFileChooser.APPROVE_OPTION){
             String FileName = selecteur.getSelectedFile().getAbsolutePath();
             jeu.initialisePartieSauve(FileName);
+
             return true;
         }
         return false;

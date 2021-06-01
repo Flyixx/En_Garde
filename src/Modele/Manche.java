@@ -1,13 +1,10 @@
 package Modele;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 
 import Controller.*;
 import Vue.ButtonIHM;
 
-import javax.swing.text.html.parser.Element;
-
-public class Manche extends Historique<Coup>{
+public class Manche extends Historique<CoupParTour>{
 
     static final int AVANCER = 1;
     static final int RECULER = 2;
@@ -26,11 +23,12 @@ public class Manche extends Historique<Coup>{
     ArrayList<Coup> coupsTour;
     Coup[] coupsTourTab;
     public int nbCoupsJoues;
-    public boolean doitParer;
+    public boolean doitParer, peutSauvegarderEtHistorique;
 
 
     public Manche(Partie p){
         doitParer = false;
+        peutSauvegarderEtHistorique = true;
         partie = p;
 
         //Les joueurs de la partie associés à la manche
@@ -69,6 +67,7 @@ public class Manche extends Historique<Coup>{
     //Constructeur de la manche en cour lors de la sauvegarde
     public Manche(Partie p, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant){
         doitParer = false;
+        peutSauvegarderEtHistorique = true;
         partie = p;
 
         //Les joueurs de la partie associés à la manche
@@ -120,11 +119,6 @@ public class Manche extends Historique<Coup>{
 
     }
 
-
-
-
-
-
     public boolean piocheVide(){
         if(piocheCartes.size() == 0){
             return true;
@@ -132,6 +126,7 @@ public class Manche extends Historique<Coup>{
             return false;
         }
     }
+
     public int restantPioche(){
         return piocheCartes.size();
     }
@@ -430,6 +425,7 @@ public class Manche extends Historique<Coup>{
     }
 
     public void jouerCoup(Coup cp) {
+        peutSauvegarderEtHistorique = false;
 
         //efface les cases select
         updateAll();
@@ -632,10 +628,10 @@ public class Manche extends Historique<Coup>{
         CaseIHM.add(caseI);
     }
 
-    public void initButtonChangeTour(int x, int y, int largeur, int hauteur)
-    {
+    public void initButtonChangeTour(int x, int y, int largeur, int hauteur) {
        boutonChangeTour = new ButtonIHM(1, "ChangeTour", x, y, largeur, hauteur);
     }
+
     public void updateCaseIHM(int i, int val, int x, int y, int largeur, int hauteur){
         CaseIHM.get(i).update(i, val, x, y, largeur, hauteur);
     }
@@ -646,8 +642,7 @@ public class Manche extends Historique<Coup>{
 
     public int getTourJoueur(){ return tourJoueur;}
 
-    public void changeTourJoueur()
-    {
+    public void changeTourJoueur() {
         CoupParTour coupTour = null;
 
         if(partie.jeu.selectedCarte != null)
@@ -743,20 +738,18 @@ public class Manche extends Historique<Coup>{
 
         }
 
-
+        peutSauvegarderEtHistorique = true;
         TestProchainCoup(coupPrecedent);
 
     }
 
-    public void updateAll()
-    {
+    public void updateAll() {
         for (int i = 0; i < CaseIHM.size(); i++){
             CaseIHM.get(i).updateEtat(0);
         }
     }
 
-    public void videListe(ArrayList<Coup> liste)
-    {
+    public void videListe(ArrayList<Coup> liste) {
         for(int i = 0; i<liste.size(); i++)
         {
             liste.remove(i);
@@ -770,8 +763,7 @@ public class Manche extends Historique<Coup>{
     }
 
     //Pour connaitre l'action que le joueur doit effectuer par rapport au coup precedent
-    public void TestProchainCoup(CoupParTour coupPrecedent)
-    {
+    public void TestProchainCoup(CoupParTour coupPrecedent) {
         if(coupPrecedent != null)
         {
             if(coupPrecedent.typeAction == 1)
@@ -807,8 +799,7 @@ public class Manche extends Historique<Coup>{
         }
     }
 
-    public boolean peutParerDirectement(CoupParTour coupPrecedent, int nbCartes)
-    {
+    public boolean peutParerDirectement(CoupParTour coupPrecedent, int nbCartes) {
         //Si le nombre de cartes de l'attaque précédente est supérieur à 2, il est impossible de parer
         if(nbCartes > 2)
         {
@@ -853,8 +844,7 @@ public class Manche extends Historique<Coup>{
     }
 
     //Parer une attaque directe
-    public void ParerAttaqueDirecte(CoupParTour coupPrecedent, int nbCartes)
-    {
+    public void ParerAttaqueDirecte(CoupParTour coupPrecedent, int nbCartes) {
 
         //int valeurRecherchee = coupPrecedent.coupsTourTab[0].action.valeurs[0];
         //Si le nombre de cartes de l'attaque précédente est supérieur à 2, il est impossible de parer
@@ -871,14 +861,9 @@ public class Manche extends Historique<Coup>{
             attaque(tourJoueur);
             partie.initialiseManche();
         }
-
-
-
-
     }
 
-    public void ParerAttaqueIndirecte(CoupParTour coupPrecedent, int nbCartes)
-    {
+    public void ParerAttaqueIndirecte(CoupParTour coupPrecedent, int nbCartes) {
         int valeurRecherchee = coupPrecedent.coupsTourTab[0].action.valeurs[0];
         //Si le nombre de cartes de l'attaque précédente est supérieur à 2, il est impossible de parer
         if(peutParerDirectement(coupPrecedent, nbCartes))
@@ -917,12 +902,12 @@ public class Manche extends Historique<Coup>{
         }
 
         doitParer = true;
+        peutSauvegarderEtHistorique = false;
 
 
     }
 
-    public JoueurHumain Joueur(int tourJoueur)
-    {
+    public JoueurHumain Joueur(int tourJoueur) {
         if(tourJoueur == 1)
         {
             return joueur1;
@@ -933,8 +918,7 @@ public class Manche extends Historique<Coup>{
         }
     }
 
-    public boolean peutReculer()
-    {
+    public boolean peutReculer() {
         boolean peutReculer = false;
         JoueurHumain joueurcourant = Joueur(tourJoueur);
 
@@ -958,8 +942,7 @@ public class Manche extends Historique<Coup>{
         return peutReculer;
     }
 
-    public void parerDirectement()
-    {
+    public void parerDirectement() {
         CoupParTour coupPrecedent = coupPrecedent();
         int valeurRecherchee = coupPrecedent.coupsTourTab[coupPrecedent.nbCoups-1].action.valeurs[0];
         int nbCartes = 0;
@@ -996,4 +979,11 @@ public class Manche extends Historique<Coup>{
 
     }
 
+    public void Revenir(Coup cp){
+        grilleJeu = cp.mapAvant;
+    }
+
+    public void Inverse(Coup cp){
+        grilleJeu = cp.mapAvant;
+    }
 }

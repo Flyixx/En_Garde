@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Coup extends Commande {
+public class Coup {
     Manche manche;
     int[] mapAvant;
     Action action;
@@ -32,12 +32,19 @@ public class Coup extends Commande {
     }
 
     public void execute(Coup cp) {
-
+        Revenir(cp);
     }
 
     public void desexecute(Coup cp) {
-
+        Inverse(cp);
     }
 
+    public void Revenir(Coup cp){
+        manche.Revenir(cp);
+    }
+
+    public void Inverse(Coup cp){
+        manche.Inverse(cp);
+    }
 
 }
