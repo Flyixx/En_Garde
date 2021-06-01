@@ -394,9 +394,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             y = (int) Math.round(hauteur * 0.62);
 
             if (jeu.partie().manche().getCaseIHM().size() < jeu.partie().manche().NOMBRE_CASES){
-                jeu.partie().manche().initCaseIHM(c, grilleJeu[c], x, y - hauteurCase*3, largeurCase, hauteurCase*4, 0);
+                jeu.partie().manche().initCaseIHM(c, grilleJeu[c], x, (int)Math.round(y-hauteurVador+(hauteurCase* 0.5)), largeurCase, hauteurVador, 0);
             } else {
-                jeu.partie().manche().updateCaseIHM(c, grilleJeu[c], x, y - hauteurCase*3, largeurCase, hauteurCase*4);
+                jeu.partie().manche().updateCaseIHM(c, grilleJeu[c], x, (int)Math.round(y-hauteurVador+(hauteurCase * 0.5)), largeurCase, hauteurVador);
             }
 
 
@@ -588,10 +588,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             }
 
-            if (j.getCarteI().get(i).getEtat() == 1){
-                drawable.drawImage(cartesDisabled[valeurCarte-1], x , y, largeurCarte, hauteurCarte, null);
-            } else {
-                drawable.drawImage(cartes[valeurCarte], x , y, largeurCarte, hauteurCarte, null);
+            if(i<j.getCarteI().size())
+            {
+                if (j.getCarteI().get(i).getEtat() == 1){
+                    drawable.drawImage(cartesDisabled[valeurCarte-1], x , y, largeurCarte, hauteurCarte, null);
+                } else {
+                    drawable.drawImage(cartes[valeurCarte], x , y, largeurCarte, hauteurCarte, null);
+                }
             }
 
             if (jeu.selectedCarte.size()>i && jeu.selectedCarte.get(i).getId() == i){

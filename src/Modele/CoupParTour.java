@@ -5,7 +5,7 @@ import Structures.SequenceListe;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CoupParTour {
+public class CoupParTour extends Commande{
 
     //Type d'action :
     //Si deplacement --> 1
@@ -61,5 +61,15 @@ public class CoupParTour {
                 ", coupsTourTab=" + Arrays.toString(coupsTourTab) +
                 ", manche=" + manche +
                 '}';
+    }
+
+    @Override
+    void execute(Coup cp) {
+
+    }
+
+    @Override
+    void desexecute(Coup cp) {
+
     }
 }

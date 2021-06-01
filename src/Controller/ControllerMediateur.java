@@ -54,7 +54,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 						if ((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))) {
 
 							jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
-							jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte);
+							jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte, true);
 
 						}
 					}
