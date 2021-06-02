@@ -43,13 +43,13 @@ public class Manche extends Historique<CoupParTour>{
 
         grilleJeu = new int[NOMBRE_CASES];
         //Situation du joueur 1 au début de la partie
-        grilleJeu[10] = 1;
-        joueur1.position = 10;
+        grilleJeu[0] = 1;
+        joueur1.position = 0;
         joueur1.direction = 1;
         //joueur1.vie = 5;
         //Situation du joueur 2 au début de la partie
-        grilleJeu[15] = 2;
-        joueur2.position = 15;
+        grilleJeu[22] = 2;
+        joueur2.position = 22;
         joueur2.direction = -1;
         //joueur2.vie = 5;
         viderMain(joueur1);
