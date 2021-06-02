@@ -41,18 +41,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 
 	public void clickCarte(int x, int y) {
-		// Si le joueur doit parer, il ne peut pas cliquer sur une carte
-		if (inter.niv().Partie) {
-			if (!jeu.partie().manche().doitParer) {
-				JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
-				for (int i = 0; i < joueur.getCarteI().size(); i++) {
-					CarteIHM c = joueur.getCarteI().get(i);
-					if (x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1) {
-						if ((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))) {
+		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2){
+			// Si le joueur doit parer, il ne peut pas cliquer sur une carte
+			if (inter.niv().Partie) {
+				if (!jeu.partie().manche().doitParer) {
+					JoueurHumain joueur = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur());
+					for (int i = 0; i < joueur.getCarteI().size(); i++) {
+						CarteIHM c = joueur.getCarteI().get(i);
+						if (x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1) {
+							if ((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))) {
 
-							jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
-							jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte, true);
+								jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
+								jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte, true);
 
+							}
 						}
 					}
 				}
@@ -61,113 +63,122 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void clickDeplacement(int x, int y){
-		ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
-		CaseIHM = jeu.partie().manche().getCaseIHM();
-		Coup cp = null;
-		for(int i = 0; i < CaseIHM.size(); i++){
-			SelectionCaseIHM c = CaseIHM.get(i);
-			if(c.getEtat() != 0 && x >= c.getX() && x <= (c.getX() + c.getLargeur())){
-				if((y >= c.getY() && y <= (c.getY() + c.getHauteur()))){
+
+		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
+		{
+			ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
+			CaseIHM = jeu.partie().manche().getCaseIHM();
+			Coup cp = null;
+			for(int i = 0; i < CaseIHM.size(); i++){
+				SelectionCaseIHM c = CaseIHM.get(i);
+				if(c.getEtat() != 0 && x >= c.getX() && x <= (c.getX() + c.getLargeur())){
+					if((y >= c.getY() && y <= (c.getY() + c.getHauteur()))){
 
 
-					if (c.getEtat() == 1){
-						int[] valeurs= new int[5];
+						if (c.getEtat() == 1){
+							int[] valeurs= new int[5];
 
-						cp = null;
-						System.out.println("Doit parer : " + jeu.partie().manche().doitParer);
-						if(jeu.partie().manche().doitParer)
-						{
-							if(jeu.partie().manche().getTourJoueur() == 1)
+							cp = null;
+							System.out.println("Doit parer : " + jeu.partie().manche().doitParer);
+							if(jeu.partie().manche().doitParer)
 							{
-								valeurs[0] = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition() - i;
+								if(jeu.partie().manche().getTourJoueur() == 1)
+								{
+									valeurs[0] = jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition() - i;
+								}
+								else
+								{
+									valeurs[0] = i - jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition();
+								}
+								cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 3);
+								boolean suppr = false;
+								for(int f = 0; f<jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.size() && suppr != true; f++)
+								{
+									if(jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.get(f) == valeurs[0])
+									{
+										jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).supprMain(f);
+										suppr = true;
+
+									}
+								}
+								jeu.partie().manche().doitParer = false;
 							}
 							else
 							{
-								valeurs[0] = i - jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).getPosition();
+								valeurs[0] = jeu.selectedCarte.get(0).getValeur();
+								cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
 							}
-							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 3);
-							boolean suppr = false;
-							for(int f = 0; f<jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.size() && suppr != true; f++)
+
+							jeu.jouerCoup(cp);
+
+							for(int j =0; j<jeu.selectedCarte.size();j ++)
 							{
-								if(jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).main.get(f) == valeurs[0])
-								{
-									jeu.partie().Joueur(jeu.partie().manche().getTourJoueur()).supprMain(f);
-									suppr = true;
-
-								}
+								jeu.selectedCarte.get(0).reset();
 							}
+
+
+
+						} else if (c.getEtat() == 2){
+							int[] valeurs = new int[5];
+
+							for(int j = 0; j<jeu.selectedCarte.size(); j++)
+							{
+								valeurs[j] = jeu.selectedCarte.get(j).getValeur();
+							}
+
+							cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
+							jeu.jouerCoup(cp);
+
+
+							//jeu.partie().manche().updateAll();
+							//jeu.partie().initialiseManche();
+
+						} else if (c.getEtat() == 3){
+							jeu.partie().manche().parerDirectement();
+							System.out.println("Tu peux parer mon pote");
 							jeu.partie().manche().doitParer = false;
+
 						}
-						else
-						{
-							valeurs[0] = jeu.selectedCarte.get(0).getValeur();
-							cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
-						}
-
-						jeu.jouerCoup(cp);
-
-						for(int j =0; j<jeu.selectedCarte.size();j ++)
-						{
-							jeu.selectedCarte.get(0).reset();
-						}
-
-
-
-					} else if (c.getEtat() == 2){
-						int[] valeurs = new int[5];
-
-						for(int j = 0; j<jeu.selectedCarte.size(); j++)
-						{
-							valeurs[j] = jeu.selectedCarte.get(j).getValeur();
-						}
-
-						cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
-						jeu.jouerCoup(cp);
-
-
-						//jeu.partie().manche().updateAll();
-						//jeu.partie().initialiseManche();
-
-					} else if (c.getEtat() == 3){
-						jeu.partie().manche().parerDirectement();
-						System.out.println("Tu peux parer mon pote");
-						jeu.partie().manche().doitParer = false;
-
 					}
 				}
 			}
+			if(cp != null){
+				mouvement = new AnimationCoup(cp, inter, 1, 2);
+				animations.insereQueue(mouvement);
+			}
 		}
-		if(cp != null){
-			mouvement = new AnimationCoup(cp, inter, 1, 2);
-			animations.insereQueue(mouvement);
-		}
+
 	}
 
 	public void clickChangeTour(int x, int y) {
-		if(inter.niv().Partie) {
-			if(jeu.partie().manche().nbCoupsJoues != 0) {
-				//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
-				if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
-					if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
-						jeu.partie().manche().changeTourJoueur();
+		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
+		{
+			if(inter.niv().Partie) {
+				if(jeu.partie().manche().nbCoupsJoues != 0) {
+					//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
+					if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
+						if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
+							jeu.partie().manche().changeTourJoueur();
 
-						for(int f = 0; f<jeu.selectedCarte.size(); f++) {
-							jeu.selectedCarte.remove(f);
-							f=0;
+							for(int f = 0; f<jeu.selectedCarte.size(); f++) {
+								jeu.selectedCarte.remove(f);
+								f=0;
+							}
+
+							if(jeu.selectedCarte.size()>0) {
+								jeu.selectedCarte.remove(0);
+							}
+
+							//jeu.partie().manche().updateAll();
+							//System.out.println("Je change le tour");
 						}
-
-						if(jeu.selectedCarte.size()>0) {
-							jeu.selectedCarte.remove(0);
-						}
-
-						jeu.partie().manche().updateAll();
-						System.out.println("Je change le tour");
 					}
+				}else{
+					//System.out.println("Impossible le joueur doit jouer au moins une carte");
 				}
-			}else{
-				System.out.println("Impossible le joueur doit jouer au moins une carte");
 			}
 		}
+
 	}
 
 	public void clickChange(int x, int y){

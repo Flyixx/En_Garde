@@ -16,6 +16,7 @@ public class Manche extends Historique<CoupParTour>{
     static final int PARADE_DIRECTE = 4;
     public int NOMBRE_CASES = 23;
 
+
     Partie partie;
     ArrayList<Integer> piocheCartes = new ArrayList<>();
     public ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
@@ -183,7 +184,19 @@ public class Manche extends Historique<CoupParTour>{
             j.main.add(carte);
 
         }
-        System.out.println("main complete joueur " + tourJoueur + " : " + j.main);
+        System.out.println("main complete joueur " + inverse() + " : " + j.main);
+    }
+
+    public int inverse()
+    {
+        if(tourJoueur == 1)
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     public void viderMain(JoueurHumain j){
@@ -199,6 +212,7 @@ public class Manche extends Historique<CoupParTour>{
         int res;
         if(piocheVide())
         {
+            System.out.println("Pioche vide: Evalution du joueur gagnant:");
             int Pj1 = 0, Pj2 = 0;
             int distance = joueur2.getPosition() - joueur1.getPosition();
             for (int i = 0; i < joueur1.getMain().size(); i++){
@@ -214,9 +228,11 @@ public class Manche extends Historique<CoupParTour>{
 
             if (Pj1 < Pj2){
                 attaque(1);
+                System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             }else if(Pj2 < Pj1){
                 attaque(2);
+                System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             } else if(Pj1 == Pj2){
                 int PosJ1 = joueur1.getPosition();
@@ -224,9 +240,11 @@ public class Manche extends Historique<CoupParTour>{
 
                 if (PosJ1 > PosJ2){
                     attaque(1);
+                    System.out.println("Joueur 2 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 } else {
                     attaque(2);
+                    System.out.println("Joueur 1 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 }
             }
@@ -261,8 +279,8 @@ public class Manche extends Historique<CoupParTour>{
                 if(j.position >= valeurCarte && peutseDeplacer){
                     possibilites = true;
                     newPos = j.position - valeurCarte;
-                    System.out.println("peut reculer en " + newPos);
-                    peutAttaquer(cartes.get(0), newPos, j);
+                    //System.out.println("peut reculer en " + newPos);
+                    //peutAttaquer(cartes.get(0), newPos, j);
 
                     if(afficher)
                     {
@@ -281,11 +299,11 @@ public class Manche extends Historique<CoupParTour>{
                         }
 
                         //System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                        peutAttaquer(cartes.get(0), j.getPosition(), j);
+                        //peutAttaquer(cartes.get(0), j.getPosition(), j);
                     }else if(newPos < joueur2.position && peutseDeplacer){
                         possibilites = true;
-                        System.out.println("peut avancer en " + newPos);
-                        peutAttaquer(cartes.get(0), newPos, j);
+                        //System.out.println("peut avancer en " + newPos);
+                        //peutAttaquer(cartes.get(0), newPos, j);
 
                         if(afficher)
                         {
@@ -296,7 +314,7 @@ public class Manche extends Historique<CoupParTour>{
                         //joue(1,valeurCarte);
                     }else{
                         CaseIHM.get(newPos).updateEtat(0);
-                        System.out.println("bloqué par joueur");
+                        //System.out.println("bloqué par joueur");
                     }
                 }
             }
@@ -311,8 +329,8 @@ public class Manche extends Historique<CoupParTour>{
                         CaseIHM.get(newPos).updateEtat(1);
                     }
 
-                    System.out.println("peut reculer en " + newPos);
-                    peutAttaquer(cartes.get(0), newPos, j);
+                    //System.out.println("peut reculer en " + newPos);
+                    //peutAttaquer(cartes.get(0), newPos, j);
                 }
                 newPos = j.position - valeurCarte;
                 if(newPos >= 0){
@@ -325,10 +343,10 @@ public class Manche extends Historique<CoupParTour>{
                             CaseIHM.get(newPos).updateEtat(2);
                         }
 
-                        peutAttaquer(cartes.get(0), j.getPosition(), j);
+                        //peutAttaquer(cartes.get(0), j.getPosition(), j);
                     }else if(newPos > joueur1.position && peutseDeplacer){
                         possibilites = true;
-                        System.out.println("peut avancer en " + newPos);
+                        //System.out.println("peut avancer en " + newPos);
 
                         if(afficher)
                         {
@@ -336,7 +354,7 @@ public class Manche extends Historique<CoupParTour>{
                         }
 
                     }else{
-                        System.out.println("bloqué par joueur");
+                        //System.out.println("bloqué par joueur");
                     }
                 }
             }
@@ -358,7 +376,7 @@ public class Manche extends Historique<CoupParTour>{
                             CaseIHM.get(newPos).updateEtat(2);
                         }
                         //System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                        peutAttaquer(cartes.get(0), j.getPosition(), j);
+                        //peutAttaquer(cartes.get(0), j.getPosition(), j);
                     }
                 }
             }
@@ -375,7 +393,7 @@ public class Manche extends Historique<CoupParTour>{
                             CaseIHM.get(newPos).updateEtat(2);
                         }
 
-                        peutAttaquer(cartes.get(0), j.getPosition(), j);
+                        //peutAttaquer(cartes.get(0), j.getPosition(), j);
                     }
                 }
             }
@@ -383,93 +401,122 @@ public class Manche extends Historique<CoupParTour>{
         return possibilites;
 
     }
-
-    public int[] listerCoupIA(JoueurHumain j, CarteIHM carte) {
-
-        // 1 = avancer 2 = reculer 3 = attaquer
-        int newPos;
-        int dir = j.direction;
-        int valeurCarte = carte.getValeur();
-        int[] possibilites = {0};
-        //System.out.println("carte : " + valeurCarte);
-        if(dir == 1) { // joueur à gauche
-            if(j.position >= valeurCarte){
-                newPos = j.position - valeurCarte;
-                System.out.println("peut reculer en " + newPos);
-                CaseIHM.get(newPos).updateEtat(1);
-            }
-            newPos = j.position + valeurCarte;
-            if(newPos <= 22){
-                if(newPos == joueur2.position ){
-                    CaseIHM.get(newPos).updateEtat(2);
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                }else if(newPos < joueur2.position){
-                    System.out.println("peut avancer en " + newPos);
-                    peutAttaquer(carte, newPos, j);
-                    CaseIHM.get(newPos).updateEtat(1);
-                    //Coup coup = new Coup()
-                    //joue(1,valeurCarte);
-                }else{
-                    CaseIHM.get(newPos).updateEtat(0);
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
-
-        if(dir == -1){ // joueur à droite
-            if(j.position +valeurCarte <= 22){
-                newPos = j.position + valeurCarte;
-                CaseIHM.get(newPos).updateEtat(1);
-                System.out.println("peut reculer en " + newPos);
-            }
-            newPos = j.position - valeurCarte;
-            if(newPos >= 0){
-                if(newPos == joueur1.position ){
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                    CaseIHM.get(newPos).updateEtat(2);
-                }else if(newPos > joueur1.position){
-                    System.out.println("peut avancer en " + newPos);
-                    CaseIHM.get(newPos).updateEtat(1);
-
-                }else{
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
-        return possibilites;
+    public int getDistance(){
+        return joueur2.getPosition() - joueur1.getPosition();
     }
 
-    public boolean peutAttaquer(CarteIHM carte,int pos, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
-        int distance;
-        if(j.getDirection()==1){
+    public ArrayList<Coup> listerCoupIA(JoueurHumain j) { // va renvoyer un tableau de coups possible dans lequel on ira piocher aléatoirement
+        ArrayList coups = new ArrayList<Coup>();
+        if(nbCoupsJoues < 2 || coupsTourTab[0].action.id == 4)
+        {
+            boolean peutseDeplacer = false;
+            if(nbCoupsJoues == 0 || (nbCoupsJoues == 1 && coupsTourTab[0].action.id == 4))
+            {
+                peutseDeplacer = true;
+            }
+
+            // 1 = avancer 2 = reculer 3 = attaquer
+            int newPos;
+            int distance = this.getDistance();
+            int dir = j.direction;
+
+            for(int i  = 0; i< j.getMain().size(); i++)
+            {
+                int valeurCarte =  j.getMain().get(i);
+                //System.out.println("Valeur carte : " + valeurCarte);
+                int[] possibilites = {0};
+                //System.out.println("carte : " + valeurCarte);
+
+                if(dir == -1){ // joueur à droite
+                    if(j.position +valeurCarte <= 22 && peutseDeplacer){
+                        newPos = j.position + valeurCarte;
+
+                        int[] valeurs = new int[5];
+                        valeurs[0] = valeurCarte;
+                        Action ac = new Action(1,valeurs);
+                        Coup cp = new Coup(grilleJeu, ac, newPos);
+                        cp.fixerManche(this);
+                        coups.add(cp);
+
+                        //System.out.println("peut reculer en " + newPos);
+                    }
+                    newPos = j.position - valeurCarte;
+                    if(newPos >= 0){
+                        if(newPos == joueur1.position ){
+                            int nbAttks  =  peutAttaquer(valeurCarte, distance, j);
+                            //System.out.println("Nb attaques possibles :" + nbAttks);
+                            for(int k = 1; k<= nbAttks ; k++)
+                            {
+                                int[] valeurs = new int[5];
+
+                                for(int l = 0; l<k;l++ )
+                                    valeurs[l] = valeurCarte;
+
+                                Action ac = new Action(2,valeurs);
+                                int target = joueur1.getPosition();
+                                Coup cp = new Coup(grilleJeu, ac, target);
+                                cp.fixerManche(this);
+                                coups.add(cp);
+                            }
+                            //System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
+                        }else if(newPos > joueur1.position && peutseDeplacer){
+
+                            int[] valeurs = new int[5];
+                            valeurs[0] = valeurCarte;
+                            Action ac = new Action(1,valeurs);
+                            Coup cp = new Coup(grilleJeu, ac, newPos);
+                            cp.fixerManche(this);
+                            coups.add(cp);
+                            //System.out.println("peut avancer en " + newPos);
+                            //CaseIHM.get(newPos).updateEtat(1);
+
+                        }else{
+                           // System.out.println("bloqué par joueur");
+                        }
+                    }
+                }
+            }
+            return coups;
+        }
+        else
+        {
+            return coups;
+        }
+
+    }
+
+    public int peutAttaquer(int valeurCarte,int distance, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
+        //int distance;
+
+       /* if(j.getDirection()==1){
             distance = joueur2.getPosition() - pos;
         }else{
             distance =  pos - joueur1.getPosition();
-        }
-            System.out.println("distance : " + distance);
+        }*/
+            //System.out.println("distance : " + distance);
             if(distance > 5){
-                System.out.println("Trop loin pour attaquer");
-                return false;
+                //System.out.println("Trop loin pour attaquer");
+                return 0;
             }else{
                 int nbAtk = 0;
                 int valCarte = 0;
-                if(carte.getValeur() == distance){
+                /*
+                if(valeurCarte == distance){
                     nbAtk++;
-                }
-                for(int i=0;i<5;i++){
-                    if(i != carte.getId()){
+                }*/
+                for(int i=0;i<j.main.size();i++){
                         if(distance == j.main.get(i)){
                             valCarte = j.main.get(i);
                             nbAtk++;
                         }
-                    }
+
                 }
                 if(valCarte != 0){
-                    System.out.println("Peut attaquer avec la carte " + valCarte + " en " + nbAtk + " exemplaires !");
-                    return true;
+                    //System.out.println("Peut attaquer avec la carte " + valCarte + " en " + nbAtk + " exemplaires !");
+                    return nbAtk;
                 }else{
-                    System.out.println("N'a pas de carte pour attaquer");
-                    return false;
+                    //System.out.println("N'a pas de carte pour attaquer");
+                    return 0;
                 }
             }
 
@@ -478,6 +525,7 @@ public class Manche extends Historique<CoupParTour>{
     public void jouerCoup(Coup cp) {
         peutSauvegarderEtHistorique = false;
 
+        System.out.println("je fais jouer coup !");
         //efface les cases select
         updateAll();
 
@@ -488,9 +536,26 @@ public class Manche extends Historique<CoupParTour>{
         //on supprime de la main du joueur toutes les cartes selectionnees pour jouer
         if(cp.action.id != PARADE_DIRECTE && cp.action.id!=PARADE_INDIRECTE)
         {
-            for(int i = 0; i < partie.jeu.selectedCarte.size(); i++)
+            if(partie.type == 2 && tourJoueur == 2)
             {
-                partie.Joueur(tourJoueur).supprMain(partie.jeu.selectedCarte.get(i).getId());
+                int carteJouer = cp.GetAction().valeurs[0];
+                int suppr = 0;
+                for(int i = 0; i < joueur2.main.size() && cp.GetAction().valeurs[suppr]!= 0; i++)
+                {
+                    if(joueur2.main.get(i) == carteJouer)
+                    {
+                        suppr++;
+                        partie.Joueur(tourJoueur).supprMain(i);
+                    }
+
+                }
+            }
+            else
+            {
+                for(int i = 0; i < partie.jeu.selectedCarte.size(); i++)
+                {
+                    partie.Joueur(tourJoueur).supprMain(partie.jeu.selectedCarte.get(i).getId());
+                }
             }
         }
 
@@ -598,7 +663,7 @@ public class Manche extends Historique<CoupParTour>{
     public Coup joue(int target, int[] valeurs, int[] grilleJeu, int typeAction){
         JoueurHumain joueurCourant;
         Action action = new Action(typeAction, valeurs);
-        Coup coupCourant = new Coup(grilleJeu, action);
+        Coup coupCourant = new Coup(grilleJeu, action, target);
         coupCourant.fixerManche(this);
 
         int oldPosJ1 = this.joueur1.getPosition();
@@ -696,6 +761,7 @@ public class Manche extends Historique<CoupParTour>{
     // Cette fonction enregistre les coups du joueur précédent dans un CoupParTour avant de changer le
     // tour du joueur
     public void changeTourJoueur() {
+        System.out.println("Je change le tour");
         CoupParTour coupTour = null;
 
         //Suppression des cartes sélectionnées pour le dernier coup
@@ -741,7 +807,11 @@ public class Manche extends Historique<CoupParTour>{
             }
             else
             {
-                if (/*coupsTour.size() == 1 && coupsTour.get(coupsTour.size()-1).action.id == 1*/coupsTourTab[2] == null && coupsTourTab[1].action.id == 1) {
+                if(coupsTourTab[1] == null)
+                {
+                    coupTour = new CoupParTour(4, coupsTour, coupsTourTab, nbCoupsJoues);
+                }
+                else if (/*coupsTour.size() == 1 && coupsTour.get(coupsTour.size()-1).action.id == 1*/coupsTourTab[2] == null && coupsTourTab[1].action.id == 1) {
 
                     //Déplacement après une parade directe
                     coupTour = new CoupParTour(1, coupsTour, coupsTourTab, nbCoupsJoues);
@@ -755,6 +825,11 @@ public class Manche extends Historique<CoupParTour>{
 
                     //Attaque indirecte après une parade directe
                     coupTour = new CoupParTour(3, coupsTour, coupsTourTab, nbCoupsJoues);
+                }
+                else
+                {
+                    //Rien après une parade
+                    coupTour = new CoupParTour(4, coupsTour, coupsTourTab, nbCoupsJoues);
                 }
             }
         }
@@ -771,6 +846,7 @@ public class Manche extends Historique<CoupParTour>{
         // effectuées par le joueur adverse au tour précédent
         CoupParTour coupPrecedent = coupPrecedent();
 
+
         videListe(coupsTour);
 
         // Remet le nombre de coup joués à 0 et du tableau des Coups pour un tour
@@ -781,19 +857,10 @@ public class Manche extends Historique<CoupParTour>{
         // Remplissage de la main du joueur précédent
         if(tourJoueur == 1)
         {
-            System.out.println("Joueur 1 pioche");
-            remplirMain(joueur1);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 2;
-            if(partie.type == 2){
-                System.out.println("Joueur 2 est IA : ");
-            }
         }
         else
         {
-            System.out.println("Joueur 2 pioche");
-            remplirMain(joueur2);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 1;
 
         }
@@ -803,7 +870,8 @@ public class Manche extends Historique<CoupParTour>{
 
         if(joueurcourant.carteI.size() > 0)
         {
-            boolean poss = false;
+            TestProchainCoup(coupPrecedent);
+           /* boolean poss = false;
             for(int i = 0; i<joueurcourant.carteI.size(); i++)
             {
                 ArrayList<CarteIHM> liste = new ArrayList();
@@ -825,7 +893,7 @@ public class Manche extends Historique<CoupParTour>{
             {
                 // Voir sur la fonction
                 TestProchainCoup(coupPrecedent);
-            }
+            }*/
         }
         else
         {
@@ -835,18 +903,60 @@ public class Manche extends Historique<CoupParTour>{
         // Remplissage de la main du joueur précédent
         if(tourJoueur == 1)
         {
-            System.out.println("Joueur 1 pioche");
+            //System.out.println("Joueur 1 pioche");
             remplirMain(joueur2);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
+            //System.out.println("Cartes restantes pioche : " + this.restantPioche());
         }
         else
         {
-            System.out.println("Joueur 2 pioche");
+            //System.out.println("Joueur 2 pioche");
             remplirMain(joueur1);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
+
+            // gestion IA
+            if(partie.type == 2){
+                System.out.println("Joueur 2 est IA ");
+                jouerIA(joueur2);
+                //this.tourJoueur = 1;
+            }
+
+            //System.out.println("Cartes restantes pioche : " + this.restantPioche());
 
         }
         peutSauvegarderEtHistorique = true;
+    }
+
+    public void jouerIA(JoueurHumain j){
+        System.out.println("Tour de l'IA ! ");
+        ArrayList<Coup> coups = this.listerCoupIA(j);
+        System.out.println("tous les coups possibles : " + coups);
+        Random rnd = new Random();
+        int total = coups.size();
+        int random = 0;
+        if(total != 0){
+            random = rnd.nextInt(total)+1;
+        }
+        System.out.println("total : " + total + " choisi : " + random);
+        Coup cp = coups.get(random-1);
+        System.out.println("selection du coup : " + cp );
+;
+        cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+        partie.jeu.jouerCoup(cp);
+
+        coups = this.listerCoupIA(j);
+
+
+
+        if(coups.size() != 0 && getTourJoueur() == 2){
+            System.out.println("IA: Attaque indirecte ");
+            jouerIA(j);
+        }
+        else if(getTourJoueur() == 2)
+        {
+
+            changeTourJoueur();
+        }
+
+
     }
 
     public void updateAll() {
@@ -875,7 +985,7 @@ public class Manche extends Historique<CoupParTour>{
             // Si le CoupParTour est un simple déplacement
             if(coupPrecedent.typeAction == 1)
             {
-                System.out.println("Le joueur adverse a juste avancé/reculé");
+                System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
 
             }
             // Si le CoupParTour est une attaque directe ou une attaque indirecte
@@ -896,13 +1006,13 @@ public class Manche extends Historique<CoupParTour>{
                 // Si le CoupParTour est une attaque directe
                 if(coupPrecedent.typeAction == 2)
                 {
-                    System.out.println("Le joueur adverse a effectué une attaque directe");
+                    System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
                     ParerAttaqueDirecte(coupPrecedent, nbCartes);
-                    System.out.println("Vous devez parer avec "+ nbCartes + " carte(s) de valeur : " + cp.action.valeurs[0]);
+                    //System.out.println("Vous devez parer avec "+ nbCartes + " carte(s) de valeur : " + cp.action.valeurs[0]);
                 }
                 else // Si le CoupParTour est une attaque indirecte
                 {
-                    System.out.println("Le joueur adverse a effectué une attaque indirecte");
+                    System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
                     ParerAttaqueIndirecte(coupPrecedent, nbCartes);
                 }
             }
@@ -960,11 +1070,18 @@ public class Manche extends Historique<CoupParTour>{
         // Si le joueur peut parer directement alors il effectue autamtiquement la parade
         if(peutParerDirectement(coupPrecedent, nbCartes))
         {
-            parerDirectement();
+            int pos;
+            if(getTourJoueur() == 1){
+                pos = joueur2.getPosition();
+            } else {
+                pos = joueur1.getPosition();
+            }
 
-
-            System.out.println("j'ai paré !");
-            System.out.println("Ma main après avoir parer :" + Joueur(tourJoueur).main);
+            // On change l'etat de la case IHM à la position du joueur adverse :
+            // Elle passe à l'etat 3 ce qui signifie que si on clique sur cette case on effectue
+            // une parade directe
+            CaseIHM.get(pos).updateEtat(3);
+            doitParer = true;
         }
         else // Sinon, le joueur subit une attaque et perd un point de vie et engendre une nouvelle manche
         {
@@ -1093,8 +1210,8 @@ public class Manche extends Historique<CoupParTour>{
         //Il s'agit d'une parade directe d'attaque
         Coup cp = partie.jeu.determinerCoup(joueuradverse.position, riposte, grilleJeu, 4);
         partie.jeu.jouerCoup(cp);
-
-
+        System.out.println("j'ai paré !");
+        System.out.println("Ma main après avoir parer :" + Joueur(tourJoueur).main);
 
     }
 

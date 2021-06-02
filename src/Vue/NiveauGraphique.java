@@ -626,7 +626,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         int x = (largeur/2)-((nbCartes*largeurCarte)/2)-largeurCarte;
         int y = (int) Math.round(hauteur * 0.80);
 
-
+        int select = 0;
         for(int i = 0; i < j.main.size(); i++){
 
             int valeurCarte = j.main.get(i);
@@ -655,9 +655,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 }
             }
 
-            if (jeu.selectedCarte.size()>i && jeu.selectedCarte.get(i).getId() == i){
-
-                jeu.selectedCarte.get(i).update(jeu.selectedCarte.get(i).getId(), jeu.selectedCarte.get(i).getValeur(), x, y, largeurCarte, hauteurCarte);
+            if (jeu.selectedCarte.size()>select && jeu.selectedCarte.get(select).getId() == i){
+                jeu.selectedCarte.get(select).update(jeu.selectedCarte.get(select).getId(), jeu.selectedCarte.get(select).getValeur(), x, y, largeurCarte, hauteurCarte);
+                select +=1;
             }
 
         }
