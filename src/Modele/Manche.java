@@ -383,65 +383,94 @@ public class Manche extends Historique<CoupParTour>{
         return possibilites;
 
     }
-
-    public int[] listerCoupIA(JoueurHumain j, CarteIHM carte) {
-
-        // 1 = avancer 2 = reculer 3 = attaquer
-        int newPos;
-        int dir = j.direction;
-        int valeurCarte = carte.getValeur();
-        int[] possibilites = {0};
-        //System.out.println("carte : " + valeurCarte);
-        if(dir == 1) { // joueur à gauche
-            if(j.position >= valeurCarte){
-                newPos = j.position - valeurCarte;
-                System.out.println("peut reculer en " + newPos);
-                CaseIHM.get(newPos).updateEtat(1);
-            }
-            newPos = j.position + valeurCarte;
-            if(newPos <= 22){
-                if(newPos == joueur2.position ){
-                    CaseIHM.get(newPos).updateEtat(2);
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                }else if(newPos < joueur2.position){
-                    System.out.println("peut avancer en " + newPos);
-                    peutAttaquer(carte, newPos, j);
-                    CaseIHM.get(newPos).updateEtat(1);
-                    //Coup coup = new Coup()
-                    //joue(1,valeurCarte);
-                }else{
-                    CaseIHM.get(newPos).updateEtat(0);
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
-
-        if(dir == -1){ // joueur à droite
-            if(j.position +valeurCarte <= 22){
-                newPos = j.position + valeurCarte;
-                CaseIHM.get(newPos).updateEtat(1);
-                System.out.println("peut reculer en " + newPos);
-            }
-            newPos = j.position - valeurCarte;
-            if(newPos >= 0){
-                if(newPos == joueur1.position ){
-                    System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
-                    CaseIHM.get(newPos).updateEtat(2);
-                }else if(newPos > joueur1.position){
-                    System.out.println("peut avancer en " + newPos);
-                    CaseIHM.get(newPos).updateEtat(1);
-
-                }else{
-                    System.out.println("bloqué par joueur");
-                }
-            }
-        }
-        return possibilites;
+    public int getDistance(){
+        return joueur2.getPosition() - joueur1.getPosition();
     }
 
-    public boolean peutAttaquer(CarteIHM carte,int pos, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
-        int distance;
-        if(j.getDirection()==1){
+    public ArrayList<Coup> listerCoupIA(JoueurHumain j) { // va renvoyer un tableau de coups possible dans lequel on ira piocher aléatoirement
+
+        if(nbCoupsJoues < 2 || coupsTourTab[0].action.id == 4)
+        {
+            boolean peutseDeplacer = false;
+            if(nbCoupsJoues == 0 || (nbCoupsJoues == 1 && coupsTourTab[0].action.id == 4))
+            {
+                peutseDeplacer = true;
+            }
+
+            ArrayList coups = new ArrayList<Coup>();
+            // 1 = avancer 2 = reculer 3 = attaquer
+            int newPos;
+            int distance = this.getDistance();
+            int dir = j.direction;
+
+            for(int i  = 0; i< j.getMain().size(); i++)
+            {
+                int valeurCarte =  j.getMain().get(i);
+                System.out.println("Valeur carte : " + valeurCarte);
+                int[] possibilites = {0};
+                //System.out.println("carte : " + valeurCarte);
+
+                if(dir == -1){ // joueur à droite
+                    if(j.position +valeurCarte <= 22 && peutseDeplacer){
+                        newPos = j.position + valeurCarte;
+
+                        int[] valeurs = new int[5];
+                        valeurs[0] = valeurCarte;
+                        Action ac = new Action(1,valeurs);
+                        Coup cp = new Coup(grilleJeu, ac, newPos);
+                        cp.fixerManche(this);
+                        coups.add(cp);
+
+                        System.out.println("peut reculer en " + newPos);
+                    }
+                    newPos = j.position - valeurCarte;
+                    if(newPos >= 0){
+                        if(newPos == joueur1.position ){
+                            int nbAttks  =  peutAttaquer(valeurCarte, distance, j);
+                            System.out.println("Nb attaques possibles :" + nbAttks);
+                            for(int k = 1; k<= nbAttks ; k++)
+                            {
+                                int[] valeurs = new int[5];
+
+                                for(int l = 0; l<k;l++ )
+                                    valeurs[l] = valeurCarte;
+
+                                Action ac = new Action(2,valeurs);
+                                int target = joueur1.getPosition();
+                                Coup cp = new Coup(grilleJeu, ac, target);
+                                cp.fixerManche(this);
+                                coups.add(cp);
+                            }
+                            System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
+                        }else if(newPos > joueur1.position && peutseDeplacer){
+
+                            int[] valeurs = new int[5];
+                            valeurs[0] = valeurCarte;
+                            Action ac = new Action(1,valeurs);
+                            Coup cp = new Coup(grilleJeu, ac, newPos);
+                            cp.fixerManche(this);
+                            coups.add(cp);
+                            System.out.println("peut avancer en " + newPos);
+                            //CaseIHM.get(newPos).updateEtat(1);
+
+                        }else{
+                            System.out.println("bloqué par joueur");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    public int peutAttaquer(int valeurCarte,int distance, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
+        //int distance;
+
+       /* if(j.getDirection()==1){
             distance = joueur2.getPosition() - pos;
         }else{
             distance =  pos - joueur1.getPosition();
@@ -785,9 +814,6 @@ public class Manche extends Historique<CoupParTour>{
             remplirMain(joueur1);
             System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 2;
-            if(partie.type == 2){
-                System.out.println("Joueur 2 est IA : ");
-            }
         }
         else
         {
@@ -847,6 +873,40 @@ public class Manche extends Historique<CoupParTour>{
 
         }
         peutSauvegarderEtHistorique = true;
+    }
+
+    public void jouerIA(JoueurHumain j){
+        System.out.println("Tour de l'IA ! ");
+        ArrayList<Coup> coups = this.listerCoupIA(j);
+        System.out.println("tous les coups possibles : " + coups);
+        Random rnd = new Random();
+        int total = coups.size();
+        int random = 0;
+        if(total != 0){
+            random = rnd.nextInt(total)+1;
+        }
+        System.out.println("total : " + total + " choisi : " + random);
+        Coup cp = coups.get(random);
+        System.out.println("selection du coup : " + cp );
+;
+        cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+        partie.jeu.jouerCoup(cp);
+
+        coups = this.listerCoupIA(j);
+
+
+
+        if(coups.size() != 0){
+            System.out.println("IA: Attaque indirecte ");
+            jouerIA(j);
+        }
+        else if(getTourJoueur() == 2)
+        {
+
+            changeTourJoueur();
+        }
+
+
     }
 
     public void updateAll() {
