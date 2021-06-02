@@ -7,6 +7,7 @@ public class Coup {
     Manche manche;
     int[] mapAvant;
     Action action;
+    int target;
 
     @Override
     public String toString() {
@@ -17,9 +18,10 @@ public class Coup {
                 '}';
     }
 
-    public Coup(int []grilleJeu, Action action){
+    public Coup(int []grilleJeu, Action action, int Target){
         mapAvant = grilleJeu;
         this.action = action;
+        target = Target;
     }
 
     public Action GetAction(){
