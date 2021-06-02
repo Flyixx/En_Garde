@@ -156,13 +156,13 @@ public class Jeu extends Observable {
     }
 
     public CoupParTour annule(){
-        CoupParTour cp = partie().annuler();
+        CoupParTour cp = partie().manche().annuler();
         miseAJour();
         return cp;
     }
 
     public CoupParTour refaire(){
-        CoupParTour cp = partie().refaire();
+        CoupParTour cp = partie().manche().refaire();
         miseAJour();
         return cp;
     }

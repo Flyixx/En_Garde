@@ -16,7 +16,7 @@ public class Historique<E extends Commande> {
     void nouveau(CoupParTour c){
         System.out.println("Coup : " + c);
         CoupFait.insereTete(c);
-        System.out.println("La séquence de fdp " +CoupFait);
+        //System.out.println("La séquence de fdp " +CoupFait);
         //c.execute(c);
         while(!CoupAnnuler.estVide()){
             CoupAnnuler.extraitTete();

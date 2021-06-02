@@ -767,9 +767,13 @@ public class Manche extends Historique<CoupParTour>{
             nouveau(coupTour);
         }
 
+        System.out.println("Coup fait avant coup précédent : " + CoupFait );
+
         // Récupération du CoupTour joué par le joueur adverse : il permet de récupérer les actions
         // effectuées par le joueur adverse au tour précédent
         CoupParTour coupPrecedent = coupPrecedent();
+
+        System.out.println("Coup fait après coup précédent : " + CoupFait );
 
         videListe(coupsTour);
 
@@ -1093,8 +1097,6 @@ public class Manche extends Historique<CoupParTour>{
         //Il s'agit d'une parade directe d'attaque
         Coup cp = partie.jeu.determinerCoup(joueuradverse.position, riposte, grilleJeu, 4);
         partie.jeu.jouerCoup(cp);
-
-
 
     }
 

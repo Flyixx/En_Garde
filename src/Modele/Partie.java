@@ -3,7 +3,7 @@ package Modele;
 import Controller.JoueurHumain;
 import Patterns.Observable;
 
-public class Partie extends Historique<CoupParTour>{
+public class Partie {
     boolean J1Gagnant, J2Gagnant;
     Jeu jeu;
     Manche courant;
