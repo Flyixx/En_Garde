@@ -741,7 +741,11 @@ public class Manche extends Historique<CoupParTour>{
             }
             else
             {
-                if (/*coupsTour.size() == 1 && coupsTour.get(coupsTour.size()-1).action.id == 1*/coupsTourTab[2] == null && coupsTourTab[1].action.id == 1) {
+                if(coupsTourTab[1] == null)
+                {
+                    coupTour = new CoupParTour(4, coupsTour, coupsTourTab, nbCoupsJoues);
+                }
+                else if (/*coupsTour.size() == 1 && coupsTour.get(coupsTour.size()-1).action.id == 1*/coupsTourTab[2] == null && coupsTourTab[1].action.id == 1) {
 
                     //Déplacement après une parade directe
                     coupTour = new CoupParTour(1, coupsTour, coupsTourTab, nbCoupsJoues);
@@ -755,6 +759,11 @@ public class Manche extends Historique<CoupParTour>{
 
                     //Attaque indirecte après une parade directe
                     coupTour = new CoupParTour(3, coupsTour, coupsTourTab, nbCoupsJoues);
+                }
+                else
+                {
+                    //Rien après une parade
+                    coupTour = new CoupParTour(4, coupsTour, coupsTourTab, nbCoupsJoues);
                 }
             }
         }
@@ -785,9 +794,6 @@ public class Manche extends Historique<CoupParTour>{
         // Remplissage de la main du joueur précédent
         if(tourJoueur == 1)
         {
-            System.out.println("Joueur 1 pioche");
-            remplirMain(joueur1);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 2;
             if(partie.type == 2){
                 System.out.println("Joueur 2 est IA : ");
@@ -795,9 +801,6 @@ public class Manche extends Historique<CoupParTour>{
         }
         else
         {
-            System.out.println("Joueur 2 pioche");
-            remplirMain(joueur2);
-            System.out.println("Cartes restantes pioche : " + this.restantPioche());
             this.tourJoueur = 1;
 
         }
