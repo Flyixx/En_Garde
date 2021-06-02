@@ -59,6 +59,7 @@ public class Historique<E extends Commande> {
     }
 
     CoupParTour annuler(){
+        /*
         System.out.print("Salut ");
         afficherListe(CoupPasse);
         System.out.println("La tchoin");
@@ -70,7 +71,8 @@ public class Historique<E extends Commande> {
             return c;
         }else{
             return null;
-        }
+        }*/
+        return null;
     }
 
 }
