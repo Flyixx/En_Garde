@@ -1153,7 +1153,7 @@ public class Manche extends Historique<CoupParTour>{
             // On change l'etat de la case IHM à la position du joueur adverse :
             // Elle passe à l'etat 3 ce qui signifie que si on clique sur cette case on effectue
             // une parade directe
-            if(partie.type == 2 || tourJoueur==2 )
+            if(partie.type == 2 && tourJoueur==2 )
             {
                 parerDirectement();
             }
