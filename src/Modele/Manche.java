@@ -957,10 +957,58 @@ public class Manche extends Historique<CoupParTour>{
         if(total != 0){
             random = rnd.nextInt(total)+1;
         }
+
         System.out.println("total : " + total + " choisi : " + random);
         Coup cp = coups.get(random-1);
         System.out.println("selection du coup : " + cp );
 ;
+        cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+        partie.jeu.jouerCoup(cp);
+
+        coups = this.listerCoupIA(j);
+
+
+
+        if(coups.size() != 0 && getTourJoueur() == 2){
+            System.out.println("IA: Attaque indirecte ");
+            jouerIA(j);
+        }
+        else if(getTourJoueur() == 2)
+        {
+
+            changeTourJoueur();
+        }
+
+
+    }
+
+    public void jouerIAMoyen(JoueurHumain j){
+        System.out.println("Tour de l'IA ! ");
+        ArrayList<Coup> coups = this.listerCoupIA(j);
+        ArrayList<Coup> coupsChoisi = new ArrayList<>();
+        System.out.println("tous les coups possibles : " + coups);
+
+        for (int i = 0; i < coups.size(); i++){
+            if (coups.get(i).action.id == 2){
+                coupsChoisi.add(coups.get(i));
+            }
+        }
+
+        int random = 0;
+        Random rnd = new Random();
+        Coup cp =null;
+        if (coupsChoisi.size() != 0){
+
+            random = rnd.nextInt(coupsChoisi.size())+1;
+            cp = coupsChoisi.get(random-1);
+        } else if(coups.size() != 0){
+            random = rnd.nextInt(coups.size())+1;
+            cp = coups.get(random-1);
+        }
+
+
+        System.out.println("selection du coup : " + cp );
+
         cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
         partie.jeu.jouerCoup(cp);
 
