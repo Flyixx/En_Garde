@@ -703,47 +703,6 @@ public class Manche extends Historique<CoupParTour>{
 
 
         return coupCourant;
-        //======================================================================= CAS ACTION EST UN DPLACEMENT
-        /*if(type == AVANCER || type == RECULER) {
-
-            //_____________________ Détermine de combien de cases on va se déplacer
-            int nbDeplacement = valeurs[0];
-
-            //_____________________ Récuperation des positions courantes
-            int target = 0;
-            int oldPosJ1 = this.joueur1.getPosition();
-            int oldPosJ2 = this.joueur2.getPosition();
-
-            //======================================================================= CAS ACTION = AVANCER
-            if (type == AVANCER) {
-                target = joueurCourant.targetAvant(nbDeplacement);
-            }
-            //======================================================================= CAS ACTION = RECULER
-            else if (type == RECULER) {
-                target = joueurCourant.targetArriere(nbDeplacement);
-            }
-
-            if (target > 0 && target < grilleJeu.length && estVide(target) && testPosition(target)) {
-
-                //_____________________  On met à jour le joueur courant
-                joueurCourant.deplace(target);
-                if (tourJoueur == 1) {
-                    this.joueur1 = joueurCourant;
-                } else {
-                    this.joueur2 = joueurCourant;
-                }
-
-                //_____________________ On met à jour les infos générales du jeu.
-                miseAJourGrille(oldPosJ1, oldPosJ2, this.joueur1.getPosition(), this.joueur2.getPosition());
-
-
-            return coupCourrant;
-        } else {
-            System.out.println("Déplacement impossible, personnage sur la case destination ou destination hors map");
-                return null;
-            }
-        }*/
-        //return null;
     }
 
     public void initCaseIHM(int i, int val, int x, int y, int largeur, int hauteur, int etat){
