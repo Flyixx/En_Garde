@@ -663,7 +663,13 @@ public class Manche extends Historique<CoupParTour>{
     public Coup joue(int target, int[] valeurs, int[] GrrilleJeu, int typeAction){
         JoueurHumain joueurCourant;
         Action action = new Action(typeAction, valeurs);
-        Coup coupCourant = new Coup(GrrilleJeu, action, target);
+
+        int[] grilleJeu2 = new int[NOMBRE_CASES];
+        for(int i = 0; i<NOMBRE_CASES; i++)
+        {
+            grilleJeu2[i] = grilleJeu[i];
+        }
+        Coup coupCourant = new Coup(grilleJeu2, action, target);
 
         for(int i = 0; i<5; i++)
         {
@@ -711,14 +717,6 @@ public class Manche extends Historique<CoupParTour>{
             coupCourant.mapAvant[oldPosJ1] = 1;
             coupCourant.mapAvant[oldPosJ2] = 2;
 
-            if(getTourJoueur() == 1)
-            {
-                coupCourant.mapAvant[joueur1.getPosition()] = 0;
-            }
-            else
-            {
-                coupCourant.mapAvant[joueur2.getPosition()] = 0;
-            }
         }
         else{
 
