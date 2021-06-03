@@ -657,6 +657,10 @@ public class Manche extends Historique<CoupParTour>{
         } else {
             System.out.println("Aucun joueur n'a bougé");
         }
+        /*this.grilleJeu[oldPosJ1] = 0;
+        this.grilleJeu[posJ1] = 1;
+        this.grilleJeu[oldPosJ2] = 0;
+        this.grilleJeu[posJ2] = 2;*/
     }
 
 
@@ -1130,7 +1134,7 @@ public class Manche extends Historique<CoupParTour>{
             }
             else{
                 target = j.position + j.main.get(i);
-                if(target <=23)
+                if(target <=22)
                 {
                     CaseIHM.get(target).updateEtat(1);
                 }
