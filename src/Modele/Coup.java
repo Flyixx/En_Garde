@@ -1,4 +1,5 @@
 package Modele;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,9 @@ public class Coup {
     int[] mapAvant;
     Action action;
     int target;
+    ArrayList<Integer> mainJ1= new ArrayList<>();
+    ArrayList<Integer> mainJ2= new ArrayList<>();
+    ArrayList<Integer> pioche = new ArrayList<>();
 
     @Override
     public String toString() {

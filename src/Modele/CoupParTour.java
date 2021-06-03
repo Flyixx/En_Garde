@@ -17,6 +17,7 @@ public class CoupParTour extends Commande{
     Coup[] coupsTourTab;
     int nbCoups;
     Manche manche;
+    int tourJoueur;
 
     public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups) {
         nbCoups = nbcoups;

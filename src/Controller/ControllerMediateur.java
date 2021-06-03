@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ControllerMediateur implements CollecteurEvenements {
 	Jeu jeu;
 	JoueurHumain Joueur1, Joueur2;
-	final int lenteurAttente = 50;
+	final int lenteurAttente = 100;
 	int joueurCourant;
 	int decompte;
 	Sequence<Animation> animations;
@@ -106,7 +106,8 @@ public class ControllerMediateur implements CollecteurEvenements {
 							else
 							{
 								valeurs[0] = jeu.selectedCarte.get(0).getValeur();
-								cp = jeu.determinerCoup(c.getId(), valeurs,jeu.partie().manche().grilleJeu, 1);
+								int[] grilleuJeux = jeu.partie().manche().grilleJeu;
+								cp = jeu.determinerCoup(c.getId(), valeurs,grilleuJeux, 1);
 							}
 
 							jeu.jouerCoup(cp);
@@ -311,12 +312,13 @@ public class ControllerMediateur implements CollecteurEvenements {
 			anim.tictac();
 		}
 		if(inter.niv().Partie){
-			joueurCourant = jeu.partie().manche().tourJoueur;
 			if(!jeu.partie().aGagner()){
 				if(decompte == 0){
-					if(joueurCourant == 2){
-
+					if(jeu.partie().manche().getTourJoueur() == 2 && jeu.partie().type == 2){
+						//Faire jouer le joueur 2
 						//changeJoueur();
+						jeu.partie().manche().jouerIA(jeu.partie().manche().joueur2);
+						decompte = lenteurAttente/2;
 					}else{
 						decompte = lenteurAttente;
 					}
@@ -331,9 +333,9 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 	public void changeJoueur(){
 		if(joueurCourant == 1){
-			jeu.partie().manche().tourJoueur = 2;
+			joueurCourant = 2;
 		}else{
-			jeu.partie().manche().tourJoueur = 1;
+			joueurCourant = 1;
 		}
 	}
 
