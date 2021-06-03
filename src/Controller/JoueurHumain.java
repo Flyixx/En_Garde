@@ -39,7 +39,7 @@ public class JoueurHumain extends Joueur {
         return carteI;
     }
 
-    public List<Integer> getMain(){
+    public ArrayList<Integer> getMain(){
         return main;
     }
 
