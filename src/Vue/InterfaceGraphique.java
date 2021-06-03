@@ -9,7 +9,7 @@ import java.awt.*;
 import java.io.*;
 
 public class InterfaceGraphique implements Runnable, Observateur {
-    Jeu jeu;
+    public Jeu jeu;
     CollecteurEvenements control;
     NiveauGraphique niv;
     JFrame frame;

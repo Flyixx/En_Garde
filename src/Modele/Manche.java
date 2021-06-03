@@ -35,6 +35,12 @@ public class Manche extends Historique<CoupParTour>{
         peutSauvegarderEtHistorique = true;
         partie = p;
 
+        partie.jeu.control.inter().niv().msg = 0;
+        partie.jeu.control.inter().niv().msg2 = 0;
+        partie.jeu.control.inter().niv().action1 = 0;
+        partie.jeu.control.inter().niv().action2 = 0;
+
+
         //Les joueurs de la partie associés à la manche
         joueur1 = partie.Joueur(1);
         joueur2 = partie.Joueur(2);
@@ -478,7 +484,6 @@ public class Manche extends Historique<CoupParTour>{
 
                         }
                     }
-
                 }
             }
             return coups;
@@ -664,7 +669,6 @@ public class Manche extends Historique<CoupParTour>{
         }
     }
 
-
     public Coup joue(int target, int[] valeurs, int[] grilleJeu, int typeAction){
         JoueurHumain joueurCourant;
         Action action = new Action(typeAction, valeurs);
@@ -684,11 +688,25 @@ public class Manche extends Historique<CoupParTour>{
         if(typeAction == AVANCER || (typeAction == PARADE_INDIRECTE && doitParer))
         {
             joueurCourant.deplace(target);
+            int nb2;
 
             if (tourJoueur == 1) {
                 this.joueur1 = joueurCourant;
+                nb2 = Math.abs(target-oldPosJ1);
             } else {
                 this.joueur2 = joueurCourant;
+                nb2 = Math.abs(target-oldPosJ2);
+            }
+
+            if(typeAction == AVANCER){
+                partie.jeu.control.inter().niv().modifMessage(0, tourJoueur, nb2, 0);
+                partie.jeu.control.inter().niv().msg = 2;
+                partie.jeu.control.inter().niv().msg2 = 0;
+            }else if(typeAction == PARADE_INDIRECTE && doitParer){
+                partie.jeu.control.inter().niv().modifMessage(6, tourJoueur, nb2, 0);
+                partie.jeu.control.inter().niv().msg = 4;
+                partie.jeu.control.inter().niv().modifMessage(3, tourJoueur, 0, 0);
+                partie.jeu.control.inter().niv().msg2 = 2;
             }
 
             miseAJourGrille(oldPosJ1, oldPosJ2, this.joueur1.getPosition(), this.joueur2.getPosition());
@@ -810,7 +828,6 @@ public class Manche extends Historique<CoupParTour>{
         // effectuées par le joueur adverse au tour précédent
         CoupParTour coupPrecedent = coupPrecedent();
 
-
         videListe(coupsTour);
 
         // Remet le nombre de coup joués à 0 et du tableau des Coups pour un tour
@@ -841,7 +858,6 @@ public class Manche extends Historique<CoupParTour>{
 
         if(joueurcourant.carteI.size() > 0)
         {
-
             test = TestProchainCoup(coupPrecedent);
            /* boolean poss = false;
             for(int i = 0; i<joueurcourant.carteI.size(); i++)
@@ -912,10 +928,10 @@ public class Manche extends Historique<CoupParTour>{
         int total = coups.size();
         int random = 0;
         if(total != 0){
-            random = rnd.nextInt(total)+1;
+            random = rnd.nextInt(total);
         }
         System.out.println("total : " + total + " choisi : " + random);
-        Coup cp = coups.get(random-1);
+        Coup cp = coups.get(random);
         System.out.println("selection du coup : " + cp );
 ;
         cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
@@ -1030,22 +1046,36 @@ public class Manche extends Historique<CoupParTour>{
                     }
                 }
 
+
+                int tour;
+                if(getTourJoueur() == 1){
+                    tour = 2;
+                }else{
+                    tour = 1;
+                }
                 // Si le CoupParTour est une attaque directe
                 if(coupPrecedent.typeAction == 2)
                 {
                     System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
+                    partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
+                    partie.jeu.control.inter().niv().msg = 2;
                     if(ParerAttaqueDirecte(coupPrecedent, nbCartes))
                     {
+                        partie.jeu.control.inter().niv().modifMessage(2, getTourJoueur(), 0, 0);
                         return true;
                     }
                     else
                     {
+                        partie.jeu.control.inter().niv().modifMessage(4, getTourJoueur(), partie.Joueur(getTourJoueur()).vie-1, 0);
+                        partie.jeu.control.inter().niv().msg2 = 3;
                         return false;
                     }
                     //System.out.println("Vous devez parer avec "+ nbCartes + " carte(s) de valeur : " + cp.action.valeurs[0]);
                 }
                 else // Si le CoupParTour est une attaque indirecte
                 {
+                    partie.jeu.control.inter().niv().modifMessage(5, tour, cp.action.valeurs[0], nbCartes);
+                    partie.jeu.control.inter().niv().msg = 3;
                     System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
                     if(ParerAttaqueIndirecte(coupPrecedent, nbCartes))
                     {
@@ -1325,6 +1355,29 @@ public class Manche extends Historique<CoupParTour>{
         partie.jeu.jouerCoup(cp);
         System.out.println("j'ai paré !");
         System.out.println("Ma main après avoir parer :" + Joueur(tourJoueur).main);
+
+        if(coupPrecedent.typeAction == PARADE_INDIRECTE){
+            partie.jeu.control.inter().niv().modifMessage(7, tourJoueur, 0, 0);
+            partie.jeu.control.inter().niv().msg = 5;
+            int tour;
+            if(tourJoueur == 1){
+                tour = 2;
+            }else{
+                tour = 1;
+            }
+            partie.jeu.control.inter().niv().modifMessage(3, tour, 0, 0);
+            partie.jeu.control.inter().niv().msg2 = 2;
+        }else{
+            partie.jeu.control.inter().niv().modifMessage(2, tourJoueur, 0, 0);
+            partie.jeu.control.inter().niv().msg2 = 1;
+            if(tourJoueur == 1){
+                partie.jeu.control.inter().niv().action2 = 0;
+            }else{
+                partie.jeu.control.inter().niv().action1 = 0;
+            }
+        }
+
+
 
     }
 
