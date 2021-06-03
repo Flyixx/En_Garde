@@ -18,9 +18,37 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NiveauGraphique extends JComponent implements Observateur {
+    private static final int NB_MESSAGE = 6;
     Jeu jeu;
     Image revenirALaPartie, menuPartie, fondMenuPartie, muteIm, unMute, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
-    int y, joueur2Vie, joueur1Vie, action, EspacementTiret, dimensionTete, xTeteDroite, xTeteGauche, yTete, etape, largeur, hauteur, nbColonnes, largeurCase, hauteurNom, largeurNom, hauteurCase, hauteurLuke, hauteurVador, largeurVador, yPoint, xPointGauche, xPointDroit, hauteurTiret, largeurTiret, yNom, xNom;
+    int y;
+    int joueur2Vie;
+    int joueur1Vie;
+    public int action1;
+    public int action2;
+    int EspacementTiret;
+    int dimensionTete;
+    int xTeteDroite;
+    int xTeteGauche;
+    int yTete;
+    int etape;
+    int largeur;
+    int hauteur;
+    int nbColonnes;
+    int largeurCase;
+    int hauteurNom;
+    int largeurNom;
+    int hauteurCase;
+    int hauteurLuke;
+    int hauteurVador;
+    int largeurVador;
+    int yPoint;
+    int xPointGauche;
+    int xPointDroit;
+    int hauteurTiret;
+    int largeurTiret;
+    int yNom;
+    int xNom;
     public int hauteurBoutonMenu, largeurBoutonMenu, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
     Image[][] joueurs1;
     Image[][] joueurs2;
@@ -32,10 +60,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
     FloatControl gainControl;
     Graphics2D drawable;
     public boolean mute, Victoire, VictoireSet, Menu, Partie, Regles, NewPartie, PartieSet, MenuSet, ReglesSet, NewPartieSet, MenuPartieSet, MenuPartie;
-    public int compteur;
+    public int compteur, msg, msg2;
     Image[] cartes = {};
     Image[] cartesSel = {};
     Image[] cartesDisabled = {};
+    String[] Message, Message2;
 
     //Fonction Permettant de charger une image
     public Image chargeImage(String nom){
@@ -50,6 +79,74 @@ public class NiveauGraphique extends JComponent implements Observateur {
             System.exit(1);
         }
         return img;
+    }
+
+    public void modifMessage(int type, int nb, int nb2, int nb1){
+        int avant = jeu.partie().manche().Joueur(nb).positionAvant;
+        int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
+        if(nb == 2){
+            avant = -avant;
+            maintenant = -maintenant;
+        }
+        if(type == 0){
+            if(maintenant > avant){
+                Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
+            }else{
+                Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+            }
+            if(nb == 1){
+                action1 = 2;
+                action2 = 0;
+            }else{
+                action1 = 0;
+                action2 = 2;
+            }
+        }else if(type == 1){
+            Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
+            if(nb == 1){
+                action1 = 1;
+                action2 = 0;
+            }else{
+                action1 = 0;
+                action2 = 1;
+            }
+        }else if(type == 2){
+            Message2[1] = "Joueur " + nb + " : A parer !";
+        }else if(type == 3){
+            if(nb == 1){
+                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
+                action1 = 0;
+            }else{
+                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
+                action2 = 0;
+            }
+        }else if(type == 4){
+            Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
+            action1 = 0;
+            action2 = 0;
+        }else if(type == 5){
+            Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
+            if(nb == 1){
+                action1 = 1;
+                action2 = 0;
+            }else{
+                action1 = 0;
+                action2 = 1;
+            }
+        }else if(type == 6){
+            Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
+            if(nb == 1){
+                action1 = 2;
+                action2 = 0;
+            }else{
+                action2 = 2;
+                action1 = 0;
+            }
+        }else if(type == 7){
+            Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
+            action1 = 0;
+            action2 = 0;
+        }
     }
 
     //Fonction qui charge les images nécessaires pour la partie en fonction du choix du joueur
@@ -161,10 +258,20 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
+        Message = new String[NB_MESSAGE];
+        Message[0] = "";
+        Message[1] = "Vous devez jouer au moins une carte pour finir votre tour";
+        msg = 0;
+
+        Message2 = new String[NB_MESSAGE];
+        Message2[0] = "";
+        msg2 = 0;
+
         etape = 0;
-        action = 0;
-        joueur1 = joueurs1[action][etape];
-        joueur2 = joueurs2[action][etape];
+        action1 = 0;
+        action2 = 0;
+        joueur1 = joueurs1[action1][etape];
+        joueur2 = joueurs2[action2][etape];
 
         //initialisation des booléens pour savoir dans quel page on est.
         Menu = true;
@@ -368,6 +475,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawable.clearRect(0, 0, largeur, hauteur);
         drawable.drawImage(map, 0, 0, largeur, hauteur, null);
+
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.025)));
+        drawable.setColor(new Color(253, 230,30));
+        drawable.drawString(Message[msg], (int)Math.round(largeur*0.30), (int)Math.round(hauteur*0.70));
+        drawable.drawString(Message2[msg2], (int)Math.round(largeur*0.30), (int)Math.round(hauteur*0.71)+(int)Math.round(largeur*0.025));
+
 
         if(jeu.partie().manche().getTourJoueur() == 1){
             drawable.drawImage(BandeVie[0][compteurJ1%2], 0, yTete-(int)Math.round(hauteur*0.040), largeur, dimensionTete+hauteurNom+largeurTiret, null);
@@ -604,8 +717,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     //Fontion permettant d'animer les joueurs à l'arret.
     public void animJoueur() {
         etape = (etape+1)%4;
-        joueur1 = joueurs1[action][etape];
-        joueur2 = joueurs2[action][etape];
+        joueur1 = joueurs1[action1][etape];
+        joueur2 = joueurs2[action2][etape];
         metAJour();
     }
 
@@ -719,7 +832,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         drawable.drawImage(ButtonChangeTour, x , y, largeurButton, hauteurButton, null);
     }
-
 
     public void setDecorsSauve(int compteurJ12, int compteurJ22, int compteurMap2) {
         stopMusique();

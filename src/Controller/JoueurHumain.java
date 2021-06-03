@@ -8,7 +8,7 @@ import java.util.List;
 public class JoueurHumain extends Joueur {
     Jeu jeu;
     public ArrayList<Integer> main= new ArrayList<>();
-    public int position;
+    public int position, positionAvant, newPosition;
     public int direction;
     public ArrayList<CarteIHM> carteI = new ArrayList<>();
     public int vie;
@@ -63,7 +63,9 @@ public class JoueurHumain extends Joueur {
          */
 
         /* Version remplacement d'indice */
+        this.positionAvant = this.position;
         this.position = val;
+        this.newPosition = this.position;
     }
 
     /*@Override

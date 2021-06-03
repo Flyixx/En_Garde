@@ -151,31 +151,36 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void clickChangeTour(int x, int y) {
-		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
-		{
+		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2) {
 			if(inter.niv().Partie) {
-				if(jeu.partie().manche().nbCoupsJoues != 0) {
 					//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
 					if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
 						if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
-							jeu.partie().manche().changeTourJoueur();
+							if(jeu.partie().manche().nbCoupsJoues != 0) {
+								int nb = jeu.partie().manche().tourJoueur;
+								jeu.partie().manche().changeTourJoueur();
 
-							for(int f = 0; f<jeu.selectedCarte.size(); f++) {
-								jeu.selectedCarte.remove(f);
-								f=0;
+								for (int f = 0; f < jeu.selectedCarte.size(); f++) {
+									jeu.selectedCarte.remove(f);
+									f = 0;
+								}
+
+								if (jeu.selectedCarte.size() > 0) {
+									jeu.selectedCarte.remove(0);
+								}
+
+								jeu.partie().manche().updateAll();
+								System.out.println("Je change le tour");
+								inter.niv().modifMessage(3, nb, 0, 0);
+								inter().niv().msg2 = 2;
+							}else{
+								System.out.println("Impossible le joueur doit jouer au moins une carte");
+								inter.niv().msg = 1;
+								inter.niv().msg2 = 0;
 							}
 
-							if(jeu.selectedCarte.size()>0) {
-								jeu.selectedCarte.remove(0);
-							}
-
-							jeu.partie().manche().updateAll();
-							System.out.println("Je change le tour");
 						}
 					}
-				}else{
-					System.out.println("Impossible le joueur doit jouer au moins une carte");
-				}
 			}
 		}
 
