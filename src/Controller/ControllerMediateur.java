@@ -190,20 +190,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 		if((y >= inter.niv().yBouton && y <= (inter.niv().yBouton + inter.niv().tailleBouton))){
 			if((x >= inter.niv().xBouton1 && x <= (inter.niv().xBouton1 + inter.niv().tailleBouton))) {
 				if(inter.niv().compteurJ1 == 0){
-					inter.niv().compteurJ1 = 5;
+					inter.niv().compteurJ1 = 1;
 				}else{
 					inter.niv().compteurJ1--;
 				}
 			}else if((x >= inter.niv().xBouton2 && x <= (inter.niv().xBouton2 + inter.niv().tailleBouton))) {
-				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%6;
+				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%2;
 			}else if((x >= inter.niv().xBouton3 && x <= (inter.niv().xBouton3 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurJ2 == 0){
-					inter.niv().compteurJ2 = 5;
+					inter.niv().compteurJ2 = 1;
 				}else{
 					inter.niv().compteurJ2--;
 				}
 			}else if((x >= inter.niv().xBouton4 && x <= (inter.niv().xBouton4 + inter.niv().tailleBouton))){
-				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%6;
+				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%2;
 			}else if((x >= inter.niv().xBouton5 && x <= (inter.niv().xBouton5 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurMap == 0){
 					inter.niv().compteurMap = 7;
@@ -311,11 +311,12 @@ public class ControllerMediateur implements CollecteurEvenements {
 			anim.tictac();
 		}
 		if(inter.niv().Partie){
+			joueurCourant = jeu.partie().manche().tourJoueur;
 			if(!jeu.partie().aGagner()){
 				if(decompte == 0){
 					if(joueurCourant == 2){
-						//Faire jouer le joueur 2
-						changeJoueur();
+
+						//changeJoueur();
 					}else{
 						decompte = lenteurAttente;
 					}
@@ -330,9 +331,9 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 	public void changeJoueur(){
 		if(joueurCourant == 1){
-			joueurCourant = 2;
+			jeu.partie().manche().tourJoueur = 2;
 		}else{
-			joueurCourant = 1;
+			jeu.partie().manche().tourJoueur = 1;
 		}
 	}
 
@@ -358,6 +359,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 				break;
 			case "PartieLance":
 				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.partie().type = 1;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false, false);

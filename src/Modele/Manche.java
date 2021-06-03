@@ -35,12 +35,6 @@ public class Manche extends Historique<CoupParTour>{
         peutSauvegarderEtHistorique = true;
         partie = p;
 
-        partie.jeu.control.inter().niv().msg = 0;
-        partie.jeu.control.inter().niv().msg2 = 0;
-        partie.jeu.control.inter().niv().action1 = 0;
-        partie.jeu.control.inter().niv().action2 = 0;
-
-
         //Les joueurs de la partie associés à la manche
         joueur1 = partie.Joueur(1);
         joueur2 = partie.Joueur(2);
@@ -140,6 +134,7 @@ public class Manche extends Historique<CoupParTour>{
     public boolean piocheVide(){
         return piocheCartes.size()==0;
     }
+
     public int restantPioche(){
         return piocheCartes.size();
     }
@@ -407,6 +402,7 @@ public class Manche extends Historique<CoupParTour>{
         return possibilites;
 
     }
+
     public int getDistance(){
         return joueur2.getPosition() - joueur1.getPosition();
     }
@@ -496,14 +492,7 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public int peutAttaquer(int valeurCarte,int distance, JoueurHumain j){ // regarde si la carte selectionnée lui permet d'attaquer l'autre joueur
-        //int distance;
 
-       /* if(j.getDirection()==1){
-            distance = joueur2.getPosition() - pos;
-        }else{
-            distance =  pos - joueur1.getPosition();
-        }*/
-            //System.out.println("distance : " + distance);
             if(distance > 5){
                 //System.out.println("Trop loin pour attaquer");
                 return 0;
@@ -729,6 +718,7 @@ public class Manche extends Historique<CoupParTour>{
     public void initButtonChangeTour(int x, int y, int largeur, int hauteur) {
        boutonChangeTour = new ButtonIHM(1, "ChangeTour", x, y, largeur, hauteur);
     }
+
     public void updateCaseIHM(int i, int val, int x, int y, int largeur, int hauteur){
         CaseIHM.get(i).update(i, val, x, y, largeur, hauteur);
     }
@@ -1381,11 +1371,12 @@ public class Manche extends Historique<CoupParTour>{
 
     }
 
-    public void Revenir(Coup cp){
+    public void RevenirCoup(Coup cp){
         grilleJeu = cp.mapAvant;
     }
 
-    public void Inverse(Coup cp){
-        grilleJeu = cp.mapAvant;
+    public void InverseCoup(Coup cp){
+        this.grilleJeu = cp.mapAvant;
+        System.out.println("ANNULER COUP");
     }
 }

@@ -42,11 +42,11 @@ public class Coup {
     }
 
     public void Revenir(Coup cp){
-        manche.Revenir(cp);
+        manche.RevenirCoup(cp);
     }
 
     public void Inverse(Coup cp){
-        manche.Inverse(cp);
+        manche.InverseCoup(cp);
     }
 
 }

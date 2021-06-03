@@ -45,8 +45,9 @@ public class Jeu extends Observable {
         String pioche = config.lis("Pioche");
         String MainJ1 = config.lis("MainJoueur1");
         String MainJ2 = config.lis("MainJoueur2");
+        int type = Integer.parseInt(config.lis("TypePartie"));
         int tourCourant = Integer.parseInt(config.lis("TourJoueur"));
-        courant = new Partie(this, pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant);
+        courant = new Partie(this, pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, type);
         selectedCarte = new ArrayList<>();
         compteurJ1 = Integer.parseInt(config.lis("CompteurJ1"));
         compteurJ2 = Integer.parseInt(config.lis("CompteurJ2"));
@@ -152,6 +153,8 @@ public class Jeu extends Observable {
                 sortie.print(courant.manche().joueur2.main.get(i));
             }
             sortie.println();
+            sortie.print("TypePartie=");
+            sortie.print(courant.type);
             sortie.close();
     }
 
