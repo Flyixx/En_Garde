@@ -22,6 +22,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     Jeu jeu;
     Image revenirALaPartie, menuPartie, fondMenuPartie, muteIm, unMute, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
+    int k = 0;
     int joueur2Vie;
     int joueur1Vie;
     public int action1;
@@ -64,6 +65,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
     Image[] cartes = {};
     Image[] cartesSel = {};
     Image[] cartesDisabled = {};
+    Image[] piochees = {};
+    int oldPioche = 15;
+    int piocheDelai =0;
+    Integer[] PosXPioche = new Integer[15];
+    Integer[] PosYPioche = new Integer[15];
+    Integer[] directionPioche = new Integer[15];
     String[] Message, Message2;
 
     //Fonction Permettant de charger une image
@@ -497,18 +504,46 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(NomJ2, (int)Math.round(xPointDroit-(5*EspacementTiret)), yNom, largeurNom, hauteurNom, null);
 
         // affichage de la pioche
+        int restantPioche = jeu.partie().manche().restantPioche();
+        if(oldPioche != restantPioche){
+            for(int i =restantPioche;i<=oldPioche;i++){
+                PosXPioche[i-1] = (int)Math.round(largeur*0.46) + (k*2);
+                PosYPioche[i-1] = (int)Math.round(hauteur*0.045) + (k*2); //(decPioche*2);
+                if(jeu.partie().manche().getTourJoueur() == 1){
+                    directionPioche[i-1] = 1;
+                }else{
+                    directionPioche[i-1] = -1;
+                }
+            }
+            if(oldPioche - restantPioche == 1){
+                oldPioche = restantPioche;
+            }else{
+                piocheDelai+=1;
+                if(piocheDelai==5){
+                    oldPioche = oldPioche - 1;
+                    piocheDelai = 0;
+                }
+            }
+        }
         int largeurCarte = (int) Math.round(largeur * 0.30)/5;
         int hauteurCarte = (int) Math.round(hauteur * 0.15);
-        //int[] oldPos;
-        int k =1;
-        do{
-            drawable.drawImage(cartes[0],(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
-            k+=1;
-        }while(k<jeu.partie().manche().restantPioche());
-        drawable.drawImage(cartes[1],(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
-        /*for(int i=jeu.partie().manche().restantPioche(); i<15;i++){
-            drawable.drawImage(cartePioche,(int)Math.round((largeur*0.45) + (i*2)),(int)Math.round(hauteur*0.20),largeurCarte,hauteurCarte, null);
-        }*/
+        cartePioche = chargeImage("Carte/Pioche/Deck_" + restantPioche);
+        for(k=1;k<restantPioche;k++){
+            drawable.drawImage(cartePioche,(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
+        }
+        drawable.drawImage(cartePioche,(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
+        for(int i = restantPioche; i<15; i++){
+            int nb = i+1;
+            cartePioche = chargeImage("Carte/Pioche/Deck_" + nb);
+            if(PosXPioche[i] > 0 && PosXPioche[i] < largeur){
+                if(PosYPioche[i] >= hauteur/4){
+                    PosXPioche[i] = majPosXPioche(PosXPioche[i],directionPioche[i]);
+                }else{
+                    PosYPioche[i] = majPosYPioche(PosYPioche[i]);
+                }
+                drawable.drawImage(cartePioche,PosXPioche[i],PosYPioche[i],largeurCarte,hauteurCarte, null);
+            }
+        }
 
         //affichage Des Bouton
         drawable.drawImage(fin, xBoutonDroite, yBoutonBas, largeurBouton, hauteurBouton, null);
@@ -557,6 +592,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 selectCartes(jeu.selectedCarte.get(i).getValeur(), jeu.selectedCarte.get(i).getCoordX(), jeu.selectedCarte.get(i).getCoordY(), jeu.selectedCarte.get(i).getLargeur(), jeu.selectedCarte.get(i).getHauteur(), drawable);
             }
         }
+    }
+    public int majPosXPioche(int posX, int dir){
+        if(posX >= largeur || posX<0){
+            return posX;
+        }else{
+            return posX + (dir * 15);
+        }
+    }
+    public int majPosYPioche(int posY){
+        return posY + 15;
     }
 
     public void tracerMenuPartie(){

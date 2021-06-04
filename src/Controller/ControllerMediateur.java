@@ -297,6 +297,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void tictac(){
+		inter.niv().metAJour();
 		if(inter.getMenu()){
 			inter.MAJPanelMenu();
 		}
