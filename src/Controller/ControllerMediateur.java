@@ -74,7 +74,6 @@ public class ControllerMediateur implements CollecteurEvenements {
 				if(c.getEtat() != 0 && x >= c.getX() && x <= (c.getX() + c.getLargeur())){
 					if((y >= c.getY() && y <= (c.getY() + c.getHauteur()))){
 
-
 						if (c.getEtat() == 1){
 							int[] valeurs= new int[5];
 

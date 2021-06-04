@@ -423,13 +423,16 @@ public class Manche extends Historique<CoupParTour>{
             int newPos;
             int distance = this.getDistance();
             int dir = j.direction;
+            int[] dejaCalcule = new int[6];
 
             for(int i  = 0; i< j.getMain().size(); i++)
             {
+
                 int valeurCarte =  j.getMain().get(i);
 
-                if(valeurCarte != 0)
+                if(valeurCarte != 0 && dejaCalcule[valeurCarte]!=1)
                 {
+                    dejaCalcule[valeurCarte] = 1;
                     //System.out.println("Valeur carte : " + valeurCarte);
                     int[] possibilites = {0};
                     //System.out.println("carte : " + valeurCarte);
@@ -559,6 +562,8 @@ public class Manche extends Historique<CoupParTour>{
                 }
             }
         }
+
+
 
         // Si l'action est une parade
         if(cp.action.id == PARADE_DIRECTE)
@@ -994,6 +999,8 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public void jouerIAMoyen(JoueurHumain j){
+
+
         System.out.println("Tour de l'IA ! ");
         ArrayList<Coup> coups = this.listerCoupIA(j);
         ArrayList<Coup> coupsChoisi = new ArrayList<>();
