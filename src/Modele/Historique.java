@@ -5,12 +5,11 @@ import Structures.Sequence;
 import Structures.SequenceListe;
 
 public class Historique<E extends Commande> {
-    Sequence<CoupParTour> CoupFait, CoupAnnuler, CoupPasse;
+    Sequence<CoupParTour> CoupFait, CoupAnnuler;
 
     Historique(){
         CoupFait = new SequenceListe<>();
         CoupAnnuler = new SequenceListe<>();
-        CoupPasse = new SequenceListe<>();
     }
 
     void nouveau(CoupParTour c){
@@ -21,7 +20,6 @@ public class Historique<E extends Commande> {
         while(!CoupAnnuler.estVide()){
             CoupAnnuler.extraitTete();
         }
-        CoupPasse = CoupFait;
     }
 
     void afficherListe(Sequence<CoupParTour> l){
@@ -59,20 +57,14 @@ public class Historique<E extends Commande> {
     }
 
     CoupParTour annuler(){
-        /*
-        System.out.print("Salut ");
-        afficherListe(CoupPasse);
-        System.out.println("La tchoin");
         if(peutAnnuler()){
-            System.out.println("Super ça marche");
             CoupParTour c = CoupFait.extraitTete();
             c.desexecute(c);
             CoupAnnuler.insereTete(c);
             return c;
         }else{
             return null;
-        }*/
-        return null;
+        }
     }
 
 }

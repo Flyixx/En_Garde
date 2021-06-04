@@ -62,14 +62,4 @@ public class CoupParTour extends Commande{
                 ", manche=" + manche +
                 '}';
     }
-
-    /*@Override
-    void execute(Coup cp) {
-
-    }
-
-    @Override
-    void desexecute(Coup cp) {
-
-    }*/
 }
