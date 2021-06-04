@@ -44,13 +44,15 @@ public class CoupParTour extends Commande{
 
 
     void execute(CoupParTour cp) {
-        Coup cpe = cp.coupsTourTab[cp.nbCoups-1];
-        cpe.execute(cpe);
+        for(int i = 0; i < cp.nbCoups; i++){
+            Coup cpe = cp.coupsTourTab[i];
+            cpe.execute(cpe);
+        }
     }
 
     void desexecute(CoupParTour cp) {
         Coup cpd = cp.coupsTourTab[0];
-        cpd.desexecute(cpd);
+        cpd.desexecute(cpd, cp.tourJoueur);
     }
 
     @Override
