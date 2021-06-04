@@ -48,6 +48,7 @@ public class Partie {
     public void initialiseManche(){
         courant = null;
 
+
         if(premierTourPrecedent == 1)
         {
             premierTourPrecedent = 2;
