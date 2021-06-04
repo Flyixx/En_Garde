@@ -2,8 +2,10 @@ package Structures;
 
 public class SequenceListe<Titi> implements Sequence<Titi> {
     Maillon<Titi> tete, queue;
+    int taille;
 
     public void insereTete(Titi element) {
+        taille++;
         Maillon<Titi> nouveau = new Maillon<>();
         nouveau.element = element;
         nouveau.suivant = tete;
@@ -16,6 +18,7 @@ public class SequenceListe<Titi> implements Sequence<Titi> {
     }
 
     public void insereQueue(Titi element) {
+        taille++;
         Maillon<Titi> nouveau = new Maillon<>();
         nouveau.element = element;
         nouveau.suivant = null;
@@ -31,6 +34,7 @@ public class SequenceListe<Titi> implements Sequence<Titi> {
     public Titi extraitTete() {
         if (tete == null)
             throw new RuntimeException("Sequence vide !");
+        taille--;
         Titi resultat = tete.element;
         tete = tete.suivant;
         // Ici, oubli de la mise à jour de la queue probablement sans conséquences :
@@ -57,6 +61,10 @@ public class SequenceListe<Titi> implements Sequence<Titi> {
         }
         resultat += "]";
         return resultat;
+    }
+
+    public int size(){
+        return taille;
     }
 }
 

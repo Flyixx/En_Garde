@@ -19,7 +19,7 @@ public class Coup {
                 "manche=" + manche +
                 ", mapAvant=" + Arrays.toString(mapAvant) +
                 ", action=" + action +
-                '}';
+                ", target=" + target+'}';
     }
 
     public Coup(int []grilleJeu, Action action, int Target){
@@ -41,16 +41,16 @@ public class Coup {
         Revenir(cp);
     }
 
-    public void desexecute(Coup cp) {
-        Inverse(cp);
+    public void desexecute(Coup cp, int tour) {
+        Inverse(cp, tour);
     }
 
     public void Revenir(Coup cp){
         manche.RevenirCoup(cp);
     }
 
-    public void Inverse(Coup cp){
-        manche.InverseCoup(cp);
+    public void Inverse(Coup cp, int tour){
+        manche.InverseCoup(cp, tour);
     }
 
 }

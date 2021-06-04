@@ -82,70 +82,72 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void modifMessage(int type, int nb, int nb2, int nb1){
-        int avant = jeu.partie().manche().Joueur(nb).positionAvant;
-        int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
-        if(nb == 2){
-            avant = -avant;
-            maintenant = -maintenant;
-        }
-        if(type == 0){
-            if(maintenant > avant){
-                Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
-            }else{
-                Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+        if(Partie){
+            int avant = jeu.partie().manche().Joueur(nb).positionAvant;
+            int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
+            if(nb == 2){
+                avant = -avant;
+                maintenant = -maintenant;
             }
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
+            if(type == 0){
+                if(maintenant > avant){
+                    Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
+                }else{
+                    Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+                }
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 2;
+                }
+            }else if(type == 1){
+                Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 2){
+                Message2[1] = "Joueur " + nb + " : A parer !";
+            }else if(type == 3){
+                if(nb == 1){
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
+                    action1 = 0;
+                }else{
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
+                    action2 = 0;
+                }
+            }else if(type == 4){
+                Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
                 action1 = 0;
-                action2 = 2;
-            }
-        }else if(type == 1){
-            Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
                 action2 = 0;
-            }else{
+            }else if(type == 5){
+                Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 6){
+                Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action2 = 2;
+                    action1 = 0;
+                }
+            }else if(type == 7){
+                Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
                 action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 2){
-            Message2[1] = "Joueur " + nb + " : A parer !";
-        }else if(type == 3){
-            if(nb == 1){
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
-                action1 = 0;
-            }else{
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
                 action2 = 0;
             }
-        }else if(type == 4){
-            Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
-            action1 = 0;
-            action2 = 0;
-        }else if(type == 5){
-            Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
-                action2 = 0;
-            }else{
-                action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 6){
-            Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
-                action2 = 2;
-                action1 = 0;
-            }
-        }else if(type == 7){
-            Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
-            action1 = 0;
-            action2 = 0;
         }
     }
 

@@ -19,9 +19,9 @@ public class Partie {
         initialisePartie();
     }
 
-    public Partie(Jeu j, int pdv1, int pdv2, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant, int type){
+    public Partie(Jeu j, int pdv1, int pdv2, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant, int type, String HistoriqueAnnule, String HistoriqueCoupFait){
         jeu = j;
-        initialisePartieSauve(pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, type);
+        initialisePartieSauve(pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, type, HistoriqueAnnule, HistoriqueCoupFait);
     }
 
     public void initialisePartie(){
@@ -39,12 +39,12 @@ public class Partie {
         jeu.control.inter().niv().action2 = 0;
     }
 
-    public void initialisePartieSauve(int pdv1, int pdv2, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant, int typePartie){
+    public void initialisePartieSauve(int pdv1, int pdv2, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant, int typePartie, String HistoriqueAnnule, String HistoriqueCoupFait){
         joueur1 = new JoueurHumain(jeu);
         joueur2 = new JoueurHumain(jeu);
         joueur1.vie = pdv1;
         joueur2.vie = pdv2;
-        courant = new Manche(this, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant);
+        courant = new Manche(this, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, HistoriqueAnnule, HistoriqueCoupFait);
         J1Gagnant = false;
         J2Gagnant = false;
         type=typePartie;
