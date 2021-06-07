@@ -323,6 +323,10 @@ public class InterfaceGraphique implements Runnable, Observateur {
         return niv.largeur;
     }
 
+    //Fonction permettant de récupérer le nombres de cases à gauche que l'on passe (lié au zoom)
+    public int getRecadrageDeb(){return niv.recadrageDeb;}
+    public int getRecadrageFin(){return niv.recadrageFin;}
+
     public boolean getRegles() {
         return niv.Regles;
     }

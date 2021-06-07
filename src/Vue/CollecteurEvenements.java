@@ -14,6 +14,7 @@ public interface CollecteurEvenements {
     void clickAnnuler(int x, int y);
     void clickRefaire(int x, int y);
     void clickMute(int x, int y);
+    void clickZoom(int x, int y);
     void clickRevenirPartie(int x, int y);
 
     void clickMenuPartie(int x, int y);

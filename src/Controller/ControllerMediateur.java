@@ -50,10 +50,8 @@ public class ControllerMediateur implements CollecteurEvenements {
 						CarteIHM c = joueur.getCarteI().get(i);
 						if (x >= c.getCoordX() && x <= (c.getCoordX() + c.getLargeur()) && c.getEtat() != 1) {
 							if ((y >= c.getCoordY() && y <= (c.getCoordY() + c.getHauteur()))) {
-
 								jeu.SelectionCarte(i, c.getValeur(), c.getCoordX(), c.getCoordY(), c.getLargeur(), c.getHauteur());
 								jeu.partie().manche().listerCoups(joueur, jeu.selectedCarte, true);
-
 							}
 						}
 					}
@@ -63,18 +61,16 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void clickDeplacement(int x, int y){
-
+		System.out.println("x = " + x + " / y = " + y);
 		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
 		{
 			ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
 			CaseIHM = jeu.partie().manche().getCaseIHM();
 			Coup cp = null;
-			for(int i = 0; i < CaseIHM.size(); i++){
+			for(int i = 0; i <= 22; i++){
 				SelectionCaseIHM c = CaseIHM.get(i);
-				if(c.getEtat() != 0 && x >= c.getX() && x <= (c.getX() + c.getLargeur())){
-					if((y >= c.getY() && y <= (c.getY() + c.getHauteur()))){
-
-
+				if(x >= c.getX() && x <= (c.getX() + c.getLargeur())){
+					if((c.getEtat() != 0 && y >= c.getY()  && y <= (c.getY() + c.getHauteur()))){
 						if (c.getEtat() == 1){
 							int[] valeurs= new int[5];
 
@@ -215,9 +211,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.niv().compteurMap = (inter.niv().compteurMap+1)%8;
 			}
 		}
-		System.out.println(inter.niv().compteurJ1);
-		System.out.println(inter.niv().compteurJ2);
-		System.out.println(inter.niv().compteurMap);
+		if(x > inter.niv().xSelJ1 && x <= inter.niv().xSelJ1+inter.niv().tailleBouton){
+			if(y > inter.niv().ySelection && y <= inter.niv().ySelection+inter.niv().tailleBouton){
+				inter.niv().premierJoueur = 1;
+			}
+		}
+		if(x > inter.niv().xSelJ2 && x <= inter.niv().xSelJ2+inter.niv().tailleBouton){
+			if(y > inter.niv().ySelection && y <= inter.niv().ySelection+inter.niv().tailleBouton){
+				inter.niv().premierJoueur = 2;
+			}
+		}
+
+		//System.out.println(inter.niv().compteurJ1);
+		//System.out.println(inter.niv().compteurJ2);
+		//System.out.println(inter.niv().compteurMap);
 		inter.niv().metAJour();
 	}
 
@@ -296,6 +303,16 @@ public class ControllerMediateur implements CollecteurEvenements {
 		}
 	}
 
+	public void clickZoom(int x, int y){
+		if(inter.niv().Partie){
+			if(x >= inter.niv().xBoutonZoom && x < (inter.niv().xBoutonZoom + inter.niv().tailleZoom)){
+				if(y >= inter.niv().yBoutonZoom && y < (inter.niv().yBoutonZoom + inter.niv().tailleZoom)){
+					inter.niv().zoom = !inter.niv().zoom;
+				}
+			}
+		}
+	}
+
 	public void tictac(){
 		inter.niv().metAJour();
 		if(inter.getMenu()){
@@ -361,14 +378,14 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.changeBackground(true, false, false, false, false, false);
 				break;
 			case "PartieLance":
-				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2,inter.niv().premierJoueur);
 				jeu.partie().type = 1;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false, false);
 				break;
 			case "PartieIAF":
-				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2, inter.niv().premierJoueur);
 				jeu.partie().type = 2;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);

@@ -1,4 +1,6 @@
 package Modele;
+import Vue.InterfaceGraphique;
+
 
 public class SelectionCaseIHM {
     int id;
@@ -6,6 +8,7 @@ public class SelectionCaseIHM {
     int x,y;
     int largeur, hauteur;
     int etat;
+    int recadrage;
 
     public SelectionCaseIHM(int i, int val, int cx, int cy, int l, int h, int e){
         id = i;
@@ -26,10 +29,10 @@ public class SelectionCaseIHM {
         hauteur = h;
     }
 
-    public void update(int i, int val, int cx, int cy, int l, int h){
+    public void update(int i, int val, int cx, int cy, int l, int h, int recadrage){
         id = i;
         valeur = val;
-        x = cx;
+        x = cx - (largeur * recadrage);
         y = cy;
         largeur = l;
         hauteur = h;

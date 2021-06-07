@@ -51,8 +51,8 @@ public class Manche extends Historique<CoupParTour>{
         joueur1.direction = 1;
         //joueur1.vie = 5;
         //Situation du joueur 2 au début de la partie
-        grilleJeu[15] = 2;
-        joueur2.position = 15;
+        grilleJeu[13] = 2;
+        joueur2.position = 13;
         joueur2.direction = -1;
         //joueur2.vie = 5;
         viderMain(joueur1);
@@ -736,8 +736,8 @@ public class Manche extends Historique<CoupParTour>{
        boutonChangeTour = new ButtonIHM(1, "ChangeTour", x, y, largeur, hauteur);
     }
 
-    public void updateCaseIHM(int i, int val, int x, int y, int largeur, int hauteur){
-        CaseIHM.get(i).update(i, val, x, y, largeur, hauteur);
+    public void updateCaseIHM(int i, int val, int x, int y, int largeur, int hauteur, int recadrage){
+        CaseIHM.get(i).update(i, val, x, y, largeur, hauteur,recadrage);
     }
 
     public ArrayList<SelectionCaseIHM> getCaseIHM() {

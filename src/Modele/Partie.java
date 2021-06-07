@@ -12,11 +12,11 @@ public class Partie {
     int gagnant;
     int premierTourPrecedent; // Changer à qui est le premier tour à chaque fois
 
-    public Partie(Jeu j){
+    public Partie(Jeu j, int premier){
         jeu = j;
 
-        premierTourPrecedent = 1;
-        initialisePartie();
+        premierTourPrecedent = premier;
+        initialisePartie(premier);
     }
 
     public Partie(Jeu j, int pdv1, int pdv2, int positionJ1, int positionJ2, String pioche, String MainJ1, String MainJ2, int tourCourant, int type){
@@ -24,13 +24,18 @@ public class Partie {
         initialisePartieSauve(pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, type);
     }
 
-    public void initialisePartie(){
-
+    public void initialisePartie(int premier){
         joueur1 = new JoueurHumain(jeu);
         joueur2 = new JoueurHumain(jeu);
         joueur1.vie = 5;
         joueur2.vie = 5;
-        courant = new Manche(this, premierTourPrecedent);
+        courant = new Manche(this, premier);
+
+        /*if(premier == 1){
+            courant = new Manche(this, 2);
+        }else{
+            courant = new Manche(this, 1);
+        }*/
         J1Gagnant = false;
         J2Gagnant = false;
         jeu.control.inter().niv().msg = 0;

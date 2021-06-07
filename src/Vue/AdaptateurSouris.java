@@ -24,6 +24,7 @@ public class AdaptateurSouris extends MouseAdapter {
             control.clickAnnuler(e.getX(), e.getY());
             control.clickRefaire(e.getX(), e.getY());
             control.clickMenuPartie(e.getX(), e.getY());
+            control.clickZoom(e.getX(), e.getY());
         }
         if(niv.MenuPartie){
             control.clickSauvegarder(e.getX(), e.getY());

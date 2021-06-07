@@ -22,8 +22,8 @@ public class Jeu extends Observable {
 
     }
 
-    public void initialisePartie(int nbMap, int nbJ1, int nbJ2){
-        courant = new Partie(this);
+    public void initialisePartie(int nbMap, int nbJ1, int nbJ2, int premier){
+        courant = new Partie(this, premier);
         selectedCarte = new ArrayList<>();
         compteurJ1 = nbJ1;
         compteurMap = nbMap;
