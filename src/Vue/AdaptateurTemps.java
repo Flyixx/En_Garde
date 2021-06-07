@@ -10,7 +10,6 @@ public class AdaptateurTemps implements ActionListener {
         control = c;
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         control.tictac();

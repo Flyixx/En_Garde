@@ -18,9 +18,7 @@ public class Jeu extends Observable {
     Configuration config;
     CollecteurEvenements control;
 
-    public Jeu() {
-
-    }
+    public Jeu() {}
 
     public void initialisePartie(int nbMap, int nbJ1, int nbJ2){
         courant = new Partie(this);
@@ -159,36 +157,13 @@ public class Jeu extends Observable {
         int nbSeqCoupFait = courant.manche().CoupFait.size();
 
         sortie.println();
-        sortie.print("HistoriqueAnnuler=");
+        sortie.print("HistoriqueCoupFait=");
         sortie.print(nbSeqAnnule);
-
         for(int i = 0; i < nbSeqAnnule; i++){
             CoupParTour cpT = courant.manche().CoupAnnuler.extraitTete();
             sortie.print(cpT.typeAction);
-            sortie.print(cpT.coupsTourTab.length);
-            for(int c = 0; c < cpT.coupsTourTab.length; c++){
-                for(int j = 0; j < 23; j++){
-                    sortie.print(cpT.coupsTourTab[c].mapAvant[j]);
-                }
-                sortie.print(cpT.coupsTourTab[c].action.id);
-                for(int v = 0; v < 5; v++){
-                    sortie.print(cpT.coupsTourTab[c].action.valeurs[v]);
-                }
-                int target = cpT.coupsTourTab[c].target;
-                if(target < 10){
-                    sortie.print("0");
-                }
-                sortie.print(cpT.coupsTourTab[c].target);
-            }
-        }
-        sortie.println();
-        sortie.print("HistoriqueCoupFait=");
-        sortie.print(nbSeqCoupFait);
-
-        for(int i = 0; i < nbSeqCoupFait; i++){
-            CoupParTour cpT = courant.manche().CoupFait.extraitTete();
-            sortie.print(cpT.typeAction);
             sortie.print(cpT.nbCoups);
+            sortie.print(cpT.tourJoueur);
             for(int c = 0; c < cpT.nbCoups; c++){
                 for(int j = 0; j < 23; j++){
                     sortie.print(cpT.coupsTourTab[c].mapAvant[j]);
@@ -202,6 +177,58 @@ public class Jeu extends Observable {
                     sortie.print("0");
                 }
                 sortie.print(cpT.coupsTourTab[c].target);
+                for(int m1 = 0; m1 < 5; m1++){
+                    sortie.print(cpT.coupsTourTab[c].mainJ1.get(m1));
+                }
+                for(int m2 = 0; m2 < 5; m2++){
+                    sortie.print(cpT.coupsTourTab[c].mainJ2.get(m2));
+                }
+                int nbCartesPioche = cpT.coupsTourTab[c].pioche.size();
+                if(nbCartesPioche < 10){
+                    sortie.print("0");
+                }
+                sortie.print(nbCartesPioche);
+                for(int p = 0; p < nbCartesPioche; p++){
+                    sortie.print(cpT.coupsTourTab[c].pioche.get(p));
+                }
+            }
+        }
+
+        //Sauvegarde de l'historique des Coups faits de la partie courante
+        sortie.print("HistoriqueCoupFait=");
+        sortie.print(nbSeqCoupFait);
+        for(int i = 0; i < nbSeqCoupFait; i++){
+            CoupParTour cpT = courant.manche().CoupFait.extraitTete();
+            sortie.print(cpT.typeAction);
+            sortie.print(cpT.nbCoups);
+            sortie.print(cpT.tourJoueur);
+            for(int c = 0; c < cpT.nbCoups; c++){
+                for(int j = 0; j < 23; j++){
+                    sortie.print(cpT.coupsTourTab[c].mapAvant[j]);
+                }
+                sortie.print(cpT.coupsTourTab[c].action.id);
+                for(int v = 0; v < 5; v++){
+                    sortie.print(cpT.coupsTourTab[c].action.valeurs[v]);
+                }
+                int target = cpT.coupsTourTab[c].target;
+                if(target < 10){
+                    sortie.print("0");
+                }
+                sortie.print(cpT.coupsTourTab[c].target);
+                for(int m1 = 0; m1 < 5; m1++){
+                    sortie.print(cpT.coupsTourTab[c].mainJ1.get(m1));
+                }
+                for(int m2 = 0; m2 < 5; m2++){
+                    sortie.print(cpT.coupsTourTab[c].mainJ2.get(m2));
+                }
+                int nbCartesPioche = cpT.coupsTourTab[c].pioche.size();
+                if(nbCartesPioche < 10){
+                    sortie.print("0");
+                }
+                sortie.print(nbCartesPioche);
+                for(int p = 0; p < nbCartesPioche; p++){
+                    sortie.print(cpT.coupsTourTab[c].pioche.get(p));
+                }
             }
         }
 

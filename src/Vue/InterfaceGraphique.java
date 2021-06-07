@@ -136,7 +136,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         }
     }
 
-    //Fonction permettant d'ajouter et de supprimer les panel de la page règles
+    //Fonction permettant d'ajouter et de supprimer les panels de la page règles
     public void InterfaceRegles(){
         if(niv.Regles){
             niv().compteur = 0;
@@ -148,6 +148,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         }
     }
 
+    //Fonction permettant d'ajouter et de supprimer les panels de la page New Partie
     public void InterfaceNewPartie(){
         if(niv.NewPartie){
             frame.add(NewPartie, BorderLayout.SOUTH);
@@ -221,6 +222,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         }
     }
 
+    //Fonction permettant de gérer le responsive du menu des nouvelles parties
     public void MAJPanelNewPartie(){
         if(hauteurPanel != ((NewPartie.getHeight() + getHauteur()) / 2)){
 
@@ -286,11 +288,11 @@ public class InterfaceGraphique implements Runnable, Observateur {
         return but;
     }
 
+    //Fonction permettant d'appeler la fonction repaint de la classe NiveauGraphique
     @Override
     public void metAJour() {
         niv.repaint();
     }
-
 
     //Fonction permettant de faire les animations en appelant la fonction animJoueur de NiveauGraphique
     public void animJoueur() {
@@ -323,10 +325,12 @@ public class InterfaceGraphique implements Runnable, Observateur {
         return niv.largeur;
     }
 
+    //Fonction permettant de récupérer le booléens Regles de la classe NiveauGraphique
     public boolean getRegles() {
         return niv.Regles;
     }
 
+    //Fonction qui permet d'ouvrir la fenêtre pour sauvegarder une partie.
     public void sauve(){
         if(jeu.partie().manche().peutSauvegarderEtHistorique){
             JFileChooser selecteur = new JFileChooser();
@@ -349,6 +353,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
 
     }
 
+    //Fonction qui permet d'ouvrir la fenêtre pour charger une partie.
     public boolean charge() {
         JFileChooser selecteur = new JFileChooser();
         selecteur.setDialogTitle("Fichier de Sauvegarde");

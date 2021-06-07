@@ -147,6 +147,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
                 action1 = 0;
                 action2 = 0;
+            }else if(type == 8){
+                Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2;
             }
         }
     }
@@ -561,6 +563,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
     }
 
+    //Fonction qui trace le Menu de la partie lorsque son booléen est à true.
     public void tracerMenuPartie(){
         drawable.clearRect(0, 0, largeur, hauteur);
 
@@ -593,6 +596,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(quitter, xBoutonMenu, yBoutonTrois, largeurBoutonMenu, hauteurBoutonMenu, null);
         drawable.drawImage(save, xBoutonMenu, yBoutonDeux, largeurBoutonMenu, hauteurBoutonMenu, null);
 
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.025)));
+        drawable.setColor(new Color(253, 230,30));
+        if(jeu.partie().manche().peutSauvegarderEtHistorique){
+            drawable.drawString("Vous pouvez sauvegarder !", (int)Math.round(largeur*0.35), (int)Math.round(hauteur*0.95));
+        }else{
+            drawable.drawString("Le Joueur " + jeu.partie().manche().tourJoueur + " doit finir son tour pour sauvegarder !", (int)Math.round(largeur*0.20), (int)Math.round(hauteur*0.95));
+        }
 
         if(mute){
             drawable.drawImage(muteIm, xBoutonMute, yBoutonMute, tailleMute, tailleMute, null);
@@ -715,7 +725,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
         repaint();
     }
 
-
     //Fontion permettant d'animer les joueurs à l'arret.
     public void animJoueur() {
         etape = (etape+1)%4;
@@ -835,10 +844,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(ButtonChangeTour, x , y, largeurButton, hauteurButton, null);
     }
 
+    //Fonction qui met à jour le décors en fonction de la partie sauvegarder auparavant
     public void setDecorsSauve(int compteurJ12, int compteurJ22, int compteurMap2) {
         stopMusique();
         teteJ1 = chargeImage("Sprite"+compteurJ12+"/Head");
         teteJ2 = chargeImage("Sprite"+compteurJ22+"/Head");
+
+        compteurJ1 = compteurJ12;
+        compteurJ2 = compteurJ22;
 
         int nb = compteurMap2;
         int nb2 = nb%4;
@@ -861,7 +874,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-30.0f);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-            //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
         }
