@@ -97,8 +97,8 @@ public class Partie {
         return false;
     }
 
-    public void jouerCoup(Coup cp) {
-        courant.jouerCoup(cp);
+    public void jouerCoup(Coup cp, boolean refaire) {
+        courant.jouerCoup(cp, refaire);
     }
 
     public JoueurHumain Joueur(int numJoueur) {

@@ -37,20 +37,22 @@ public class Coup {
         manche = m;
     }
 
-    public void execute(Coup cp) {
-        Revenir(cp);
+    public Coup execute(Coup cp) {
+        Coup cp1 = Revenir(cp);
+        return cp1;
     }
 
-    public void desexecute(Coup cp, int tour) {
-        Inverse(cp, tour);
+    public void desexecute(Coup cp, int tour, boolean devaitParer, int[] etatCasesIHM) {
+        Inverse(cp, tour, devaitParer, etatCasesIHM);
     }
 
-    public void Revenir(Coup cp){
-        manche.RevenirCoup(cp);
+    public Coup Revenir(Coup cp){
+        Coup cp1 = manche.RevenirCoup(cp);
+        return cp1;
     }
 
-    public void Inverse(Coup cp, int tour){
-        manche.InverseCoup(cp, tour);
+    public void Inverse(Coup cp, int tour, boolean devaitParer, int[] etatCasesIHM){
+        manche.InverseCoup(cp, tour,devaitParer, etatCasesIHM);
     }
 
 }

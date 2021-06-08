@@ -61,7 +61,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void clickDeplacement(int x, int y){
-		System.out.println("x = " + x + " / y = " + y);
+
 		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
 		{
 			ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
@@ -106,7 +106,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 								cp = jeu.determinerCoup(c.getId(), valeurs,grilleuJeux, 1);
 							}
 
-							jeu.jouerCoup(cp);
+							jeu.jouerCoup(cp, false);
 
 							for(int j =0; j<jeu.selectedCarte.size();j ++)
 							{
@@ -124,13 +124,14 @@ public class ControllerMediateur implements CollecteurEvenements {
 							}
 
 							cp = jeu.determinerCoup(c.getId(), valeurs, jeu.partie().manche().grilleJeu, 2);
-							jeu.jouerCoup(cp);
+							jeu.jouerCoup(cp, false);
 
 
 							//jeu.partie().manche().updateAll();
 							//jeu.partie().initialiseManche();
 
 						} else if (c.getEtat() == 3){
+
 							jeu.partie().manche().parerDirectement();
 							System.out.println("Tu peux parer mon pote");
 							jeu.partie().manche().doitParer = false;
@@ -155,7 +156,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 						if (y >= inter.niv().yBoutonBas && y < (inter.niv().yBoutonBas+inter.niv().hauteurBouton)){
 							if(jeu.partie().manche().nbCoupsJoues != 0) {
 								int nb = jeu.partie().manche().tourJoueur;
-								jeu.partie().manche().changeTourJoueur();
+								jeu.partie().manche().changeTourJoueur(false);
 
 								for (int f = 0; f < jeu.selectedCarte.size(); f++) {
 									jeu.selectedCarte.remove(f);

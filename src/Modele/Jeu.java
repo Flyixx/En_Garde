@@ -67,12 +67,12 @@ public class Jeu extends Observable {
         return courant.manche().joue(type, valeurs, grilleJeu,typeAction );
     }
 
-    public void jouerCoup(Coup cp) {
+    public void jouerCoup(Coup cp, boolean refaire) {
         if (cp == null) {
             System.out.println("Salut");
             //Configuration.instance().logger().info("Déplacement impossible");
         } else {
-            courant.jouerCoup(cp);
+            courant.jouerCoup(cp, refaire);
             miseAJour();
         }
     }
