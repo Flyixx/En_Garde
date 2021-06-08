@@ -92,70 +92,75 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void modifMessage(int type, int nb, int nb2, int nb1){
-        int avant = jeu.partie().manche().Joueur(nb).positionAvant;
-        int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
-        if(nb == 2){
-            avant = -avant;
-            maintenant = -maintenant;
-        }
-        if(type == 0){
-            if(maintenant > avant){
-                Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
-            }else{
-                Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+        if(Partie){
+            int avant = 0;
+            if(jeu.partie().manche().Joueur(nb).positionAvant == 0){
+                avant = jeu.partie().manche().Joueur(nb).positionAvant;
             }
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
+            int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
+            if(nb == 2){
+                avant = -avant;
+                maintenant = -maintenant;
+            }
+            if(type == 0){
+                if(maintenant > avant){
+                    Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
+                }else{
+                    Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+                }
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 2;
+                }
+            }else if(type == 1){
+                Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 2){
+                Message2[1] = "Joueur " + nb + " : A parer !";
+            }else if(type == 3){
+                if(nb == 1){
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
+                    action1 = 0;
+                }else{
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
+                    action2 = 0;
+                }
+            }else if(type == 4){
+                Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
                 action1 = 0;
-                action2 = 2;
-            }
-        }else if(type == 1){
-            Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
                 action2 = 0;
-            }else{
+            }else if(type == 5){
+                Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 6){
+                Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action2 = 2;
+                    action1 = 0;
+                }
+            }else if(type == 7){
+                Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
                 action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 2){
-            Message2[1] = "Joueur " + nb + " : A parer !";
-        }else if(type == 3){
-            if(nb == 1){
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
-                action1 = 0;
-            }else{
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
                 action2 = 0;
             }
-        }else if(type == 4){
-            Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
-            action1 = 0;
-            action2 = 0;
-        }else if(type == 5){
-            Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
-                action2 = 0;
-            }else{
-                action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 6){
-            Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
-                action2 = 2;
-                action1 = 0;
-            }
-        }else if(type == 7){
-            Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
-            action1 = 0;
-            action2 = 0;
         }
     }
 
@@ -532,10 +537,11 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         // affichage de la pioche
         int restantPioche = jeu.partie().manche().restantPioche();
+        int piocheArrivees = 0;
         if(oldPioche < restantPioche){
             oldPioche = restantPioche;
         }
-        if(oldPioche != restantPioche){
+        if(oldPioche != restantPioche && restantPioche !=0){
             for(int i =restantPioche;i<=oldPioche;i++){
                 PosXPioche[i-1] = (int)Math.round(largeur*0.46) + (k*2);
                 PosYPioche[i-1] = (int)Math.round(hauteur*0.045) + (k*2); //(decPioche*2);
@@ -562,16 +568,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
             drawable.drawImage(cartePioche,(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
         }
         drawable.drawImage(cartePioche,(int)Math.round((largeur*0.46) + (k*2)),(int)Math.round(hauteur*0.045),largeurCarte,hauteurCarte, null);
-        for(int i = restantPioche; i<15; i++){
+
+        // déplacement de la pioche
+        for(int i = restantPioche; i<15 - piocheArrivees; i++){
             int nb = i+1;
             cartePioche = chargeImage("Carte/Pioche/Deck_" + nb);
             if(PosXPioche[i] > 0 && PosXPioche[i] < largeur){
                 if(PosYPioche[i] >= hauteur/4){
+                    System.out.println("Position X carte " + i + " = " + PosXPioche[i]);
                     PosXPioche[i] = majPosXPioche(PosXPioche[i],directionPioche[i]);
                 }else{
                     PosYPioche[i] = majPosYPioche(PosYPioche[i]);
                 }
                 drawable.drawImage(cartePioche,PosXPioche[i],PosYPioche[i],largeurCarte,hauteurCarte, null);
+            }else{
+                piocheArrivees+=1;
             }
         }
 
@@ -644,11 +655,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
     }
     public int majPosXPioche(int posX, int dir){
-        if(posX >= largeur || posX<0){
-            return posX;
-        }else{
             return posX + (dir * 15);
-        }
     }
     public int majPosYPioche(int posY){
         return posY + 15;

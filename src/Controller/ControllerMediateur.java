@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ControllerMediateur implements CollecteurEvenements {
 	Jeu jeu;
 	JoueurHumain Joueur1, Joueur2;
-	final int lenteurAttente = 100;
+	final int lenteurAttente = 10;
 	int joueurCourant;
 	int decompte;
 	Sequence<Animation> animations;

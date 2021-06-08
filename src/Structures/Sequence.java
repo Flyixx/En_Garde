@@ -8,4 +8,5 @@ public interface Sequence<Toto> {
     Toto extraitTete();
     boolean estVide();
     Iterateur<Toto> iterateur();
+    int size();
 }
