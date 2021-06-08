@@ -439,6 +439,13 @@ public class ControllerMediateur implements CollecteurEvenements {
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false,false);
 				break;
+			case "PartieIAIA":
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2,inter.niv().premierJoueur);
+				jeu.partie().type = 4;
+				Joueur1 = jeu.partie().Joueur(1);
+				Joueur2 = jeu.partie().Joueur(2);
+				inter.changeBackground(false, true, false, false, false,false);
+				break;
 			case "ChargePartie":
 				boolean bool = inter.charge();
 				if(bool){

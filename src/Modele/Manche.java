@@ -408,7 +408,7 @@ public class Manche extends Historique<CoupParTour>{
                 if(j.position >= valeurCarte && peutseDeplacer){
                     possibilites = true;
                     newPos = j.position - valeurCarte;
-                    //System.out.println("peut reculer en " + newPos);
+                    System.out.println("peut reculer en " + newPos);
                     //peutAttaquer(cartes.get(0), newPos, j);
 
                     if(afficher)
@@ -670,7 +670,7 @@ public class Manche extends Historique<CoupParTour>{
         //on supprime de la main du joueur toutes les cartes selectionnees pour jouer
         if(cp.action.id != PARADE_DIRECTE && cp.action.id!=PARADE_INDIRECTE)
         {
-            if(partie.type == 2 && tourJoueur == 2)
+            if((partie.type == 2 && tourJoueur == 2) || partie.type == 4 || (partie.type == 3 && tourJoueur == 2))
             {
                 int carteJouer = cp.GetAction().valeurs[0];
                 int suppr = 0;
@@ -1037,7 +1037,7 @@ public class Manche extends Historique<CoupParTour>{
         {
             if(joueurcourant.carteI.size() > 0)
             {
-                if(partie.type != 2 || getTourJoueur() != 2)
+                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4)
                 {
                     test = TestProchainCoup(coupPrecedent);
                 }
@@ -1068,7 +1068,7 @@ public class Manche extends Historique<CoupParTour>{
             else
             {
 
-                if(partie.type != 2 || getTourJoueur() != 2)
+                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4)
                 {
                     test = TestProchainCoup(coupPrecedent);
                 }
