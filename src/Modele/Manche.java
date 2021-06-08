@@ -982,7 +982,7 @@ public class Manche extends Historique<CoupParTour>{
 
 
            /* coups = this.listerCoupIA(j);
-
+//
 
 
             if(coups.size() != 0 && getTourJoueur() == 2){
