@@ -73,7 +73,7 @@ public class Partie {
         }
         if(this.aGagner())
         {
-            System.out.println("Le vainqueur est le joueur " + gagnant);
+            //System.out.println("Le vainqueur est le joueur " + gagnant);
 
         }
         else

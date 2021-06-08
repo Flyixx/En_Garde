@@ -227,7 +227,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
             largeurPanel = getLargeur();
             hauteurPanel = (NewPartie.getHeight() + getHauteur()) / 2;
 
-            System.out.println(largeurPanel+ " " + hauteurPanel);
+            //System.out.println(largeurPanel+ " " + hauteurPanel);
 
             frame.remove(NewPartie);
             frame.revalidate();
@@ -348,7 +348,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
                 }
             }
         }else{
-            System.out.println("Sauvegarde Impossible, Veuillez finir votre tour");
+            //System.out.println("Sauvegarde Impossible, Veuillez finir votre tour");
         }
 
     }

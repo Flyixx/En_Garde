@@ -57,12 +57,12 @@ public class Manche extends Historique<CoupParTour>{
         joueur2.direction = -1;
         //joueur2.vie = 5;
         viderMain(joueur1);
-        System.out.println("Main joueur1 :" + joueur1.getMain());
+        //System.out.println("Main joueur1 :" + joueur1.getMain());
         viderMain(joueur2);
-        System.out.println("Main joueur2 :" + joueur2.getMain());
+        //System.out.println("Main joueur2 :" + joueur2.getMain());
         remplirMain(joueur1);
         remplirMain(joueur2);
-        System.out.println("Pioche complete : " + piocheCartes);
+        //System.out.println("Pioche complete : " + piocheCartes);
 
         coupsTour = new ArrayList<>();
         coupsTourTab = new Coup[3];
@@ -237,14 +237,14 @@ public class Manche extends Historique<CoupParTour>{
 
 
 
-        System.out.println("Sequence Annuler : " + this.CoupAnnuler);
-        System.out.println("Sequence Coup Fait : " + this.CoupFait);
+        //System.out.println("Sequence Annuler : " + this.CoupAnnuler);
+        //System.out.println("Sequence Coup Fait : " + this.CoupFait);
 
 
 
 
 
-        System.out.println("Pioche complete : " + piocheCartes);
+        //System.out.println("Pioche complete : " + piocheCartes);
 
         coupsTour = new ArrayList<>();
         coupsTourTab = new Coup[3];
@@ -268,14 +268,14 @@ public class Manche extends Historique<CoupParTour>{
                 piocheCartes.add(i);
             }
         }
-        System.out.println("Pioche non triee : " + piocheCartes);
+        //System.out.println("Pioche non triee : " + piocheCartes);
         Collections.shuffle(piocheCartes);
-        System.out.println("Pioche melangee :" + piocheCartes);
+        //System.out.println("Pioche melangee :" + piocheCartes);
 
     }
 
     public void attaque(int j){
-        System.out.println("joueur : " + j);
+        //System.out.println("joueur : " + j);
 
         if(j == 1){
             partie.joueur1.vie-= 1;
@@ -308,7 +308,7 @@ public class Manche extends Historique<CoupParTour>{
             j.main.add(carte);
 
         }
-        System.out.println("main complete joueur " + inverse() + " : " + j.main);
+        //System.out.println("main complete joueur " + inverse() + " : " + j.main);
     }
 
     public int inverse()
@@ -336,7 +336,7 @@ public class Manche extends Historique<CoupParTour>{
         int res;
         if(piocheVide())
         {
-            System.out.println("Pioche vide: Evalution du joueur gagnant:");
+            //System.out.println("Pioche vide: Evalution du joueur gagnant:");
             int Pj1 = 0, Pj2 = 0;
             int distance = joueur2.getPosition() - joueur1.getPosition();
             for (int i = 0; i < joueur1.getMain().size(); i++){
@@ -352,11 +352,11 @@ public class Manche extends Historique<CoupParTour>{
 
             if (Pj1 < Pj2){
                 attaque(1);
-                System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
+                //System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             }else if(Pj2 < Pj1){
                 attaque(2);
-                System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
+                //System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             } else {
                 int PosJ1 = joueur1.getPosition();
@@ -364,11 +364,11 @@ public class Manche extends Historique<CoupParTour>{
 
                 if (PosJ1 > PosJ2){
                     attaque(1);
-                    System.out.println("Joueur 2 gagne: Joueur le plus avancé");
+                    //System.out.println("Joueur 2 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 } else {
                     attaque(2);
-                    System.out.println("Joueur 1 gagne: Joueur le plus avancé");
+                    //System.out.println("Joueur 1 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 }
             }
@@ -654,7 +654,7 @@ public class Manche extends Historique<CoupParTour>{
             }
         }
 
-        System.out.println("je fais jouer coup !");
+        //System.out.println("je fais jouer coup !");
         //efface les cases select
         updateAll();
 
@@ -796,7 +796,7 @@ public class Manche extends Historique<CoupParTour>{
             grilleJeu[oldPosJ2] = 0;
             grilleJeu[posJ2] = 2;
         } else {
-            System.out.println("Aucun joueur n'a bougé");
+            //System.out.println("Aucun joueur n'a bougé");
         }
     }
 
@@ -905,7 +905,7 @@ public class Manche extends Historique<CoupParTour>{
     // tour du joueur
     public void changeTourJoueur(boolean refait) {
         nbCoupsIA = 0;
-        System.out.println("Je change le tour");
+        //System.out.println("Je change le tour");
         CoupParTour coupTour = null;
 
         //Suppression des cartes sélectionnées pour le dernier coup
@@ -998,7 +998,7 @@ public class Manche extends Historique<CoupParTour>{
         // effectuées par le joueur adverse au tour précédent
         CoupParTour coupPrecedent = coupPrecedent();
 
-        System.out.println("Coup précédent : " + coupPrecedent);
+        //System.out.println("Coup précédent : " + coupPrecedent);
 
         videListe(coupsTour);
 
@@ -1115,21 +1115,21 @@ public class Manche extends Historique<CoupParTour>{
         }
         else if(nbCoupsJoues <2 || coupsTourTab[0].action.id == 4)
         {
-            System.out.println("Tour de l'IA ! ");
+            //System.out.println("Tour de l'IA ! ");
             ArrayList<Coup> coups = this.listerCoupIA(j);
-            System.out.println("tous les coups possibles : " + coups);
+            //System.out.println("tous les coups possibles : " + coups);
             Random rnd = new Random();
             int total = coups.size();
             int random = 0;
             if(total != 0){
                 random = rnd.nextInt(total);
             }
-            System.out.println("total : " + total + " choisi : " + random);
+            //System.out.println("total : " + total + " choisi : " + random);
 
             if(coups.size() > 0)
             {
                 Coup cp = coups.get(random);
-                System.out.println("selection du coup : " + cp );
+                //System.out.println("selection du coup : " + cp );
                 cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
                 partie.jeu.jouerCoup(cp, false);
                 int nbCartes = 0;
@@ -1199,11 +1199,11 @@ public class Manche extends Historique<CoupParTour>{
             nbCoupsIA++;
         }
         else if(nbCoupsJoues <2 || coupsTourTab[0].action.id == 4) {
-            System.out.println("Tour de l'IA ! ");
+            //System.out.println("Tour de l'IA ! ");
             ArrayList<Coup> coups = this.listerCoupIA(j);
             ArrayList<Coup> coupsChoisi = new ArrayList<>();
             ArrayList<Coup> coupsAttaqueIndirecte = new ArrayList<>();
-            System.out.println("tous les coups possibles : " + coups);
+            //System.out.println("tous les coups possibles : " + coups);
 
             for (int i = 0; i < coups.size(); i++) {
                 if (coups.get(i).action.id == 2) {
@@ -1250,13 +1250,13 @@ public class Manche extends Historique<CoupParTour>{
 
 
                 if (coupIndiIA != null) {
-                    System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
+                    //System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
                     coupIndiIA = joue(coupIndiIA.target, coupIndiIA.action.valeurs, coupIndiIA.mapAvant, coupIndiIA.action.id);
                     partie.jeu.jouerCoup(coupIndiIA,false);
                     coupIndiIA = null;
                 }else {
-                    System.out.println("Main j2" + j.getMain() );
-                    System.out.println("DEPLACEMENT *************" + cp);
+                    //System.out.println("Main j2" + j.getMain() );
+                    //System.out.println("DEPLACEMENT *************" + cp);
                     cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
                     partie.jeu.jouerCoup(cp,false);
                     coupIndiIA = cpAI;
@@ -1296,7 +1296,7 @@ public class Manche extends Historique<CoupParTour>{
             // Si le CoupParTour est un simple déplacement
             if(coupPrecedent.typeAction == 1)
             {
-                System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
+                //System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
                 return true;
 
             }
@@ -1324,7 +1324,7 @@ public class Manche extends Historique<CoupParTour>{
                 // Si le CoupParTour est une attaque directe
                 if(coupPrecedent.typeAction == 2)
                 {
-                    System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
+                    //System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
                     //partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
                     //partie.jeu.control.inter().niv().msg = 2;
                     if(ParerAttaqueDirecte(coupPrecedent, nbCartes))
@@ -1345,17 +1345,17 @@ public class Manche extends Historique<CoupParTour>{
                 {
                     partie.jeu.control.inter().niv().modifMessage(5, tour, cp.action.valeurs[0], nbCartes);
                     partie.jeu.control.inter().niv().msg = 3;
-                    System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
+                    //System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
                     if(ParerAttaqueIndirecte(coupPrecedent, nbCartes))
                     {
-                        System.out.println("PARADE INDIRECTE");
+                        //System.out.println("PARADE INDIRECTE");
                         partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
                         partie.jeu.control.inter().niv().msg2 = 4;
                         return true;
                     }
                     else
                     {
-                        System.out.println("PAS PARADE INDIRECTE");
+                        //System.out.println("PAS PARADE INDIRECTE");
                         partie.jeu.control.inter().niv().modifMessage(9, getTourJoueur(), cp.action.valeurs[0], nbCartes);
                         partie.jeu.control.inter().niv().msg2 = 4;
                         return false;
@@ -1372,7 +1372,7 @@ public class Manche extends Historique<CoupParTour>{
         //Si le nombre de cartes de l'attaque précédente est supérieur à 2, il est impossible de parer
         if(nbCartes > 2)
         {
-            System.out.println("Je ne peux pas parer directement");
+            //System.out.println("Je ne peux pas parer directement");
             return false;
         }
         else //Regarde si le joueur a le nombre de cartes de la valeur recherchée
@@ -1402,7 +1402,7 @@ public class Manche extends Historique<CoupParTour>{
 
             if(nbCartesRecherchees == nbCartes)
             {
-                System.out.println("je peux parer directement!");
+                //System.out.println("je peux parer directement!");
                 return true;
             }
             else
@@ -1543,8 +1543,8 @@ public class Manche extends Historique<CoupParTour>{
             }
 
             Coup cp = coupsParadeIA.get(random-1);
-            System.out.println("Tous les coups possibles parades indirecte IA :" +coupsParadeIA);
-            System.out.println("Coup choisi parade Indirecte IA :" + cp);
+            //System.out.println("Tous les coups possibles parades indirecte IA :" +coupsParadeIA);
+            //System.out.println("Coup choisi parade Indirecte IA :" + cp);
             if(cp.action.id == 4)
             {
                 test = true;
@@ -1628,8 +1628,8 @@ public class Manche extends Historique<CoupParTour>{
         //Il s'agit d'une parade directe d'attaque
         Coup cp = partie.jeu.determinerCoup(joueuradverse.position, riposte, grilleJeu, 4);
         partie.jeu.jouerCoup(cp, false);
-        System.out.println("j'ai paré !");
-        System.out.println("Ma main après avoir parer :" + Joueur(tourJoueur).main);
+        //System.out.println("j'ai paré !");
+        //System.out.println("Ma main après avoir parer :" + Joueur(tourJoueur).main);
 
         if(coupPrecedent.typeAction == PARADE_INDIRECTE){
             partie.jeu.control.inter().niv().modifMessage(7, tourJoueur, 0, 0);
@@ -1667,7 +1667,7 @@ public class Manche extends Historique<CoupParTour>{
         /*this.joueur1.main = cp.mainJ1;
         this.joueur2.main = cp.mainJ2;
         this.piocheCartes = cp.pioche;*/
-        System.out.println("Taille de la pioche :" + piocheCartes.size());
+        //System.out.println("Taille de la pioche :" + piocheCartes.size());
 
         return cp1;
     }
@@ -1689,8 +1689,8 @@ public class Manche extends Historique<CoupParTour>{
         this.joueur2.main = cp.mainJ2;
         this.piocheCartes = cp.pioche;
         this.tourJoueur = tour;
-        System.out.println("Taille de la pioche :" + piocheCartes.size());
-        System.out.println("COUP INVERSE");
+        //System.out.println("Taille de la pioche :" + piocheCartes.size());
+        //System.out.println("COUP INVERSE");
     }
 
     @Override

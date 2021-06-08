@@ -582,7 +582,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             cartePioche = chargeImage("Carte/Pioche/Deck_" + nb);
             if(PosXPioche[i] > 0 && PosXPioche[i] < largeur){
                 if(PosYPioche[i] >= hauteur/4){
-                    System.out.println("Position X carte " + i + " = " + PosXPioche[i]);
+                    //System.out.println("Position X carte " + i + " = " + PosXPioche[i]);
                     PosXPioche[i] = majPosXPioche(PosXPioche[i],directionPioche[i]);
                 }else{
                     PosYPioche[i] = majPosYPioche(PosYPioche[i]);
