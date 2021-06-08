@@ -48,9 +48,9 @@ public class Historique<E extends Commande> {
     CoupParTour refaire(){
         if(peutRefaire()){
             CoupParTour c = CoupAnnuler.extraitTete();
-            c.execute(c);
-            CoupFait.insereTete(c);
-            return c;
+            CoupParTour cp1 = c.execute(c);
+            CoupFait.insereTete(cp1);
+            return cp1;
         }else{
             return null;
         }
@@ -61,6 +61,7 @@ public class Historique<E extends Commande> {
             CoupParTour c = CoupFait.extraitTete();
             c.desexecute(c);
             CoupAnnuler.insereTete(c);
+            System.out.println("Sequence annuler :" + CoupAnnuler);
             return c;
         }else{
             return null;

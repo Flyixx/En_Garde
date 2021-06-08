@@ -18,6 +18,20 @@ public class CoupParTour extends Commande{
     int nbCoups;
     Manche manche;
     int tourJoueur;
+    boolean devaitParer;
+    int[] etatCasesIHM = new int[23];
+
+    public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups, boolean DevaitParer, int[] EtatCasesIHM) {
+        nbCoups = nbcoups;
+        coupstour = new ArrayList<>();
+        coupsTourTab = new Coup[2];
+        typeAction = typeaction;
+        coupsTour = coupstour;
+        coupsTourTab = coupstourtab;
+        devaitParer = DevaitParer;
+        etatCasesIHM = EtatCasesIHM;
+
+    }
 
     public CoupParTour(int typeaction, ArrayList<Coup> coupstour, Coup[] coupstourtab, int nbcoups) {
         nbCoups = nbcoups;
@@ -42,17 +56,22 @@ public class CoupParTour extends Commande{
         manche = m;
     }
 
-
-    void execute(CoupParTour cp) {
+    CoupParTour execute(CoupParTour cp) {
+        CoupParTour cp1 = cp;
         for(int i = 0; i < cp.nbCoups; i++){
             Coup cpe = cp.coupsTourTab[i];
-            cpe.execute(cpe);
+            Coup cpf;
+            cpf = cpe.execute(cpe);
+            cp1.coupsTourTab[i] = cpf;
         }
+        return  cp1;
     }
 
     void desexecute(CoupParTour cp) {
         Coup cpd = cp.coupsTourTab[0];
-        cpd.desexecute(cpd, cp.tourJoueur);
+        boolean devaitParer = cp.devaitParer;
+        int[] etatCasesIHM = cp.etatCasesIHM;
+        cpd.desexecute(cpd, cp.tourJoueur, devaitParer, etatCasesIHM);
     }
 
     @Override
