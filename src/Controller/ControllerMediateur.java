@@ -375,7 +375,15 @@ public class ControllerMediateur implements CollecteurEvenements {
 						jeu.partie().manche().jouerIA(jeu.partie().manche().joueur2);
 						decompte = lenteurAttente/2;
 					}else if(jeu.partie().manche().getTourJoueur() == 2 && jeu.partie().type == 3){
-						System.out.println("\n\n\n==============================================\n\n\n");
+
+						jeu.partie().manche().jouerIAMoyen(jeu.partie().manche().joueur2);
+						decompte = lenteurAttente/2;
+					}else if(jeu.partie().manche().getTourJoueur() == 1 && jeu.partie().type == 4){
+						System.out.println("L'IA Facile joue");
+						jeu.partie().manche().jouerIA(jeu.partie().manche().joueur1);
+						decompte = lenteurAttente/2;
+					}else if(jeu.partie().manche().getTourJoueur() == 2 && jeu.partie().type == 4){
+						System.out.println("L'IA Moyenne joue");
 						jeu.partie().manche().jouerIAMoyen(jeu.partie().manche().joueur2);
 						decompte = lenteurAttente/2;
 					}else{

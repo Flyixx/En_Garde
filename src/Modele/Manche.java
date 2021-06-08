@@ -608,6 +608,51 @@ public class Manche extends Historique<CoupParTour>{
                             }
 
                         }
+                    } else if (dir == 1){
+                        if(j.position - valeurCarte > 0 && peutseDeplacer){
+                            newPos = j.position - valeurCarte;
+
+                            int[] valeurs = new int[5];
+                            valeurs[0] = valeurCarte;
+                            Action ac = new Action(1,valeurs);
+                            Coup cp = new Coup(grilleJeu, ac, newPos);
+                            cp.fixerManche(this);
+                            coups.add(cp);
+
+                            //System.out.println("peut reculer en " + newPos);
+                        }
+                        newPos = j.position + valeurCarte;
+                        if(newPos <= 22) {
+                            if (newPos == joueur2.position) {
+                                int nbAttks = peutAttaquer(valeurCarte, distance, j);
+                                //System.out.println("Nb attaques possibles :" + nbAttks);
+                                for (int k = 1; k <= nbAttks; k++) {
+                                    int[] valeurs = new int[5];
+
+                                    for (int l = 0; l < k; l++)
+                                        valeurs[l] = valeurCarte;
+
+                                    Action ac = new Action(2, valeurs);
+                                    int target = joueur2.getPosition();
+                                    Coup cp = new Coup(grilleJeu, ac, target);
+                                    cp.fixerManche(this);
+                                    coups.add(cp);
+                                }
+                                //System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
+                            } else if (newPos < joueur2.position && peutseDeplacer) {
+
+                                int[] valeurs = new int[5];
+                                valeurs[0] = valeurCarte;
+                                Action ac = new Action(1, valeurs);
+                                Coup cp = new Coup(grilleJeu, ac, newPos);
+                                cp.fixerManche(this);
+                                coups.add(cp);
+                                //System.out.println("peut avancer en " + newPos);
+                                //CaseIHM.get(newPos).updateEtat(1);
+
+                            }
+
+                        }
                     }
                 }
             }
