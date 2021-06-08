@@ -433,7 +433,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.changeBackground(false, true, false, false, false,false);
 				break;
 			case "PartieIAM":
-				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2,inter.niv().premierJoueur);
 				jeu.partie().type = 3;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);

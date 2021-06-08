@@ -1252,13 +1252,13 @@ public class Manche extends Historique<CoupParTour>{
                 if (coupIndiIA != null) {
                     System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
                     coupIndiIA = joue(coupIndiIA.target, coupIndiIA.action.valeurs, coupIndiIA.mapAvant, coupIndiIA.action.id);
-                    partie.jeu.jouerCoup(coupIndiIA);
+                    partie.jeu.jouerCoup(coupIndiIA,false);
                     coupIndiIA = null;
                 }else {
                     System.out.println("Main j2" + j.getMain() );
                     System.out.println("DEPLACEMENT *************" + cp);
                     cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
-                    partie.jeu.jouerCoup(cp);
+                    partie.jeu.jouerCoup(cp,false);
                     coupIndiIA = cpAI;
                 }
 
