@@ -30,6 +30,7 @@ public class Manche extends Historique<CoupParTour>{
     public int nbCoupsJoues;
     public boolean doitParer, peutSauvegarderEtHistorique;
     int nbCoupsIA;
+    Coup coupIndiIA = null;
 
 
     public Manche(Partie p, int premierTourPrecedent){
@@ -269,6 +270,9 @@ public class Manche extends Historique<CoupParTour>{
         if(nbCoupsJoues == 0 || (nbCoupsJoues == 1 && coupsTourTab[0].action.id == 4))
         {
             peutseDeplacer = true;
+        } else {
+
+
         }
 
         if(cartes.size() == 1)// 1 seule carte selectionnee
@@ -317,7 +321,7 @@ public class Manche extends Historique<CoupParTour>{
                         //joue(1,valeurCarte);
                     }else{
                         CaseIHM.get(newPos).updateEtat(0);
-                        //System.out.println("bloqué par joueur");
+                        System.out.println("bloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueurbloqué par joueur");
                     }
                 }
             }
@@ -939,7 +943,9 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public void jouerIA(JoueurHumain j){
-
+        for (int i = 0; i < j.getMain().size(); i++) {
+            j.getCarteI().get(i).setEtat(1);
+        }
         boolean test = true;
         if(nbCoupsJoues == 0 && nbCoupsIA == 0 )
         {
@@ -951,6 +957,7 @@ public class Manche extends Historique<CoupParTour>{
             System.out.println("Tour de l'IA ! ");
             ArrayList<Coup> coups = this.listerCoupIA(j);
             System.out.println("tous les coups possibles : " + coups);
+
             Random rnd = new Random();
             int total = coups.size();
             int random = 0;
@@ -994,49 +1001,84 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public void jouerIAMoyen(JoueurHumain j){
-        System.out.println("Tour de l'IA ! ");
-        ArrayList<Coup> coups = this.listerCoupIA(j);
-        ArrayList<Coup> coupsChoisi = new ArrayList<>();
-        System.out.println("tous les coups possibles : " + coups);
+        for (int i = 0; i < j.getMain().size(); i++) {
+           j.getCarteI().get(i).setEtat(1);
+        }
+        boolean test = true;
+        if(nbCoupsJoues == 0 && nbCoupsIA == 0 )
+        {
+            TestProchainCoup(coupPrecedent());
+            nbCoupsIA++;
+        }
+        else if(nbCoupsJoues <2 || coupsTourTab[0].action.id == 4) {
+            System.out.println("Tour de l'IA ! ");
+            ArrayList<Coup> coups = this.listerCoupIA(j);
+            ArrayList<Coup> coupsChoisi = new ArrayList<>();
+            ArrayList<Coup> coupsAttaqueIndirecte = new ArrayList<>();
+            System.out.println("tous les coups possibles : " + coups);
 
-        for (int i = 0; i < coups.size(); i++){
-            if (coups.get(i).action.id == 2){
-                coupsChoisi.add(coups.get(i));
+            for (int i = 0; i < coups.size(); i++) {
+                if (coups.get(i).action.id == 2) {
+                    coupsChoisi.add(coups.get(i));
+                } else if (coups.get(i).action.id == 1) {
+                    coupsAttaqueIndirecte.add(coups.get(i));
+                }
+            }
+
+            if (coups.size() > 0 && getTourJoueur() == 2) {
+                int random = 0;
+                Random rnd = new Random();
+                Coup cp = null;
+                Coup cpAI = null;
+
+
+                if (coupsChoisi.size() != 0) { //Si possibilité d'attaque
+                    random = rnd.nextInt(coupsChoisi.size()) + 1;
+                    cp = coupsChoisi.get(random - 1);
+                } else if (coupsAttaqueIndirecte.size() != 0) { //Si possibilité d'attaque indirecte
+                    for (int i = 0; i < coupsAttaqueIndirecte.size(); i++) {
+                        for (int y = 0; y < j.getMain().size(); y++) {
+                            cp = coupsAttaqueIndirecte.get(i);
+                            if ((coupsAttaqueIndirecte.get(i).action.valeurs[0] + j.getMain().get(y)) == getDistance()) { //test Les attaques indirectes, prend la premiere trouvé
+
+                                int[] valeurs = new int[5];
+                                valeurs[0] = j.getMain().get(y);
+
+                                Action ac = new Action(2, valeurs);
+                                int target = joueur1.getPosition();
+                                cpAI = new Coup(grilleJeu, ac, target);
+                                cpAI.fixerManche(this);
+
+                                break;
+
+                            }
+                        }
+                    }
+                } else { //Si cest un déplacement
+                    random = rnd.nextInt(coups.size()) + 1;
+                    cp = coups.get(random - 1);
+                }
+
+
+
+                if (coupIndiIA != null) {
+                    System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
+                    coupIndiIA = joue(coupIndiIA.target, coupIndiIA.action.valeurs, coupIndiIA.mapAvant, coupIndiIA.action.id);
+                    partie.jeu.jouerCoup(coupIndiIA);
+                    coupIndiIA = null;
+                }else {
+                    System.out.println("Main j2" + j.getMain() );
+                    System.out.println("DEPLACEMENT *************" + cp);
+                    cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+                    partie.jeu.jouerCoup(cp);
+                    coupIndiIA = cpAI;
+                }
+
+            } else {
+
+                changeTourJoueur();
             }
         }
-
-        int random = 0;
-        Random rnd = new Random();
-        Coup cp =null;
-        if (coupsChoisi.size() != 0){
-
-            random = rnd.nextInt(coupsChoisi.size())+1;
-            cp = coupsChoisi.get(random-1);
-        } else if(coups.size() != 0){
-            random = rnd.nextInt(coups.size())+1;
-            cp = coups.get(random-1);
-        }
-
-
-        System.out.println("selection du coup : " + cp );
-
-        cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
-        partie.jeu.jouerCoup(cp);
-
-        coups = this.listerCoupIA(j);
-
-
-
-        if(coups.size() != 0 && getTourJoueur() == 2){
-            System.out.println("IA: Attaque indirecte ");
-           // jouerIA(j);
-        }
-        else if(getTourJoueur() == 2)
-        {
-
-            changeTourJoueur();
-        }
-
 
     }
 

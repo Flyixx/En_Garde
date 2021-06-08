@@ -319,6 +319,10 @@ public class ControllerMediateur implements CollecteurEvenements {
 						//changeJoueur();
 						jeu.partie().manche().jouerIA(jeu.partie().manche().joueur2);
 						decompte = lenteurAttente/2;
+					}else if(jeu.partie().manche().getTourJoueur() == 2 && jeu.partie().type == 3){
+						System.out.println("\n\n\n==============================================\n\n\n");
+						jeu.partie().manche().jouerIAMoyen(jeu.partie().manche().joueur2);
+						decompte = lenteurAttente/2;
 					}else{
 						decompte = lenteurAttente;
 					}
@@ -369,6 +373,13 @@ public class ControllerMediateur implements CollecteurEvenements {
 			case "PartieIAF":
 				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
 				jeu.partie().type = 2;
+				Joueur1 = jeu.partie().Joueur(1);
+				Joueur2 = jeu.partie().Joueur(2);
+				inter.changeBackground(false, true, false, false, false,false);
+				break;
+			case "PartieIAM":
+				jeu.initialisePartie(inter.niv().compteurMap, inter.niv().compteurJ1, inter.niv().compteurJ2);
+				jeu.partie().type = 3;
 				Joueur1 = jeu.partie().Joueur(1);
 				Joueur2 = jeu.partie().Joueur(2);
 				inter.changeBackground(false, true, false, false, false,false);
