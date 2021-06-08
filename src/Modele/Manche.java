@@ -4,7 +4,6 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 import javax.swing.text.html.parser.Element;
 
 import Controller.*;
-import Structures.Sequence;
 import Vue.ButtonIHM;
 
 import javax.swing.text.html.parser.Element;
@@ -116,80 +115,126 @@ public class Manche extends Historique<CoupParTour>{
             piocheCartes.add(Character.digit(PiocheChar[i],10));
         }
 
+
+        /*Chargement de l'historique des coupAnnuler avant la sauvegarde*/
         char HistoAnnule[] = HistoriqueAnnule.toCharArray();
         int tailleHisto = HistoAnnule.length;
         int nbCptAnnule = Character.digit(HistoAnnule[0],10);
+        int Avancement = 1;
         if(nbCptAnnule != 0){
-            int typeAction = Character.digit(HistoAnnule[0],10);
-            Coup coupTour[] = new Coup[2];
-
-            int Avancement = 2;
-            int nbc = Character.digit(HistoAnnule[1],10);
-
-            for(int c = 0; c < nbc; c++){
-                int[] map = new int[23];
-                for(int t = 0; t < 23; t++){
-                    map[t] = Character.digit(HistoAnnule[Avancement],10);
-                    Avancement++;
-                }
-                int typeAction2 = Character.digit(HistoAnnule[Avancement],10);
+            for(int cpt = 0; cpt < nbCptAnnule; cpt++) {
+                int typeAction = Character.digit(HistoAnnule[Avancement], 10);
+                Coup coupTour[] = new Coup[3];
                 Avancement++;
-                int target = Character.digit(HistoAnnule[Avancement], 10);
+                int nbc = Character.digit(HistoAnnule[Avancement], 10);
                 Avancement++;
-                int[] val = new int[5];
-                for(int v = 0; v < 5; v++){
-                    val[v] = Character.digit(HistoAnnule[Avancement], 10);
-                    Avancement++;
-                }
-                Action action = new Action(typeAction2, val);
-                Coup cp = new Coup(map, action, target);
-                cp.manche = this;
-                coupTour[c] = cp;
-            }
-            CoupParTour cpT = new CoupParTour(typeAction, null, coupTour, nbc);
-            cpT.manche = this;
-
-            this.CoupAnnuler.insereQueue(cpT);
-        }
-
-        char HistoCF[] = HistoriqueCoupFait.toCharArray();
-        int tailleCF = HistoCF.length;
-        if(tailleCF > 0){
-            int nbcptCF = Character.digit(HistoCF[0],10);
-            int typeActionCF = Character.digit(HistoCF[1],10);
-            Coup coupTourCF[] = new Coup[2];
-            int AvancementCF = 3;
-            int nbcCF = Character.digit(HistoCF[2],10);
-
-            for(int f = 0; f < nbcptCF; f++){
-                for(int c = 0; c < nbcCF; c++){
-                    System.out.println("Salut " + c);
-                    int[] map = new int[23];
-                    for(int t = 0; t < 23; t++){
-                        map[t] = Character.digit(HistoCF[AvancementCF],10);
-                        AvancementCF++;
+                int tourJ = Character.digit(HistoAnnule[Avancement],10);
+                Avancement++;
+                for (int c = 0; c < nbc; c++) {
+                    int map[] = new int[23];
+                    for (int t = 0; t < 23; t++) {
+                        map[t] = Character.digit(HistoAnnule[Avancement], 10);
+                        Avancement++;
                     }
-                    int typeAction2 = Character.digit(HistoCF[AvancementCF],10);
-                    AvancementCF++;
-                    String targetS = HistoCF[AvancementCF] + "" + HistoCF[AvancementCF+1];
-                    int target = Integer.parseInt(targetS);
-                    AvancementCF++;
-                    AvancementCF++;
+                    int typeAction2 = Character.digit(HistoAnnule[Avancement], 10);
+                    Avancement++;
                     int[] val = new int[5];
-                    for(int v = 0; v < 5; v++){
-                        val[v] = Character.digit(HistoCF[AvancementCF], 10);
-                        AvancementCF++;
+                    for (int v = 0; v < 5; v++) {
+                        val[v] = Character.digit(HistoAnnule[Avancement], 10);
+                        Avancement++;
                     }
+                    String targetS = HistoAnnule[Avancement] + "" + HistoAnnule[Avancement + 1];
+                    int target = Integer.parseInt(targetS);
+                    Avancement++;
+                    Avancement++;
                     Action action = new Action(typeAction2, val);
                     Coup cp = new Coup(map, action, target);
                     cp.manche = this;
+                    for(int m1 = 0; m1 < 5; m1++){
+                        cp.mainJ1.add(Character.digit(HistoAnnule[Avancement], 10));
+                        Avancement++;
+                    }
+                    for(int m2 = 0; m2 < 5; m2++){
+                        cp.mainJ2.add(Character.digit(HistoAnnule[Avancement], 10));
+                        Avancement++;
+                    }
+                    String nbPiocheS = HistoAnnule[Avancement] + "" + HistoAnnule[Avancement + 1];
+                    int nbPioche = Integer.parseInt(nbPiocheS);
+                    Avancement++;
+                    Avancement++;
+                    for(int pio = 0; pio < nbPioche; pio++){
+                        cp.pioche.add(Character.digit(HistoAnnule[Avancement], 10));
+                        Avancement++;
+                    }
+                    coupTour[c] = cp;
+                }
+                CoupParTour cpTCF = new CoupParTour(typeAction, null, coupTour, nbc);
+                cpTCF.manche = this;
+                cpTCF.tourJoueur = tourJ;
+                this.CoupFait.insereQueue(cpTCF);
+            }
+        }
+
+        /*Chargement de l'historique des coupFait avant la sauvegarde*/
+        char HistoCF[] = HistoriqueCoupFait.toCharArray();
+        int tailleCF = HistoCF.length;
+        int AvancementCF = 1;
+        int nbcptCF = Character.digit(HistoCF[0],10);
+        if(nbcptCF != 0){
+            for(int cpt = 0; cpt < nbcptCF; cpt++) {
+                int typeActionCF = Character.digit(HistoCF[AvancementCF], 10);
+                Coup coupTourCF[] = new Coup[3];
+                AvancementCF++;
+                int nbcCF = Character.digit(HistoCF[AvancementCF], 10);
+                AvancementCF++;
+                int tourJ = Character.digit(HistoCF[AvancementCF],10);
+                AvancementCF++;
+                for (int c = 0; c < nbcCF; c++) {
+                    int map[] = new int[23];
+                    for (int t = 0; t < 23; t++) {
+                        map[t] = Character.digit(HistoCF[AvancementCF], 10);
+                        AvancementCF++;
+                    }
+                    int typeAction2 = Character.digit(HistoCF[AvancementCF], 10);
+                    AvancementCF++;
+                    int[] val = new int[5];
+                    for (int v = 0; v < 5; v++) {
+                        val[v] = Character.digit(HistoCF[AvancementCF], 10);
+                        AvancementCF++;
+                    }
+                    String targetS = HistoCF[AvancementCF] + "" + HistoCF[AvancementCF + 1];
+                    int target = Integer.parseInt(targetS);
+                    AvancementCF++;
+                    AvancementCF++;
+                    Action action = new Action(typeAction2, val);
+                    Coup cp = new Coup(map, action, target);
+                    cp.manche = this;
+                    for(int m1 = 0; m1 < 5; m1++){
+                        cp.mainJ1.add(Character.digit(HistoCF[AvancementCF], 10));
+                        AvancementCF++;
+                    }
+                    for(int m2 = 0; m2 < 5; m2++){
+                        cp.mainJ2.add(Character.digit(HistoCF[AvancementCF], 10));
+                        AvancementCF++;
+                    }
+                    String nbPiocheS = HistoCF[AvancementCF] + "" + HistoCF[AvancementCF + 1];
+                    int nbPioche = Integer.parseInt(nbPiocheS);
+                    AvancementCF++;
+                    AvancementCF++;
+                    for(int pio = 0; pio < nbPioche; pio++){
+                        cp.pioche.add(Character.digit(HistoCF[AvancementCF], 10));
+                        AvancementCF++;
+                    }
                     coupTourCF[c] = cp;
                 }
                 CoupParTour cpTCF = new CoupParTour(typeActionCF, null, coupTourCF, nbcCF);
                 cpTCF.manche = this;
+                cpTCF.tourJoueur = tourJ;
                 this.CoupFait.insereQueue(cpTCF);
             }
         }
+
+
 
         System.out.println("Sequence Annuler : " + this.CoupAnnuler);
         System.out.println("Sequence Coup Fait : " + this.CoupFait);
@@ -214,7 +259,6 @@ public class Manche extends Historique<CoupParTour>{
         int random = rand.nextInt(4);
         System.out.println("Je choisis la carte : " + random);
     }
-
 
     public boolean piocheVide(){
         return piocheCartes.size()==0;
@@ -643,18 +687,6 @@ public class Manche extends Historique<CoupParTour>{
             }
         }
 
-        /*if(partie.jeu.selectedCarte.size() == 0){
-            int i = 0;
-            while(cp.action.valeurs[i] != 0){
-                for(int j = 0; j < 5; j++){
-                    if(partie.Joueur(tourJoueur).main.get(j) == cp.action.valeurs[i]){
-                        partie.Joueur(tourJoueur).supprMain(j);
-                        i++;
-                    }
-                }
-            }
-        }*/
-
         // Si l'action est une parade
         if(cp.action.id == PARADE_DIRECTE)
         {
@@ -814,8 +846,16 @@ public class Manche extends Historique<CoupParTour>{
 
         }
         else{
-
-            //attaque(tourJoueur);
+            int nbCartes = 0;
+            for(int i = 0; i < 5; i++){
+                if(coupCourant.action.valeurs[i] != 0){
+                    nbCartes++;
+                }
+            }
+            if(typeAction == ATTAQUER){
+                partie.jeu.control.inter().niv().modifMessage(1, getTourJoueur(), coupCourant.action.valeurs[0], nbCartes);
+                partie.jeu.control.inter().niv().msg = 2;
+            }
         }
 
 
@@ -1060,9 +1100,37 @@ public class Manche extends Historique<CoupParTour>{
                 System.out.println("selection du coup : " + cp );
                 cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
                 partie.jeu.jouerCoup(cp);
+                int nbCartes = 0;
+                for(int i = 0; i < 5; i++){
+                    if(cp.action.valeurs[i] != 0){
+                        nbCartes++;
+                    }
+                }
+                int tour;
+                if(getTourJoueur() == 1){
+                    tour = 2;
+                }else{
+                    tour = 1;
+                }
+
+                if(cp.action.id == AVANCER){
+                    partie.jeu.control.inter().niv().modifMessage(0, tourJoueur, cp.action.valeurs[0], 0);
+                    partie.jeu.control.inter().niv().msg = 2;
+                    partie.jeu.control.inter().niv().msg2 = 0;
+                }else if(cp.action.id == PARADE_INDIRECTE){
+                    partie.jeu.control.inter().niv().modifMessage(6, tourJoueur, cp.action.valeurs[0], 0);
+                    partie.jeu.control.inter().niv().msg = 4;
+                    partie.jeu.control.inter().niv().modifMessage(3, tour, 0, 0);
+                    partie.jeu.control.inter().niv().msg2 = 2;
+                }else if(cp.action.id == ATTAQUER){
+                    partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
+                    partie.jeu.control.inter().niv().msg = 2;
+                }
             }
             else
             {
+                partie.jeu.control.inter().niv().modifMessage(3, tourJoueur, 0,0);
+                partie.jeu.control.inter().niv().msg2 = 2;
                 changeTourJoueur();
             }
 
@@ -1180,7 +1248,6 @@ public class Manche extends Historique<CoupParTour>{
                     }
                 }
 
-
                 int tour;
                 if(getTourJoueur() == 1){
                     tour = 2;
@@ -1191,16 +1258,17 @@ public class Manche extends Historique<CoupParTour>{
                 if(coupPrecedent.typeAction == 2)
                 {
                     System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
-                    partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
-                    partie.jeu.control.inter().niv().msg = 2;
+                    //partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
+                    //partie.jeu.control.inter().niv().msg = 2;
                     if(ParerAttaqueDirecte(coupPrecedent, nbCartes))
                     {
-                        partie.jeu.control.inter().niv().modifMessage(2, getTourJoueur(), 0, 0);
+                        partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                        partie.jeu.control.inter().niv().msg2 = 4;
                         return true;
                     }
                     else
                     {
-                        partie.jeu.control.inter().niv().modifMessage(4, getTourJoueur(), partie.Joueur(getTourJoueur()).vie-1, 0);
+                        partie.jeu.control.inter().niv().modifMessage(4, getTourJoueur(), partie.Joueur(getTourJoueur()).vie, 0);
                         partie.jeu.control.inter().niv().msg2 = 3;
                         return false;
                     }
@@ -1213,10 +1281,16 @@ public class Manche extends Historique<CoupParTour>{
                     System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
                     if(ParerAttaqueIndirecte(coupPrecedent, nbCartes))
                     {
+                        System.out.println("PARADE INDIRECTE");
+                        partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                        partie.jeu.control.inter().niv().msg2 = 4;
                         return true;
                     }
                     else
                     {
+                        System.out.println("PAS PARADE INDIRECTE");
+                        partie.jeu.control.inter().niv().modifMessage(9, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                        partie.jeu.control.inter().niv().msg2 = 4;
                         return false;
                     }
                 }

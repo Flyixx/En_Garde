@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NiveauGraphique extends JComponent implements Observateur {
-    private static final int NB_MESSAGE = 6;
+    private static final int NB_MESSAGE = 10;
     Jeu jeu;
     Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1,selectionJoueur, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
@@ -92,74 +92,79 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void modifMessage(int type, int nb, int nb2, int nb1){
-        if(Partie){
-            int avant = 0;
-            if(jeu.partie().manche().Joueur(nb).positionAvant == 0){
-                avant = jeu.partie().manche().Joueur(nb).positionAvant;
+        int avant = jeu.partie().manche().Joueur(nb).positionAvant;
+        int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
+        if(nb == 2){
+            avant = -avant;
+            maintenant = -maintenant;
+        }
+        if(type == 0){
+            if(maintenant > avant){
+                Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
+            }else{
+                Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
             }
-            int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
-            if(nb == 2){
-                avant = -avant;
-                maintenant = -maintenant;
+            if(nb == 1){
+                action1 = 2;
+                action2 = 0;
+            }else{
+                action1 = 0;
+                action2 = 2;
             }
-            if(type == 0){
-                if(maintenant > avant){
-                    Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
-                }else{
-                    Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
-                }
-                if(nb == 1){
-                    action1 = 2;
-                    action2 = 0;
-                }else{
-                    action1 = 0;
-                    action2 = 2;
-                }
-            }else if(type == 1){
-                Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
-                if(nb == 1){
-                    action1 = 1;
-                    action2 = 0;
-                }else{
-                    action1 = 0;
-                    action2 = 1;
-                }
-            }else if(type == 2){
-                Message2[1] = "Joueur " + nb + " : A parer !";
-            }else if(type == 3){
-                if(nb == 1){
-                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
-                    action1 = 0;
-                }else{
-                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
-                    action2 = 0;
-                }
-            }else if(type == 4){
-                Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
-                action1 = 0;
+        }else if(type == 1){
+            Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
+            if(nb == 1){
+                action1 = 1;
                 action2 = 0;
-            }else if(type == 5){
-                Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
-                if(nb == 1){
-                    action1 = 1;
-                    action2 = 0;
-                }else{
-                    action1 = 0;
-                    action2 = 1;
-                }
-            }else if(type == 6){
-                Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
-                if(nb == 1){
-                    action1 = 2;
-                    action2 = 0;
-                }else{
-                    action2 = 2;
-                    action1 = 0;
-                }
-            }else if(type == 7){
-                Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
+            }else{
                 action1 = 0;
+                action2 = 1;
+            }
+        }else if(type == 2){
+            Message2[1] = "Joueur " + nb + " : A parer, à lui de jouer!";
+        }else if(type == 3){
+            if(nb == 1){
+                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
+                action1 = 0;
+            }else{
+                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
                 action2 = 0;
+            }
+        }else if(type == 4){
+            Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
+            action1 = 0;
+            action2 = 0;
+        }else if(type == 5){
+            Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
+            if(nb == 1){
+                action1 = 1;
+                action2 = 0;
+            }else{
+                action1 = 0;
+                action2 = 1;
+            }
+        }else if(type == 6){
+            Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
+            if(nb == 1){
+                action1 = 2;
+                action2 = 0;
+            }else{
+                action2 = 2;
+                action1 = 0;
+            }
+        }else if(type == 7){
+            Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
+            action1 = 0;
+            action2 = 0;
+        }else if(type == 8){
+            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2;
+        }else if(type == 9){
+            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2 + " ou reculer";
+        }else if(type == 10){
+            if(nb1 == 1){
+                Message[7] = "Joueur " + nb + " : A annulé un coup ! Tour du Joueur " + nb2;
+            }else{
+                Message[7] = "Joueur " + nb + " : A refait un coup ! Tour du Joueur " + nb2;
             }
         }
     }
@@ -287,7 +292,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         Message[0] = "";
         Message[1] = "Vous devez jouer au moins une carte pour finir votre tour";
         msg = 0;
-
+        Message[6] = "Vous devez finir votre tour pour pouvoir utiliser l'historique !";
+        Message[8] = "Impossible d'annuler un coup, car la séquence est vide";
+        Message[9] = "Impossible de refaire un coup, car la séquence est vide";
         Message2 = new String[NB_MESSAGE];
         Message2[0] = "";
         msg2 = 0;
@@ -693,6 +700,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(quitter, xBoutonMenu, yBoutonTrois, largeurBoutonMenu, hauteurBoutonMenu, null);
         drawable.drawImage(save, xBoutonMenu, yBoutonDeux, largeurBoutonMenu, hauteurBoutonMenu, null);
 
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.025)));
+        drawable.setColor(new Color(253, 230,30));
+        if(jeu.partie().manche().peutSauvegarderEtHistorique){
+            drawable.drawString("Vous pouvez sauvegarder !", (int)Math.round(largeur*0.35), (int)Math.round(hauteur*0.95));
+        }else{
+            drawable.drawString("Le Joueur " + jeu.partie().manche().tourJoueur + " doit finir son tour pour sauvegarder !", (int)Math.round(largeur*0.20), (int)Math.round(hauteur*0.95));
+        }
 
         if(mute){
             drawable.drawImage(muteIm, xBoutonMute, yBoutonMute, tailleMute, tailleMute, null);
@@ -954,6 +968,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         int nb = compteurMap2;
         int nb2 = nb%4;
+
+        compteurJ1 = compteurJ12;
+        compteurJ2 = compteurJ22;
 
         map = chargeImage("Map/Map"+nb);
         sol = chargeImage("Sol/Sol"+nb2);
