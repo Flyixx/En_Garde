@@ -5,7 +5,8 @@ import Structures.Sequence;
 import Structures.SequenceListe;
 
 public class Historique<E extends Commande> {
-    Sequence<CoupParTour> CoupFait, CoupAnnuler;
+    public Sequence<CoupParTour> CoupFait;
+    public Sequence<CoupParTour> CoupAnnuler;
 
     Historique(){
         CoupFait = new SequenceListe<>();

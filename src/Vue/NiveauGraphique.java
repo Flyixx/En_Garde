@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NiveauGraphique extends JComponent implements Observateur {
-    private static final int NB_MESSAGE = 6;
+    private static final int NB_MESSAGE = 10;
     Jeu jeu;
     Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1,selectionJoueur, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
@@ -121,7 +121,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
                 action2 = 1;
             }
         }else if(type == 2){
-            Message2[1] = "Joueur " + nb + " : A parer !";
+            Message2[1] = "Joueur " + nb + " : A parer, à lui de jouer!";
         }else if(type == 3){
             if(nb == 1){
                 Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
@@ -156,6 +156,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
             Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
             action1 = 0;
             action2 = 0;
+        }else if(type == 8){
+            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2;
+        }else if(type == 9){
+            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2 + " ou reculer";
+        }else if(type == 10){
+            if(nb1 == 1){
+                Message[7] = "Joueur " + nb + " : A annulé un coup ! Tour du Joueur " + nb2;
+            }else{
+                Message[7] = "Joueur " + nb + " : A refait un coup ! Tour du Joueur " + nb2;
+            }
         }
     }
 
@@ -282,7 +292,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
         Message[0] = "";
         Message[1] = "Vous devez jouer au moins une carte pour finir votre tour";
         msg = 0;
-
+        Message[6] = "Vous devez finir votre tour pour pouvoir utiliser l'historique !";
+        Message[8] = "Impossible d'annuler un coup, car la séquence est vide";
+        Message[9] = "Impossible de refaire un coup, car la séquence est vide";
         Message2 = new String[NB_MESSAGE];
         Message2[0] = "";
         msg2 = 0;
@@ -643,6 +655,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
     }
+
     public int majPosXPioche(int posX, int dir){
         if(posX >= largeur || posX<0){
             return posX;
@@ -650,6 +663,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             return posX + (dir * 15);
         }
     }
+
     public int majPosYPioche(int posY){
         return posY + 15;
     }
@@ -686,6 +700,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.drawImage(quitter, xBoutonMenu, yBoutonTrois, largeurBoutonMenu, hauteurBoutonMenu, null);
         drawable.drawImage(save, xBoutonMenu, yBoutonDeux, largeurBoutonMenu, hauteurBoutonMenu, null);
 
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.025)));
+        drawable.setColor(new Color(253, 230,30));
+        if(jeu.partie().manche().peutSauvegarderEtHistorique){
+            drawable.drawString("Vous pouvez sauvegarder !", (int)Math.round(largeur*0.35), (int)Math.round(hauteur*0.95));
+        }else{
+            drawable.drawString("Le Joueur " + jeu.partie().manche().tourJoueur + " doit finir son tour pour sauvegarder !", (int)Math.round(largeur*0.20), (int)Math.round(hauteur*0.95));
+        }
 
         if(mute){
             drawable.drawImage(muteIm, xBoutonMute, yBoutonMute, tailleMute, tailleMute, null);
@@ -947,6 +968,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         int nb = compteurMap2;
         int nb2 = nb%4;
+
+        compteurJ1 = compteurJ12;
+        compteurJ2 = compteurJ22;
 
         map = chargeImage("Map/Map"+nb);
         sol = chargeImage("Sol/Sol"+nb2);

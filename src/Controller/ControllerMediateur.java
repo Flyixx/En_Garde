@@ -187,20 +187,20 @@ public class ControllerMediateur implements CollecteurEvenements {
 		if((y >= inter.niv().yBouton && y <= (inter.niv().yBouton + inter.niv().tailleBouton))){
 			if((x >= inter.niv().xBouton1 && x <= (inter.niv().xBouton1 + inter.niv().tailleBouton))) {
 				if(inter.niv().compteurJ1 == 0){
-					inter.niv().compteurJ1 = 1;
+					inter.niv().compteurJ1 = 5;
 				}else{
 					inter.niv().compteurJ1--;
 				}
 			}else if((x >= inter.niv().xBouton2 && x <= (inter.niv().xBouton2 + inter.niv().tailleBouton))) {
-				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%2;
+				inter.niv().compteurJ1 = (inter.niv().compteurJ1+1)%6;
 			}else if((x >= inter.niv().xBouton3 && x <= (inter.niv().xBouton3 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurJ2 == 0){
-					inter.niv().compteurJ2 = 1;
+					inter.niv().compteurJ2 = 5;
 				}else{
 					inter.niv().compteurJ2--;
 				}
 			}else if((x >= inter.niv().xBouton4 && x <= (inter.niv().xBouton4 + inter.niv().tailleBouton))){
-				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%2;
+				inter.niv().compteurJ2 = (inter.niv().compteurJ2+1)%6;
 			}else if((x >= inter.niv().xBouton5 && x <= (inter.niv().xBouton5 + inter.niv().tailleBouton))){
 				if(inter.niv().compteurMap == 0){
 					inter.niv().compteurMap = 7;
@@ -267,8 +267,26 @@ public class ControllerMediateur implements CollecteurEvenements {
 	public void clickAnnuler(int x, int y) {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu2 && y < (inter.niv().yBoutonMilieu2+inter.niv().hauteurBouton)){
-				System.out.println("Annuler");
-				commande("Annuler");
+				if(inter.jeu.partie().manche().peutSauvegarderEtHistorique){
+					System.out.println("Annuler");
+					if(!inter.jeu.partie().manche().CoupFait.estVide()){
+						int tour = inter.jeu.partie().manche().getTourJoueur();
+						if(tour == 1){
+							inter.niv().modifMessage(10, 1, 2,1);
+						}else{
+							inter.niv().modifMessage(10, 2, 1,1);
+						}
+						inter.niv().msg = 7;
+						inter.niv().msg2 = 0;
+						commande("Annuler");
+					}else{
+						inter.niv().msg = 8;
+						inter.niv().msg2 = 0;
+					}
+				}else{
+					inter.niv().msg = 6;
+					inter.niv().msg2 = 0;
+				}
 			}
 		}
 	}
@@ -277,8 +295,26 @@ public class ControllerMediateur implements CollecteurEvenements {
 	public void clickRefaire(int x, int y) {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
-				System.out.println("Refaire");
-				commande("Refaire");
+				if(inter.jeu.partie().manche().peutSauvegarderEtHistorique){
+					System.out.println("Refaire");
+					if(!inter.jeu.partie().manche().CoupAnnuler.estVide()){
+						int tour = inter.jeu.partie().manche().getTourJoueur();
+						if(tour == 1){
+							inter.niv().modifMessage(10, 1, 2,2);
+						}else{
+							inter.niv().modifMessage(10, 2, 1,2);
+						}
+						inter.niv().msg = 7;
+						inter.niv().msg2 = 0;
+						commande("Refaire");
+					}else{
+						inter.niv().msg = 9;
+						inter.niv().msg2 = 0;
+					}
+				}else{
+					inter.niv().msg = 6;
+					inter.niv().msg2 = 0;
+				}
 			}
 		}
 	}
