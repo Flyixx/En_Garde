@@ -1128,7 +1128,6 @@ public class Manche extends Historique<CoupParTour>{
                 System.out.println("selection du coup : " + cp );
                 cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
                 partie.jeu.jouerCoup(cp, false);
-                partie.jeu.jouerCoup(cp);
                 int nbCartes = 0;
                 for(int i = 0; i < 5; i++){
                     if(cp.action.valeurs[i] != 0){
