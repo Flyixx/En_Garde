@@ -611,16 +611,18 @@ public class NiveauGraphique extends JComponent implements Observateur {
         for(int i = restantPioche; i<15 - piocheArrivees; i++){
             int nb = i+1;
             cartePioche = chargeImage("Carte/Pioche/Deck_" + nb);
-            if(PosXPioche[i] > 0 && PosXPioche[i] < largeur){
-                if(PosYPioche[i] >= hauteur/4){
-                    //System.out.println("Position X carte " + i + " = " + PosXPioche[i]);
-                    PosXPioche[i] = majPosXPioche(PosXPioche[i],directionPioche[i]);
+            if(PosXPioche[i] != null){
+                if(PosXPioche[i] > 0 && PosXPioche[i] < largeur){
+                    if(PosYPioche[i] >= hauteur/4){
+                        //System.out.println("Position X carte " + i + " = " + PosXPioche[i]);
+                        PosXPioche[i] = majPosXPioche(PosXPioche[i],directionPioche[i]);
+                    }else{
+                        PosYPioche[i] = majPosYPioche(PosYPioche[i]);
+                    }
+                    drawable.drawImage(cartePioche,PosXPioche[i],PosYPioche[i],largeurCarte,hauteurCarte, null);
                 }else{
-                    PosYPioche[i] = majPosYPioche(PosYPioche[i]);
+                    piocheArrivees+=1;
                 }
-                drawable.drawImage(cartePioche,PosXPioche[i],PosYPioche[i],largeurCarte,hauteurCarte, null);
-            }else{
-                piocheArrivees+=1;
             }
         }
 
