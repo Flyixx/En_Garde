@@ -80,7 +80,7 @@ public class Partie {
         {
             courant = null;
             courant = new Manche(this, premierTourPrecedent);
-            courant.finManche = false;
+            //courant.finManche = false;
         }
 
     }
