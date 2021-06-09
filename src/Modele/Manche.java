@@ -1082,7 +1082,7 @@ public class Manche extends Historique<CoupParTour>{
         {
             if(joueurcourant.carteI.size() > 0)
             {
-                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4)
+                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4 && (partie.type != 3 || getTourJoueur() != 2))
                 {
                     test = TestProchainCoup(coupPrecedent);
                 }
@@ -1252,11 +1252,14 @@ public class Manche extends Historique<CoupParTour>{
             nbCoupsIA++;
         }
         else if(nbCoupsJoues <2 || coupsTourTab[0].action.id == 4) {
+
             //System.out.println("Tour de l'IA ! ");
             ArrayList<Coup> coups = this.listerCoupIA(j);
             ArrayList<Coup> coupsChoisi = new ArrayList<>();
             ArrayList<Coup> coupsAttaqueIndirecte = new ArrayList<>();
-            //System.out.println("tous les coups possibles : " + coups);
+            System.out.println("Main de l'IA : " + j.main);
+            System.out.println("tous les coups possibles : " + coups);
+
 
             for (int i = 0; i < coups.size(); i++) {
                 if (coups.get(i).action.id == 2) {
@@ -1265,6 +1268,8 @@ public class Manche extends Historique<CoupParTour>{
                     coupsAttaqueIndirecte.add(coups.get(i));
                 }
             }
+
+            System.out.println("tous les coups d'attaques posisbles : " + coupsChoisi);
 
             if (coups.size() > 0 && getTourJoueur() == 2) {
                 int random = 0;
@@ -1281,11 +1286,12 @@ public class Manche extends Historique<CoupParTour>{
                         for (int y = 0; y < j.getMain().size(); y++) {
                             cp = coupsAttaqueIndirecte.get(i);
                             if ((coupsAttaqueIndirecte.get(i).action.valeurs[0] + j.getMain().get(y)) == getDistance()) { //test Les attaques indirectes, prend la premiere trouvé
-
+                                System.out.println("Je rentre dans une attaque indirecte avec la valeur " + coupsAttaqueIndirecte.get(i).action.valeurs[0] + " en deplacement et la valeur " + j.main.get(y) + " en attaque !");
                                 int[] valeurs = new int[5];
                                 valeurs[0] = j.getMain().get(y);
 
                                 Action ac = new Action(2, valeurs);
+                                System.out.println("Position du joueur 1 : " +joueur1.getPosition());
                                 int target = joueur1.getPosition();
                                 cpAI = new Coup(grilleJeu, ac, target);
                                 cpAI.fixerManche(this);
@@ -1300,16 +1306,16 @@ public class Manche extends Historique<CoupParTour>{
                     cp = coups.get(random - 1);
                 }
 
-
+                System.out.println("Coup indirect IA :" + coupIndiIA);
 
                 if (coupIndiIA != null) {
-                    //System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
+                    System.out.println("COUPS INDIRECTE !!!!!!!!!" + coupIndiIA);
                     coupIndiIA = joue(coupIndiIA.target, coupIndiIA.action.valeurs, coupIndiIA.mapAvant, coupIndiIA.action.id);
                     partie.jeu.jouerCoup(coupIndiIA,false);
                     coupIndiIA = null;
                 }else {
                     //System.out.println("Main j2" + j.getMain() );
-                    //System.out.println("DEPLACEMENT *************" + cp);
+                    System.out.println("DEPLACEMENT *************" + cp);
                     cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
                     partie.jeu.jouerCoup(cp,false);
                     coupIndiIA = cpAI;
@@ -1549,7 +1555,7 @@ public class Manche extends Historique<CoupParTour>{
                 pos = joueur1.getPosition();
             }
 
-            if(partie.type == 2 && tourJoueur == 2)
+            if((partie.type == 2 && tourJoueur == 2) || (partie.type == 3 && tourJoueur == 2))
             {
                 int[] valeurs = new int[5];
 
@@ -1596,7 +1602,7 @@ public class Manche extends Historique<CoupParTour>{
                 if(target <=22)
                 {
 
-                    if(partie.type == 2)
+                    if(partie.type == 2 || partie.type == 3)
                     {
                         int[] valeurs = new int[5];
                         valeurs[0] = target - j.position;
