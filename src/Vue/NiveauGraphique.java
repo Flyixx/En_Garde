@@ -447,8 +447,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.clearRect(0, 0, largeur, hauteur);
         drawable.drawImage(fond, 0,0,largeur, hauteur, null);
 
-        if(compteur == 0){
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.015)));
+        drawable.setColor(new Color(90, 156,255));
+
+        if(compteur == 0){ // première fenetre
+
+            drawable.drawString("En Garde est un jeu de cartes stratégique à deux joueurs. Vous affrontez votre adversaire sur un terrain linéaire de 23 cases, votre but est de vous déplacer et d'attaquer à l'aide de vos cartes. ", (int)Math.round(largeur*0.10), (int)Math.round(hauteur*0.20));
             drawable.drawImage(teteJ1, 0, 0, 150,150, null);
+        }else if(compteur==1){ // deuxieme fenetre
+
+        }else if(compteur==2){ // troisieme fenetre
+
+        }else if(compteur==3) { // quatrieme fenetre
+
+        }else if(compteur==4){ //cinquieme fenetre
+
         }
 
         tailleMute = (int)Math.round(largeur*0.05);
@@ -893,7 +906,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
             if(i<j.getCarteI().size())
             {
-                if (j.getCarteI().get(i).getEtat() == 1){
+                if (j.getCarteI().get(i).getEtat() == 1 && valeurCarte!=0){
                     drawable.drawImage(cartesDisabled[valeurCarte-1], x , y, largeurCarte, hauteurCarte, null);
                 } else {
                     drawable.drawImage(cartes[valeurCarte], x , y, largeurCarte, hauteurCarte, null);
