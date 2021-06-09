@@ -336,7 +336,7 @@ public class Manche extends Historique<CoupParTour>{
         int res;
         if(piocheVide())
         {
-            //System.out.println("Pioche vide: Evalution du joueur gagnant:");
+            System.out.println("Pioche vide: Evaluation du joueur gagnant:");
             int Pj1 = 0, Pj2 = 0;
             int distance = joueur2.getPosition() - joueur1.getPosition();
             for (int i = 0; i < joueur1.getMain().size(); i++){
@@ -352,11 +352,11 @@ public class Manche extends Historique<CoupParTour>{
 
             if (Pj1 < Pj2){
                 attaque(1);
-                //System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
+                System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             }else if(Pj2 < Pj1){
                 attaque(2);
-                //System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
+                System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
                 partie.initialiseManche();
             } else {
                 int PosJ1 = joueur1.getPosition();
@@ -364,11 +364,11 @@ public class Manche extends Historique<CoupParTour>{
 
                 if (PosJ1 > PosJ2){
                     attaque(2);
-                    //System.out.println("Joueur 1 gagne: Joueur le plus avancé");
+                    System.out.println("Joueur 1 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 } else {
                     attaque(1);
-                    //System.out.println("Joueur 2 gagne: Joueur le plus avancé");
+                    System.out.println("Joueur 2 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 }
             }
