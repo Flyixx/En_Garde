@@ -53,7 +53,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int recadrageDeb;
     int recadrageFin;
     public int premierJoueur = 1;
-    public int hauteurBoutonMenu, largeurBoutonMenu,xSelJ1, xSelJ2,ySelection, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute,tailleZoom,xBoutonZoom,yBoutonZoom, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
+    public int hauteurBoutonMenu, xBoutonGauche1, xBoutonGauche2, largeurBoutonMenu,xSelJ1, xSelJ2,ySelection, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute,tailleZoom,xBoutonZoom,yBoutonZoom, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
     Image[][] joueurs1;
     Image[][] joueurs2;
     Image[][] BandeVie;

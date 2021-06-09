@@ -169,10 +169,10 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 								//jeu.partie().manche().updateAll();
 								//System.out.println("Je change le tour");
-								if(!inter.jeu.partie().manche().finManche){
+
 									inter.niv().modifMessage(3, nb, 0, 0);
 									inter().niv().msg2 = 2;
-								}
+
 							}else{
 								//System.out.println("Impossible le joueur doit jouer au moins une carte");
 								inter.niv().msg = 1;
