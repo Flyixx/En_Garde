@@ -1001,7 +1001,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
 
         try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap2+".wav"));
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Duel"+compteurMap2+".wav");
+            AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
