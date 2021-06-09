@@ -1170,11 +1170,13 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public void jouerIA(JoueurHumain j){
-        if(j.getMain().size() > 0){
+        /*if(j.getMain().size() > 0 && j.getMain() != null){
             for (int i = 0; i < j.getMain().size(); i++) {
-                j.getCarteI().get(i).setEtat(1);
+                if(i != j.getMain().size() && j.getMain().size() < 6){
+                    j.getCarteI().get(i).setEtat(1);
+                }
             }
-        }
+        }*/
 
         boolean test = true;
         if(nbCoupsJoues == 0 && nbCoupsIA == 0 )
@@ -1258,9 +1260,11 @@ public class Manche extends Historique<CoupParTour>{
     }
 
     public void jouerIAMoyen(JoueurHumain j){
-        for (int i = 0; i < j.getMain().size(); i++) {
-           j.getCarteI().get(i).setEtat(1);
-        }
+        /*for (int i = 0; i < j.getMain().size(); i++) {
+            if(i != j.getMain().size() && j.getMain().size() < 6){
+                j.getCarteI().get(i).setEtat(1);
+            }
+        }*/
         boolean test = true;
         if(nbCoupsJoues == 0 && nbCoupsIA == 0 )
         {
@@ -1611,7 +1615,9 @@ public class Manche extends Historique<CoupParTour>{
                 // On change l'etat de la case IHM à la position du joueur adverse :
                 // Elle passe à l'etat 3 ce qui signifie que si on clique sur cette case on effectue
                 // une parade directe
-                CaseIHM.get(pos).updateEtat(3);
+                if(CaseIHM.size() > pos){
+                    CaseIHM.get(pos).updateEtat(3);
+                }
             }
 
         }
