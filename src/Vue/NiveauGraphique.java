@@ -196,7 +196,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
-        try {
+        /*try {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Duel"+compteurMap+".wav");
             AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
@@ -207,7 +207,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public NiveauGraphique(Jeu j){
@@ -366,12 +366,12 @@ public class NiveauGraphique extends JComponent implements Observateur {
             tracerMenuPartie();
         }
         //System.out.println("J1 " + joueur1Vie + "/ J2 " + joueur2Vie);
-        mute();
+        //mute();
     }
 
     //Fonction qui démarre la musique du menu principal
     public void startMusique(){
-        try {
+        /*try {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Menu.wav");
             AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
@@ -381,21 +381,21 @@ public class NiveauGraphique extends JComponent implements Observateur {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     //Fonction qui permet d'arrêter la musique
-    public void mute(){
+    /*public void mute(){
         if(mute){
             clip.stop();
         }else{
             clip.start();
         }
-    }
+    }*/
 
     //Fonction qui lance la musique de la victoire en fonction du vainqueur
     public void startVictoire(){
-        try {
+        /*try {
             int nb;
             AudioInputStream input = null;
             InputStream in = null;
@@ -415,13 +415,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     //Fonction qui permet de stopper la musique en cours
     public void stopMusique(){
         if(MenuSet || PartieSet || VictoireSet){
-            clip.stop();
+            //clip.stop();
         }
     }
 
@@ -1011,7 +1011,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
-        try {
+        /*try {
             InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Duel"+compteurMap2+".wav");
             AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
@@ -1022,6 +1022,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -336,7 +336,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 			if(x >= inter.niv().xBoutonMute && x < (inter.niv().xBoutonMute + inter.niv().tailleMute)){
 				if(y >= inter.niv().yBoutonMute && y < (inter.niv().yBoutonMute + inter.niv().tailleMute)){
 					inter.niv().mute = !inter.niv().mute;
-					inter.niv().mute();
+					//inter.niv().mute();
 				}
 			}
 		}
