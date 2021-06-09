@@ -50,6 +50,7 @@ public class Jeu extends Observable {
         int type = Integer.parseInt(config.lis("TypePartie"));
         int tourCourant = Integer.parseInt(config.lis("TourJoueur"));
         courant = new Partie(this, pdv1, pdv2, positionJ1, positionJ2, pioche, MainJ1, MainJ2, tourCourant, type, HistoriqueAnnule, HistoriqueCoupFait);
+        courant.premierTourPrecedent = Integer.parseInt(config.lis("CommenceManche"));
         selectedCarte = new ArrayList<>();
         compteurJ1 = Integer.parseInt(config.lis("CompteurJ1"));
         compteurJ2 = Integer.parseInt(config.lis("CompteurJ2"));
@@ -135,6 +136,7 @@ public class Jeu extends Observable {
         sortie.println("CompteurMap="+compteurMap);
         sortie.println("CompteurJ1="+compteurJ1);
         sortie.println("CompteurJ2="+compteurJ2);
+        sortie.println("CommenceManche="+partie().premierTourPrecedent);
         sortie.println("Joueur1Vie="+courant.joueur1.vie);
         sortie.println("Joueur2Vie="+courant.joueur2.vie);
         sortie.println("TourJoueur="+courant.manche().tourJoueur);

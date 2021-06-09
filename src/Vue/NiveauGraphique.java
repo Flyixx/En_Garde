@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NiveauGraphique extends JComponent implements Observateur {
-    private static final int NB_MESSAGE = 10;
+    private static final int NB_MESSAGE = 20;
     Jeu jeu;
     Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1,selectionJoueur, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
@@ -53,7 +53,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
     int recadrageDeb;
     int recadrageFin;
     public int premierJoueur = 1;
-    public int hauteurBoutonMenu, largeurBoutonMenu,xSelJ1, xSelJ2,ySelection, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute,tailleZoom,xBoutonZoom,yBoutonZoom, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
+    public int xBoutonGauche1, xBoutonGauche2, hauteurBoutonMenu, largeurBoutonMenu,xSelJ1, xSelJ2,ySelection, yBoutonUn, yBoutonDeux, xBoutonMenu, yBoutonTrois, tailleMute, xBoutonMute, yBoutonMute,tailleZoom,xBoutonZoom,yBoutonZoom, yBoutonVictoire, tailleBouton, xBouton1, yBouton, xBouton2, xBouton3, xBouton4, xBouton5, xBouton6, compteurJ1, compteurJ2, compteurMap, largeurBouton, hauteurBouton, xBoutonDroite, xBoutonGauche, yBoutonMilieu, yBoutonBas, yBoutonMilieu2, yBoutonHaut;
     Image[][] joueurs1;
     Image[][] joueurs2;
     Image[][] BandeVie;
@@ -92,79 +92,86 @@ public class NiveauGraphique extends JComponent implements Observateur {
     }
 
     public void modifMessage(int type, int nb, int nb2, int nb1){
-        int avant = jeu.partie().manche().Joueur(nb).positionAvant;
-        int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
-        if(nb == 2){
-            avant = -avant;
-            maintenant = -maintenant;
-        }
-        if(type == 0){
-            if(maintenant > avant){
-                Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
-            }else{
-                Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+        if(jeu.partie().manche() != null){
+            int avant = jeu.partie().manche().Joueur(nb).positionAvant;
+            int maintenant = jeu.partie().manche().Joueur(nb).newPosition;
+            if(nb == 2){
+                avant = -avant;
+                maintenant = -maintenant;
             }
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
+            if(type == 0){
+                if(maintenant > avant){
+                    Message[2] = "Joueur " + nb + " : A avancé de " + nb2 + " case(s) !";
+                }else{
+                    Message[2] = "Joueur " + nb + " : A reculé de " + nb2 + " case(s) !";
+                }
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 2;
+                }
+            }else if(type == 1){
+                Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 2){
+                Message2[1] = "Joueur " + nb + " : A parer, à lui de jouer!";
+            }else if(type == 3){
+                if(nb == 1){
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
+                    action1 = 0;
+                }else{
+                    Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
+                    action2 = 0;
+                }
+
+            }else if(type == 4){
+                Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
                 action1 = 0;
-                action2 = 2;
-            }
-        }else if(type == 1){
-            Message[2] = "Joueur " + nb + " : Attaque Directe avec "+ nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
                 action2 = 0;
-            }else{
+            }else if(type == 5){
+                Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
+                if(nb == 1){
+                    action1 = 1;
+                    action2 = 0;
+                }else{
+                    action1 = 0;
+                    action2 = 1;
+                }
+            }else if(type == 6){
+                Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
+                if(nb == 1){
+                    action1 = 2;
+                    action2 = 0;
+                }else{
+                    action2 = 2;
+                    action1 = 0;
+                }
+            }else if(type == 7){
+                Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
                 action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 2){
-            Message2[1] = "Joueur " + nb + " : A parer, à lui de jouer!";
-        }else if(type == 3){
-            if(nb == 1){
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 2";
-                action1 = 0;
-            }else{
-                Message2[2] = "Joueur " + nb + " : A terminé son tour ! Tour du Joueur 1";
                 action2 = 0;
-            }
-        }else if(type == 4){
-            Message2[3] = "Joueur " + nb + " : A perdu une vie, il lui en reste " + nb2;
-            action1 = 0;
-            action2 = 0;
-        }else if(type == 5){
-            Message[3] = "Joueur " + nb + " : Attaque Indirecte avec " + nb1 + " carte(s) de valeur " + nb2;
-            if(nb == 1){
-                action1 = 1;
-                action2 = 0;
-            }else{
-                action1 = 0;
-                action2 = 1;
-            }
-        }else if(type == 6){
-            Message[4] = "Joueur " + nb + " : A esquivé en reculant de " + nb2 + " case(s)";
-            if(nb == 1){
-                action1 = 2;
-                action2 = 0;
-            }else{
-                action2 = 2;
-                action1 = 0;
-            }
-        }else if(type == 7){
-            Message[5] = "Joueur " + nb + " : A fait une Parade Indirecte";
-            action1 = 0;
-            action2 = 0;
-        }else if(type == 8){
-            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2;
-        }else if(type == 9){
-            Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2 + " ou reculer";
-        }else if(type == 10){
-            if(nb1 == 1){
-                Message[7] = "Joueur " + nb + " : A annulé un coup ! Tour du Joueur " + nb2;
-            }else{
-                Message[7] = "Joueur " + nb + " : A refait un coup ! Tour du Joueur " + nb2;
+            }else if(type == 8){
+                Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2;
+            }else if(type == 9){
+                Message2[4] = "Joueur "+ nb + " : Doit parer avec " + nb1 + " carte(s) de valeur(s) " + nb2 + " ou reculer";
+            }else if(type == 10){
+                if(nb1 == 1){
+                    Message[7] = "Joueur " + nb + " : A annulé un coup ! Tour du Joueur " + nb2;
+                }else{
+                    Message[7] = "Joueur " + nb + " : A refait un coup ! Tour du Joueur " + nb2;
+                }
+            }else if(type == 11){
+                Message[10] = "Fin de la Pioche - Joueur " + nb + " : Gagne car il a plus de carte d'attaque ! -1 vie pour le joueur " + nb2;
+            }else if(type == 12){
+                Message[11] = "Fin de la Pioche - Joueur " + nb + " : Gagne car il est le plus avancé ! -1 vie pour le joueur " + nb2;
             }
         }
     }
@@ -190,13 +197,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         }
 
         try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap+".wav"));
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Duel"+compteurMap+".wav");
+            AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue(-30.0f);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-            //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -354,7 +361,8 @@ public class NiveauGraphique extends JComponent implements Observateur {
     //Fonction qui démarre la musique du menu principal
     public void startMusique(){
         try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Menu.wav"));
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Menu.wav");
+            AudioInputStream input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -379,13 +387,16 @@ public class NiveauGraphique extends JComponent implements Observateur {
         try {
             int nb;
             AudioInputStream input = null;
+            InputStream in = null;
             if(joueur2Vie > joueur1Vie){
                 nb = compteurJ2%2;
-                input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
+                in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Victoire"+nb+".wav");
+
             }else{
                 nb = compteurJ1%2;
-                input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
+                in = ClassLoader.getSystemClassLoader().getResourceAsStream("Music/Victoire"+nb+".wav");
             }
+            input = AudioSystem.getAudioInputStream(in);
             clip = AudioSystem.getClip();
             clip.open(input);
             gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -523,11 +534,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.clearRect(0, 0, largeur, hauteur);
         drawable.drawImage(map, 0, 0, largeur, hauteur, null);
 
-        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.025)));
+        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.020)));
         drawable.setColor(new Color(253, 230,30));
-        drawable.drawString(Message[msg], (int)Math.round(largeur*0.30), (int)Math.round(hauteur*0.70));
-        drawable.drawString(Message2[msg2], (int)Math.round(largeur*0.30), (int)Math.round(hauteur*0.71)+(int)Math.round(largeur*0.025));
-
+        if(Message[msg] != null){
+            drawable.drawString(Message[msg], (int)Math.round(largeur*0.05), (int)Math.round(hauteur*0.70));
+        }
+        if(Message2[msg2] != null){
+            drawable.drawString(Message2[msg2], (int)Math.round(largeur*0.05), (int)Math.round(hauteur*0.71)+(int)Math.round(largeur*0.020));
+        }
         if(jeu.partie().manche().getTourJoueur() == 1){
             drawable.drawImage(BandeVie[0][compteurJ1%2], 0, yTete-(int)Math.round(hauteur*0.040), largeur, dimensionTete+hauteurNom+largeurTiret, null);
         }else{
@@ -593,10 +607,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
+        xBoutonGauche1 = xBoutonGauche-(largeurBouton/2);
+        xBoutonGauche2 = xBoutonGauche+(largeurBouton/2);
+
         //affichage Des Bouton
         drawable.drawImage(fin, xBoutonDroite, yBoutonBas, largeurBouton, hauteurBouton, null);
-        drawable.drawImage(annuler, xBoutonGauche, yBoutonMilieu2, largeurBouton, hauteurBouton, null);
-        drawable.drawImage(refaire, xBoutonGauche, yBoutonMilieu, largeurBouton, hauteurBouton, null);
+        drawable.drawImage(annuler, xBoutonGauche1, yBoutonMilieu, largeurBouton, hauteurBouton, null);
+        drawable.drawImage(refaire, xBoutonGauche2, yBoutonMilieu, largeurBouton, hauteurBouton, null);
         drawable.drawImage(menuPartie, xBoutonGauche, yBoutonBas, largeurBouton, hauteurBouton, null);
 
         // affichage du bouton de zoom
