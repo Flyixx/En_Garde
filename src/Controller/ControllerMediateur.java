@@ -467,7 +467,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 				inter.changeBackground(false, false, false, false, false, true);
 				break;
 			case "Suivant":
-				if(inter.niv().compteur < 10){
+				if(inter.niv().compteur < 2){
 					inter.niv().compteur++;
 				}
 				break;

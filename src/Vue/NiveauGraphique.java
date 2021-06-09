@@ -20,7 +20,7 @@ import java.util.Random;
 public class NiveauGraphique extends JComponent implements Observateur {
     private static final int NB_MESSAGE = 10;
     Jeu jeu;
-    Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
+    Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, regle1,regle2,regle3, caseBleue,caseRouge,caseVerte, muteIm, selJoueur1, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
     int k = 0;
     int joueur2Vie;
@@ -271,6 +271,17 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
         ButtonChangeTour = chargeImage("Partie/ChangeTour");
 
+        //Images des regles
+        regle1 = chargeImage("Regles/page1");
+        regle2 = chargeImage("Regles/page2");
+        regle3 = chargeImage("Regles/page3");
+
+        //Chargement images zone d'attaque
+        caseBleue = chargeImage("Partie/caseBleue");
+        caseRouge = chargeImage("Partie/caseRouge");
+        caseVerte = chargeImage("Partie/caseVerte");
+
+
         //Chargement des images pour Animations
         joueurs1 = new Image[3][4];
         joueurs2 = new Image[3][4];
@@ -447,20 +458,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
         drawable.clearRect(0, 0, largeur, hauteur);
         drawable.drawImage(fond, 0,0,largeur, hauteur, null);
 
-        drawable.setFont(new Font("Segeo UI Black", Font.BOLD, (int)Math.round(largeur*0.015)));
-        drawable.setColor(new Color(90, 156,255));
-
         if(compteur == 0){ // première fenetre
-
-            drawable.drawString("En Garde est un jeu de cartes stratégique à deux joueurs. Vous affrontez votre adversaire sur un terrain linéaire de 23 cases, votre but est de vous déplacer et d'attaquer à l'aide de vos cartes. ", (int)Math.round(largeur*0.10), (int)Math.round(hauteur*0.20));
-            drawable.drawImage(teteJ1, 0, 0, 150,150, null);
+            drawable.drawImage(regle1,0,(int)Math.round(hauteur*0.1),largeur,hauteur,null);
         }else if(compteur==1){ // deuxieme fenetre
+            drawable.drawImage(regle2,0,(int)Math.round(hauteur*0.1),largeur,hauteur,null);
 
         }else if(compteur==2){ // troisieme fenetre
-
-        }else if(compteur==3) { // quatrieme fenetre
-
-        }else if(compteur==4){ //cinquieme fenetre
+            drawable.drawImage(regle3,0,(int)Math.round(hauteur*0.1),largeur,hauteur,null);
 
         }
 
@@ -930,19 +934,13 @@ public class NiveauGraphique extends JComponent implements Observateur {
             int etat = CaseIHM.get(i).getEtat();
             switch(etat){
                 case 1:
-                    Color cBleu = new Color(100, 250, 255, 20);
-                    drawable.setColor(cBleu);
-                    drawable.fillRect(CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador);
+                    drawable.drawImage(caseBleue, CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador,null);
                     break;
                 case 2:
-                    Color cRouge = new Color(255,0,0,20);
-                    drawable.setColor(cRouge);
-                    drawable.fillRect(CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador);
+                    drawable.drawImage(caseRouge, CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador,null);
                     break;
                 case 3:
-                    Color cVert = new Color(0,255,0, 20);
-                    drawable.setColor(cVert);
-                    drawable.fillRect(CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador);
+                    drawable.drawImage(caseVerte, CaseIHM.get(i).getX(), (int)Math.round(y-hauteurVador+(hauteurCase*0.5)), CaseIHM.get(i).getLargeur(), hauteurVador,null);
                     break;
                 default:
                     break;
