@@ -14,7 +14,7 @@ public class Historique<E extends Commande> {
     }
 
     void nouveau(CoupParTour c){
-        System.out.println("Coup : " + c);
+        //System.out.println("Coup : " + c);
         CoupFait.insereTete(c);
         //System.out.println("La séquence de fdp " +CoupFait);
         //c.execute(c);
@@ -24,7 +24,7 @@ public class Historique<E extends Commande> {
     }
 
     void afficherListe(Sequence<CoupParTour> l){
-        System.out.println("j'affiche" + l);
+        //System.out.println("j'affiche" + l);
     }
 
     public CoupParTour coupPrecedent() {
@@ -41,8 +41,8 @@ public class Historique<E extends Commande> {
     }
 
     public boolean peutAnnuler(){
-        System.out.println(!CoupFait.estVide());
-        System.out.println("La sequence annuler " + CoupFait);
+        //System.out.println(!CoupFait.estVide());
+        //System.out.println("La sequence annuler " + CoupFait);
         return !CoupFait.estVide();
     }
 
@@ -62,7 +62,7 @@ public class Historique<E extends Commande> {
             CoupParTour c = CoupFait.extraitTete();
             c.desexecute(c);
             CoupAnnuler.insereTete(c);
-            System.out.println("Sequence annuler :" + CoupAnnuler);
+            //System.out.println("Sequence annuler :" + CoupAnnuler);
             return c;
         }else{
             return null;

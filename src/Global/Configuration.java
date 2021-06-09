@@ -21,7 +21,7 @@ public class Configuration {
         try {
             propIn = new FileInputStream(Save);
             prop.load(propIn);
-            System.out.println(prop);
+            //System.out.println(prop);
             String home = System.getProperty("user.home");
             prop = new Properties(prop);
         } catch (Exception e) {

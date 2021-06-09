@@ -75,7 +75,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 							int[] valeurs= new int[5];
 
 							cp = null;
-							System.out.println("Doit parer : " + jeu.partie().manche().doitParer);
+							//System.out.println("Doit parer : " + jeu.partie().manche().doitParer);
 							if(jeu.partie().manche().doitParer)
 							{
 								if(jeu.partie().manche().getTourJoueur() == 1)
@@ -133,7 +133,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 						} else if (c.getEtat() == 3){
 
 							jeu.partie().manche().parerDirectement();
-							System.out.println("Tu peux parer mon pote");
+							//System.out.println("Tu peux parer mon pote");
 							jeu.partie().manche().doitParer = false;
 
 						}
@@ -168,11 +168,11 @@ public class ControllerMediateur implements CollecteurEvenements {
 								}
 
 								//jeu.partie().manche().updateAll();
-								System.out.println("Je change le tour");
+								//System.out.println("Je change le tour");
 								inter.niv().modifMessage(3, nb, 0, 0);
 								inter().niv().msg2 = 2;
 							}else{
-								System.out.println("Impossible le joueur doit jouer au moins une carte");
+								//System.out.println("Impossible le joueur doit jouer au moins une carte");
 								inter.niv().msg = 1;
 								inter.niv().msg2 = 0;
 							}
@@ -269,7 +269,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu2 && y < (inter.niv().yBoutonMilieu2+inter.niv().hauteurBouton)){
 				if(inter.jeu.partie().manche().peutSauvegarderEtHistorique){
-					System.out.println("Annuler");
+					//System.out.println("Annuler");
 					if(!inter.jeu.partie().manche().CoupFait.estVide()){
 						int tour = inter.jeu.partie().manche().getTourJoueur();
 						if(tour == 1){
@@ -297,7 +297,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 		if(x >= inter.niv().xBoutonGauche && x < (inter.niv().xBoutonGauche+inter.niv().largeurBouton)){
 			if(y >= inter.niv().yBoutonMilieu && y < (inter.niv().yBoutonMilieu+inter.niv().hauteurBouton)){
 				if(inter.jeu.partie().manche().peutSauvegarderEtHistorique){
-					System.out.println("Refaire");
+					//System.out.println("Refaire");
 					if(!inter.jeu.partie().manche().CoupAnnuler.estVide()){
 						int tour = inter.jeu.partie().manche().getTourJoueur();
 						if(tour == 1){
@@ -379,11 +379,11 @@ public class ControllerMediateur implements CollecteurEvenements {
 						jeu.partie().manche().jouerIAMoyen(jeu.partie().manche().joueur2);
 						decompte = lenteurAttente/2;
 					}else if(jeu.partie().manche().getTourJoueur() == 1 && jeu.partie().type == 4){
-						System.out.println("L'IA Facile joue");
+						//System.out.println("L'IA Facile joue");
 						jeu.partie().manche().jouerIA(jeu.partie().manche().joueur1);
 						decompte = lenteurAttente/2;
 					}else if(jeu.partie().manche().getTourJoueur() == 2 && jeu.partie().type == 4){
-						System.out.println("L'IA Moyenne joue");
+						//System.out.println("L'IA Moyenne joue");
 						jeu.partie().manche().jouerIAMoyen(jeu.partie().manche().joueur2);
 						decompte = lenteurAttente/2;
 					}else{
