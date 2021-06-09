@@ -27,11 +27,13 @@ public class Manche extends Historique<CoupParTour>{
     public boolean doitParer, peutSauvegarderEtHistorique;
     int nbCoupsIA;
     Coup coupIndiIA = null;
+    boolean peutRemplirMain;
 
     public int[] etatCasesIHM;
 
 
     public Manche(Partie p, int premierTourPrecedent){
+        peutRemplirMain = true;
         doitParer = false;
         peutSauvegarderEtHistorique = true;
         partie = p;
@@ -276,7 +278,7 @@ public class Manche extends Historique<CoupParTour>{
 
     public void attaque(int j){
         //System.out.println("joueur : " + j);
-
+        peutRemplirMain = false;
         if(j == 1){
             partie.joueur1.vie-= 1;
         }else{
@@ -1087,10 +1089,10 @@ public class Manche extends Historique<CoupParTour>{
 
         boolean test;
 
-        if((partie.type == 2 && tourJoueur == 2 && coupPrecedent.typeAction == 3)||(partie.type == 3 && tourJoueur == 2 && coupPrecedent.typeAction == 3))
+        /*if((partie.type == 2 && tourJoueur == 2 && coupPrecedent.typeAction == 3)||(partie.type == 3 && tourJoueur == 2 && coupPrecedent.typeAction == 3))
         {
             remplirMain(joueur1);
-        }
+        }*/
 
         if(coupPrecedent!= null && coupPrecedent.tourJoueur != tourJoueur)
         {
@@ -1138,13 +1140,13 @@ public class Manche extends Historique<CoupParTour>{
 
 
         // Remplissage de la main du joueur précédent
-        if(tourJoueur == 1)
+        if(tourJoueur == 1 && peutRemplirMain)
         {
             //System.out.println("Joueur 1 pioche");
             remplirMain(joueur2);
             //System.out.println("Cartes restantes pioche : " + this.restantPioche());
         }
-        else
+        else if(peutRemplirMain)
         {
             //System.out.println("Joueur 2 pioche");
             remplirMain(joueur1);
@@ -1421,6 +1423,7 @@ public class Manche extends Historique<CoupParTour>{
                 // Si le CoupParTour est un simple déplacement
                 if(coupPrecedent.typeAction == 1)
                 {
+                    peutRemplirMain = true;
                     //System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
                     return true;
 

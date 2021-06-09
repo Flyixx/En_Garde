@@ -41,7 +41,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 
 	public void clickCarte(int x, int y) {
-		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2){
+		if((jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2) || (jeu.partie().type != 3 || jeu.partie().manche().tourJoueur != 2) || jeu.partie().type!=4){
 			// Si le joueur doit parer, il ne peut pas cliquer sur une carte
 			if (inter.niv().Partie) {
 				if (!jeu.partie().manche().doitParer) {
@@ -62,7 +62,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 
 	public void clickDeplacement(int x, int y){
 
-		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2)
+		if((jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2) || (jeu.partie().type != 3 || jeu.partie().manche().tourJoueur != 2) || jeu.partie().type!=4)
 		{
 			ArrayList<SelectionCaseIHM> CaseIHM = new ArrayList<>();
 			CaseIHM = jeu.partie().manche().getCaseIHM();
@@ -149,7 +149,7 @@ public class ControllerMediateur implements CollecteurEvenements {
 	}
 
 	public void clickChangeTour(int x, int y) {
-		if(jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2) {
+		if((jeu.partie().type != 2 || jeu.partie().manche().tourJoueur != 2) || (jeu.partie().type != 3 || jeu.partie().manche().tourJoueur != 2) || jeu.partie().type!=4) {
 			if(inter.niv().Partie) {
 					//ButtonIHM but = jeu.partie().manche().boutonChangeTour;
 					if (x >= inter.niv().xBoutonDroite && x < (inter.niv().xBoutonDroite+inter.niv().largeurBouton)){
