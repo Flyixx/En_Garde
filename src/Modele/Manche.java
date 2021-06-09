@@ -1073,7 +1073,7 @@ public class Manche extends Historique<CoupParTour>{
 
         boolean test;
 
-        if(partie.type == 2 && tourJoueur == 2 && coupPrecedent.typeAction == 3)
+        if((partie.type == 2 && tourJoueur == 2 && coupPrecedent.typeAction == 3)||(partie.type == 3 && tourJoueur == 2 && coupPrecedent.typeAction == 3))
         {
             remplirMain(joueur1);
         }
@@ -1271,7 +1271,9 @@ public class Manche extends Historique<CoupParTour>{
 
             System.out.println("tous les coups d'attaques posisbles : " + coupsChoisi);
 
-            if (coups.size() > 0 && getTourJoueur() == 2) {
+            Coup coupDeplacementAttaqueIndirecte = null;
+
+            if ((coups.size() > 0 || coupIndiIA != null)  && getTourJoueur() == 2) {
                 int random = 0;
                 Random rnd = new Random();
                 Coup cp = null;
@@ -1281,11 +1283,12 @@ public class Manche extends Historique<CoupParTour>{
                 if (coupsChoisi.size() != 0) { //Si possibilité d'attaque
                     random = rnd.nextInt(coupsChoisi.size()) + 1;
                     cp = coupsChoisi.get(random - 1);
-                } else if (coupsAttaqueIndirecte.size() != 0) { //Si possibilité d'attaque indirecte
+                } else if (coupsAttaqueIndirecte.size() != 0 && coupIndiIA == null) { //Si possibilité d'attaque indirecte
                     for (int i = 0; i < coupsAttaqueIndirecte.size(); i++) {
+                        boolean passePar = false;
                         for (int y = 0; y < j.getMain().size(); y++) {
                             cp = coupsAttaqueIndirecte.get(i);
-                            if ((coupsAttaqueIndirecte.get(i).action.valeurs[0] + j.getMain().get(y)) == getDistance()) { //test Les attaques indirectes, prend la premiere trouvé
+                            if ((coupsAttaqueIndirecte.get(i).action.valeurs[0] + j.getMain().get(y)) == getDistance() && (passePar || j.main.get(y) != coupsAttaqueIndirecte.get(i).action.valeurs[0])) { //test Les attaques indirectes, prend la premiere trouvé
                                 System.out.println("Je rentre dans une attaque indirecte avec la valeur " + coupsAttaqueIndirecte.get(i).action.valeurs[0] + " en deplacement et la valeur " + j.main.get(y) + " en attaque !");
                                 int[] valeurs = new int[5];
                                 valeurs[0] = j.getMain().get(y);
@@ -1296,14 +1299,26 @@ public class Manche extends Historique<CoupParTour>{
                                 cpAI = new Coup(grilleJeu, ac, target);
                                 cpAI.fixerManche(this);
 
+                                coupDeplacementAttaqueIndirecte = cp;
+
                                 break;
 
+                            }
+
+                            if(j.main.get(y) == coupsAttaqueIndirecte.get(i).action.valeurs[0])
+                            {
+                                passePar = true;
                             }
                         }
                     }
                 } else { //Si cest un déplacement
-                    random = rnd.nextInt(coups.size()) + 1;
-                    cp = coups.get(random - 1);
+
+                    if(coups.size()>0)
+                    {
+                        random = rnd.nextInt(coups.size()) + 1;
+                        cp = coups.get(random - 1);
+                    }
+
                 }
 
                 System.out.println("Coup indirect IA :" + coupIndiIA);
@@ -1316,7 +1331,15 @@ public class Manche extends Historique<CoupParTour>{
                 }else {
                     //System.out.println("Main j2" + j.getMain() );
                     System.out.println("DEPLACEMENT *************" + cp);
-                    cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+
+                    if(coupDeplacementAttaqueIndirecte != null)
+                    {
+                        cp = joue(coupDeplacementAttaqueIndirecte.target, coupDeplacementAttaqueIndirecte.action.valeurs, coupDeplacementAttaqueIndirecte.mapAvant, coupDeplacementAttaqueIndirecte.action.id);
+                    }
+                    else
+                    {
+                        cp = joue(cp.target, cp.action.valeurs, cp.mapAvant, cp.action.id);
+                    }
                     partie.jeu.jouerCoup(cp,false);
                     coupIndiIA = cpAI;
                 }
@@ -1518,7 +1541,7 @@ public class Manche extends Historique<CoupParTour>{
             // On change l'etat de la case IHM à la position du joueur adverse :
             // Elle passe à l'etat 3 ce qui signifie que si on clique sur cette case on effectue
             // une parade directe
-            if(partie.type == 2 && tourJoueur==2 )
+            if((partie.type == 2 && tourJoueur==2) || (partie.type == 3 && tourJoueur == 2) )
             {
                 parerDirectement();
             }
@@ -1624,7 +1647,7 @@ public class Manche extends Historique<CoupParTour>{
         doitParer = true;
         peutSauvegarderEtHistorique = false;
 
-        if(partie.type == 2 && getTourJoueur() == 2)
+        if((partie.type == 2 && getTourJoueur() == 2) || (partie.type == 3 && getTourJoueur() == 2))
         {
             Random rnd = new Random();
             int total = coupsParadeIA.size();
