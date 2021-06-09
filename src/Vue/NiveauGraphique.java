@@ -20,7 +20,7 @@ import java.util.Random;
 public class NiveauGraphique extends JComponent implements Observateur {
     private static final int NB_MESSAGE = 10;
     Jeu jeu;
-    Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1,selectionJoueur, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
+    Image revenirALaPartie, menuPartie, nomSelec, fondMenuPartie, muteIm, selJoueur1, selJoueur2, unMute, zoomIm, unzoomIm, victoireName, annuler, refaire, quitter, save, fin, fondJoueur, flecheDroit, flecheGauche, fondMenu, fond, fondNewPartie, joueur1, joueur1Choix, joueur2Choix, joueur2, sol, map, teteJ1, teteJ2, TiretBleu, TiretRouge, NomJ1, NomJ2, carte1, carte2, carte3, carte4, carte5, carte0, carte1_select, carte2_select, carte3_select, carte4_select, carte5_select;
     int y;
     int k = 0;
     int joueur2Vie;
@@ -189,8 +189,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
-        try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap+".wav"));
+        /*try {
+            AudioInputStream input = AudioSystem.getAudioInputStream(getClass().getResource("res/Music/Duel"+compteurMap+".wav"));
+            //AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap+".wav"));
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -199,7 +200,7 @@ public class NiveauGraphique extends JComponent implements Observateur {
             //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     public NiveauGraphique(Jeu j){
@@ -211,37 +212,36 @@ public class NiveauGraphique extends JComponent implements Observateur {
         //Chargement des images
         teteJ1 = chargeImage("Sprite0/Head");
         teteJ2 = chargeImage("Sprite1/Head");
-        TiretBleu = chargeImage("Partie/TiretBleu");
-        TiretRouge = chargeImage("Partie/TiretRouge");
+        TiretBleu = chargeImage("Partie/TiretBleuBis");
+        TiretRouge = chargeImage("Partie/TiretRougeBis");
         fondMenu = chargeImage("Menu/MenuDroit");
         flecheDroit = chargeImage("Menu/Flèche");
         flecheGauche = chargeImage("Menu/FlècheReverse");
         fondNewPartie = chargeImage("Menu/MenuHaut");
         fond = chargeImage("Menu/Menu");
-        NomJ1 = chargeImage("Partie/NomJ1");
-        NomJ2 = chargeImage("Partie/NomJ2");
+        NomJ1 = chargeImage("Partie/NomJ1bis");
+        NomJ2 = chargeImage("Partie/NomJ2bis");
         fondJoueur = chargeImage("Partie/FondJoueur");
         fondMenuPartie = chargeImage("Partie/NomMenu");
-        revenirALaPartie = chargeImage("Partie/RevenirPartie");
-        menuPartie = chargeImage("Partie/Menu");
+        revenirALaPartie = chargeImage("Partie/RevenirPartieBis");
+        menuPartie = chargeImage("Partie/MenuBis");
 
         selJoueur1 = chargeImage("Menu/select2");
         selJoueur2 = chargeImage("Menu/select1");
-        selectionJoueur = chargeImage("Partie/Victoire");
 
-        victoireName = chargeImage("Partie/Victoire");
-        muteIm = chargeImage("Partie/Mute");
-        unMute = chargeImage("Partie/UnMute");
+        victoireName = chargeImage("Partie/VictoireBis");
+        muteIm = chargeImage("Partie/MuteBis");
+        unMute = chargeImage("Partie/UnMuteBis");
 
         zoomIm = chargeImage("Partie/UnZoom");
         unzoomIm = chargeImage("Partie/Zoom");
 
         //Boutons
-        fin = chargeImage("Partie/Fin");
-        quitter = chargeImage("Partie/Quitter");
-        save = chargeImage("Partie/Save");
-        annuler = chargeImage("Partie/AnnulerCoup");
-        refaire = chargeImage("Partie/RefaireCoup");
+        fin = chargeImage("Partie/FinBis");
+        quitter = chargeImage("Partie/QuitterBis");
+        save = chargeImage("Partie/SaveBis");
+        annuler = chargeImage("Partie/AnnulerCoupBis");
+        refaire = chargeImage("Partie/RefaireCoupBis");
 
         cartePioche = chargeImage("Carte/DeckCard");
 
@@ -353,8 +353,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
 
     //Fonction qui démarre la musique du menu principal
     public void startMusique(){
-        try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Menu.wav"));
+        /*try {
+            AudioInputStream input = AudioSystem.getAudioInputStream(getClass().getResource("res/Music/Menu.wav"));
+            //AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Menu.wav"));
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -362,29 +363,31 @@ public class NiveauGraphique extends JComponent implements Observateur {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     //Fonction qui permet d'arrêter la musique
     public void mute(){
-        if(mute){
+        /*if(mute){
             clip.stop();
         }else{
             clip.start();
-        }
+        }*/
     }
 
     //Fonction qui lance la musique de la victoire en fonction du vainqueur
     public void startVictoire(){
-        try {
+       /* try {
             int nb;
             AudioInputStream input = null;
             if(joueur2Vie > joueur1Vie){
                 nb = compteurJ2%2;
-                input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
+                //input = AudioSystem.getAudioInputStream(getClass().getResource("res/Music/Victoire"+nb+".wav"));
+                //input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
             }else{
                 nb = compteurJ1%2;
-                input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
+                //input = AudioSystem.getAudioInputStream(getClass().getResource("res/Music/Victoire"+nb+".wav"));
+                //input = AudioSystem.getAudioInputStream(new File("res/Music/Victoire"+nb+".wav"));
             }
             clip = AudioSystem.getClip();
             clip.open(input);
@@ -393,14 +396,14 @@ public class NiveauGraphique extends JComponent implements Observateur {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     //Fonction qui permet de stopper la musique en cours
     public void stopMusique(){
-        if(MenuSet || PartieSet || VictoireSet){
+        /*if(MenuSet || PartieSet || VictoireSet){
             clip.stop();
-        }
+        }*/
     }
 
     //Fonction qui trace les différents éléments graphique du menu
@@ -983,8 +986,9 @@ public class NiveauGraphique extends JComponent implements Observateur {
             }
         }
 
-        try {
-            AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap2+".wav"));
+        /*try {
+            AudioInputStream input = AudioSystem.getAudioInputStream(getClass().getResource("res/Music/Duel"+compteurMap2+".wav"));
+            //AudioInputStream input = AudioSystem.getAudioInputStream(new File("res/Music/Duel"+compteurMap2+".wav"));
             clip = AudioSystem.getClip();
             clip.open(input);
             FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -993,6 +997,6 @@ public class NiveauGraphique extends JComponent implements Observateur {
             //gainControl.setValue(0.0f);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

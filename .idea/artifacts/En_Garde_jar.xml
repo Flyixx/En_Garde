@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="En_Garde:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/En_Garde_jar</output-path>
+    <root id="archive" name="En_Garde.jar">
+      <element id="module-output" name="En_Garde" />
+    </root>
+  </artifact>
+</component>
