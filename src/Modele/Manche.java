@@ -336,7 +336,7 @@ public class Manche extends Historique<CoupParTour>{
         int res;
         if(piocheVide())
         {
-            System.out.println("Pioche vide: Evaluation du joueur gagnant:");
+            //System.out.println("Pioche vide: Evalution du joueur gagnant:");
             int Pj1 = 0, Pj2 = 0;
             int distance = joueur2.getPosition() - joueur1.getPosition();
             for (int i = 0; i < joueur1.getMain().size(); i++){
@@ -352,23 +352,37 @@ public class Manche extends Historique<CoupParTour>{
 
             if (Pj1 < Pj2){
                 attaque(1);
-                System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
+                //System.out.println("Joueur 2 gagne: Plus de carte d'attaque direct");
+                partie.jeu.control.inter().niv().modifMessage(11, 2, 1 ,joueur1.vie);
+                partie.jeu.control.inter().niv().msg = 10;
+                partie.jeu.control.inter().niv().msg2 = 10;
                 partie.initialiseManche();
             }else if(Pj2 < Pj1){
                 attaque(2);
-                System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
+                //System.out.println("Joueur 1 gagne: Plus de carte d'attaque direct");
+                partie.jeu.control.inter().niv().modifMessage(11, 1, 2 ,joueur2.vie);
+                partie.jeu.control.inter().niv().msg = 10;
+                partie.jeu.control.inter().niv().msg2 = 10;
                 partie.initialiseManche();
             } else {
                 int PosJ1 = joueur1.getPosition();
                 int PosJ2 = NOMBRE_CASES - joueur2.getPosition();
+                //System.out.println(PosJ1);
+                //System.out.println(PosJ2);
 
                 if (PosJ1 > PosJ2){
                     attaque(2);
-                    System.out.println("Joueur 1 gagne: Joueur le plus avancé");
+                    //System.out.println("Joueur 1 gagne: Joueur le plus avancé");
+                    partie.jeu.control.inter().niv().modifMessage(12, 1, 2 ,joueur2.vie);
+                    partie.jeu.control.inter().niv().msg = 11;
+                    partie.jeu.control.inter().niv().msg2 = 11;
                     partie.initialiseManche();
                 } else {
                     attaque(1);
                     System.out.println("Joueur 2 gagne: Joueur le plus avancé");
+                    partie.jeu.control.inter().niv().modifMessage(12, 2, 1 ,joueur1.vie);
+                    partie.jeu.control.inter().niv().msg = 11;
+                    partie.jeu.control.inter().niv().msg2 = 11;
                     partie.initialiseManche();
                 }
             }
@@ -1476,7 +1490,6 @@ public class Manche extends Historique<CoupParTour>{
 
             }
         }
-
 
         return true;
     }

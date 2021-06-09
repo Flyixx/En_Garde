@@ -216,7 +216,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
         }else{
             Gauche.setVisible(true);
         }
-        if(niv.compteur == 5){
+        if(niv.compteur == 2){
             Droit.setVisible(false);
         }else{
             Droit.setVisible(true);
