@@ -360,15 +360,15 @@ public class Manche extends Historique<CoupParTour>{
                 partie.initialiseManche();
             } else {
                 int PosJ1 = joueur1.getPosition();
-                int PosJ2 = NOMBRE_CASES - joueur1.getPosition();
+                int PosJ2 = NOMBRE_CASES - joueur2.getPosition();
 
                 if (PosJ1 > PosJ2){
-                    attaque(1);
-                    //System.out.println("Joueur 2 gagne: Joueur le plus avancé");
-                    partie.initialiseManche();
-                } else {
                     attaque(2);
                     //System.out.println("Joueur 1 gagne: Joueur le plus avancé");
+                    partie.initialiseManche();
+                } else {
+                    attaque(1);
+                    //System.out.println("Joueur 2 gagne: Joueur le plus avancé");
                     partie.initialiseManche();
                 }
             }
@@ -397,6 +397,11 @@ public class Manche extends Historique<CoupParTour>{
             int newPos;
             int dir = j.direction;
             int valeurCarte = cartes.get(0).getValeur();
+
+            if(valeurCarte == 0)
+            {
+                valeurCarte = j.main.get(cartes.get(0).getId());
+            }
             //System.out.println("carte : " + valeurCarte);
             if(dir == 1) { // joueur à gauche
 
@@ -603,6 +608,51 @@ public class Manche extends Historique<CoupParTour>{
                             }
 
                         }
+                    } else if (dir == 1){
+                        if(j.position - valeurCarte > 0 && peutseDeplacer){
+                            newPos = j.position - valeurCarte;
+
+                            int[] valeurs = new int[5];
+                            valeurs[0] = valeurCarte;
+                            Action ac = new Action(1,valeurs);
+                            Coup cp = new Coup(grilleJeu, ac, newPos);
+                            cp.fixerManche(this);
+                            coups.add(cp);
+
+                            //System.out.println("peut reculer en " + newPos);
+                        }
+                        newPos = j.position + valeurCarte;
+                        if(newPos <= 22) {
+                            if (newPos == joueur2.position) {
+                                int nbAttks = peutAttaquer(valeurCarte, distance, j);
+                                //System.out.println("Nb attaques possibles :" + nbAttks);
+                                for (int k = 1; k <= nbAttks; k++) {
+                                    int[] valeurs = new int[5];
+
+                                    for (int l = 0; l < k; l++)
+                                        valeurs[l] = valeurCarte;
+
+                                    Action ac = new Action(2, valeurs);
+                                    int target = joueur2.getPosition();
+                                    Coup cp = new Coup(grilleJeu, ac, target);
+                                    cp.fixerManche(this);
+                                    coups.add(cp);
+                                }
+                                //System.out.println("peut attaquer le joueur avec carte " + valeurCarte);
+                            } else if (newPos < joueur2.position && peutseDeplacer) {
+
+                                int[] valeurs = new int[5];
+                                valeurs[0] = valeurCarte;
+                                Action ac = new Action(1, valeurs);
+                                Coup cp = new Coup(grilleJeu, ac, newPos);
+                                cp.fixerManche(this);
+                                coups.add(cp);
+                                //System.out.println("peut avancer en " + newPos);
+                                //CaseIHM.get(newPos).updateEtat(1);
+
+                            }
+
+                        }
                     }
                 }
             }
@@ -665,7 +715,7 @@ public class Manche extends Historique<CoupParTour>{
         //on supprime de la main du joueur toutes les cartes selectionnees pour jouer
         if(cp.action.id != PARADE_DIRECTE && cp.action.id!=PARADE_INDIRECTE)
         {
-            if(partie.type == 2 && tourJoueur == 2)
+            if((partie.type == 2 && tourJoueur == 2) || partie.type == 4 || (partie.type == 3 && tourJoueur == 2))
             {
                 int carteJouer = cp.GetAction().valeurs[0];
                 int suppr = 0;
@@ -1032,7 +1082,7 @@ public class Manche extends Historique<CoupParTour>{
         {
             if(joueurcourant.carteI.size() > 0)
             {
-                if(partie.type != 2 || getTourJoueur() != 2)
+                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4)
                 {
                     test = TestProchainCoup(coupPrecedent);
                 }
@@ -1063,7 +1113,7 @@ public class Manche extends Historique<CoupParTour>{
             else
             {
 
-                if(partie.type != 2 || getTourJoueur() != 2)
+                if((partie.type != 2 || getTourJoueur() != 2) && partie.type!=4)
                 {
                     test = TestProchainCoup(coupPrecedent);
                 }
@@ -1291,79 +1341,110 @@ public class Manche extends Historique<CoupParTour>{
 
     //Pour connaitre l'action que le joueur doit effectuer par rapport au coup precedent
     public boolean TestProchainCoup(CoupParTour coupPrecedent) {
-        if(coupPrecedent != null)
+        JoueurHumain joueurcourant = Joueur(tourJoueur);
+        boolean poss = false;
+
+        if(joueurcourant.carteI.size()!= 0)
         {
-            // Si le CoupParTour est un simple déplacement
-            if(coupPrecedent.typeAction == 1)
+            for(int i = 0; i<joueurcourant.carteI.size(); i++)
             {
-                //System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
-                return true;
-
-            }
-            // Si le CoupParTour est une attaque directe ou une attaque indirecte
-            if(coupPrecedent.typeAction == 2 || coupPrecedent.typeAction == 3)
-            {
-
-                // Récupération du nombre de cartes utilisées pour l'attaque
-                int nbCartes = 0;
-                Coup cp = coupPrecedent.coupsTourTab[coupPrecedent.nbCoups-1];
-                for(int j = 0; j<cp.action.valeurs.length; j++)
+                ArrayList<CarteIHM> liste = new ArrayList();
+                liste.add(joueurcourant.carteI.get(i));
+                if(listerCoups(joueurcourant,liste, false))
                 {
-                    if(cp.action.valeurs[j] != 0)
-                    {
-                        nbCartes++;
-                    }
-                }
-
-                int tour;
-                if(getTourJoueur() == 1){
-                    tour = 2;
-                }else{
-                    tour = 1;
-                }
-                // Si le CoupParTour est une attaque directe
-                if(coupPrecedent.typeAction == 2)
-                {
-                    //System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
-                    //partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
-                    //partie.jeu.control.inter().niv().msg = 2;
-                    if(ParerAttaqueDirecte(coupPrecedent, nbCartes))
-                    {
-                        partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
-                        partie.jeu.control.inter().niv().msg2 = 4;
-                        return true;
-                    }
-                    else
-                    {
-                        partie.jeu.control.inter().niv().modifMessage(4, getTourJoueur(), partie.Joueur(getTourJoueur()).vie, 0);
-                        partie.jeu.control.inter().niv().msg2 = 3;
-                        return false;
-                    }
-                    //System.out.println("Vous devez parer avec "+ nbCartes + " carte(s) de valeur : " + cp.action.valeurs[0]);
-                }
-                else // Si le CoupParTour est une attaque indirecte
-                {
-                    partie.jeu.control.inter().niv().modifMessage(5, tour, cp.action.valeurs[0], nbCartes);
-                    partie.jeu.control.inter().niv().msg = 3;
-                    //System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
-                    if(ParerAttaqueIndirecte(coupPrecedent, nbCartes))
-                    {
-                        //System.out.println("PARADE INDIRECTE");
-                        partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
-                        partie.jeu.control.inter().niv().msg2 = 4;
-                        return true;
-                    }
-                    else
-                    {
-                        //System.out.println("PAS PARADE INDIRECTE");
-                        partie.jeu.control.inter().niv().modifMessage(9, getTourJoueur(), cp.action.valeurs[0], nbCartes);
-                        partie.jeu.control.inter().niv().msg2 = 4;
-                        return false;
-                    }
+                    poss = true;
                 }
             }
-
         }
+        else {
+            poss = true;
+        }
+
+
+        System.out.println("Possibilites : " + poss);
+
+        if(!poss)
+        {
+            partie.Joueur(tourJoueur).vie -= 1;
+            partie.initialiseManche();
+        }
+        else
+        {
+            if(coupPrecedent != null)
+            {
+                // Si le CoupParTour est un simple déplacement
+                if(coupPrecedent.typeAction == 1)
+                {
+                    System.out.println("coup precedent: Le joueur adverse a juste avancé/reculé");
+                    return true;
+
+                }
+                // Si le CoupParTour est une attaque directe ou une attaque indirecte
+                if(coupPrecedent.typeAction == 2 || coupPrecedent.typeAction == 3)
+                {
+
+                    // Récupération du nombre de cartes utilisées pour l'attaque
+                    int nbCartes = 0;
+                    Coup cp = coupPrecedent.coupsTourTab[coupPrecedent.nbCoups-1];
+                    for(int j = 0; j<cp.action.valeurs.length; j++)
+                    {
+                        if(cp.action.valeurs[j] != 0)
+                        {
+                            nbCartes++;
+                        }
+                    }
+
+                    int tour;
+                    if(getTourJoueur() == 1){
+                        tour = 2;
+                    }else{
+                        tour = 1;
+                    }
+                    // Si le CoupParTour est une attaque directe
+                    if(coupPrecedent.typeAction == 2)
+                    {
+                        System.out.println("coup precedent: Le joueur adverse a effectué une attaque directe");
+                        //partie.jeu.control.inter().niv().modifMessage(1, tour, cp.action.valeurs[0], nbCartes);
+                        //partie.jeu.control.inter().niv().msg = 2;
+                        if(ParerAttaqueDirecte(coupPrecedent, nbCartes))
+                        {
+                            partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                            partie.jeu.control.inter().niv().msg2 = 4;
+                            return true;
+                        }
+                        else
+                        {
+                            partie.jeu.control.inter().niv().modifMessage(4, getTourJoueur(), partie.Joueur(getTourJoueur()).vie, 0);
+                            partie.jeu.control.inter().niv().msg2 = 3;
+                            return false;
+                        }
+                        //System.out.println("Vous devez parer avec "+ nbCartes + " carte(s) de valeur : " + cp.action.valeurs[0]);
+                    }
+                    else // Si le CoupParTour est une attaque indirecte
+                    {
+                        partie.jeu.control.inter().niv().modifMessage(5, tour, cp.action.valeurs[0], nbCartes);
+                        partie.jeu.control.inter().niv().msg = 3;
+                        System.out.println("coup precedent: Le joueur adverse a effectué une attaque indirecte");
+                        if(ParerAttaqueIndirecte(coupPrecedent, nbCartes))
+                        {
+                            System.out.println("PARADE INDIRECTE");
+                            partie.jeu.control.inter().niv().modifMessage(8, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                            partie.jeu.control.inter().niv().msg2 = 4;
+                            return true;
+                        }
+                        else
+                        {
+                            System.out.println("PAS PARADE INDIRECTE");
+                            partie.jeu.control.inter().niv().modifMessage(9, getTourJoueur(), cp.action.valeurs[0], nbCartes);
+                            partie.jeu.control.inter().niv().msg2 = 4;
+                            return false;
+                        }
+                    }
+                }
+
+            }
+        }
+
 
         return true;
     }

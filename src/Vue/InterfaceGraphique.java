@@ -16,7 +16,7 @@ public class InterfaceGraphique implements Runnable, Observateur {
     Box barreLaterale;
     JPanel pan, optionGauche, optionDroit, Regles, NewPartie;
     public int hauteurPanel, largeurPanel;
-    JButton Niveau, Option, Charger, Quitter, Droit, Gauche, Retour, Retour2, PvP, PvIAF, PvIAM;
+    JButton Niveau, Option, Charger, Quitter, Droit, Gauche, Retour, Retour2, PvP, PvIAF, PvIAM, IAvIA;
 
     InterfaceGraphique(Jeu j,CollecteurEvenements c){
         jeu = j;
@@ -116,10 +116,12 @@ public class InterfaceGraphique implements Runnable, Observateur {
         PvIAF = createButton("Joueur Vs IA Facile", "PartieIAF");
         PvIAM = createButton("Joueur VS IA Moyen", "PartieIAM");
         Retour2 = createButton("Menu", "RetourMenu");
+        IAvIA = createButton("IAFacile vs IA Moyenne", "PartieIAIA");
 
         NewPartie.add(PvP);
         NewPartie.add(PvIAF);
         NewPartie.add(PvIAM);
+        NewPartie.add(IAvIA);
         NewPartie.add(Retour2);
 
 
@@ -239,9 +241,10 @@ public class InterfaceGraphique implements Runnable, Observateur {
             int yBouton = (int)Math.round(hauteurPanel * 0.05);
             int xBouton = (int)Math.round(largeurPanel * 0.375);
 
-            PvP.setBounds(xBouton, yBouton, largeurBouton, hauteurBouton);
-            PvIAF.setBounds(xBouton, (yBouton*2)+hauteurBouton, largeurBouton, hauteurBouton);
-            PvIAM.setBounds(xBouton, ((yBouton*3) + (hauteurBouton*2)), largeurBouton, hauteurBouton);
+            PvP.setBounds(xBouton-(xBouton/2), yBouton, largeurBouton, hauteurBouton);
+            PvIAF.setBounds(xBouton-(xBouton/2), (yBouton*2)+hauteurBouton, largeurBouton, hauteurBouton);
+            PvIAM.setBounds(xBouton+(xBouton/2), yBouton, largeurBouton, hauteurBouton);
+            IAvIA.setBounds(xBouton+(xBouton/2), (yBouton*2)+hauteurBouton,largeurBouton, hauteurBouton);
             Retour2.setBounds(largeurPanel-(largeurBouton/2), hauteurPanel-hauteurBouton, largeurBouton/2, hauteurBouton);
 
             frame.add(NewPartie, BorderLayout.SOUTH);
